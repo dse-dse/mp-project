@@ -354,15 +354,7 @@
 }
 
 /* Поддержка темной темы (опционально) */
-@media (prefers-color-scheme: dark) {
-  .scroll-text-section {
-    background-color: #000000;
-  }
-  
-  .text-line {
-    color: #ffffff;
-  }
-}
+
 
 /* Улучшенный рендеринг текста */
 .text-line {

@@ -831,46 +831,6 @@
   .contact-section {
     background-color: #000000;
   }
-  
-  .email-label,
-  .email-value,
-  .chat-text,
-  .contact-text,
-  .form-label,
-  .form-input,
-  .form-textarea,
-  .submit-button {
-    color: #ffffff;
-  }
-  
-  .form-input,
-  .form-textarea {
-    border-bottom-color: #ffffff;
-  }
-  
-  .form-input::placeholder,
-  .form-textarea::placeholder {
-    color: #aaaaaa;
-  }
-  
-  .submit-button {
-    background: rgba(255, 255, 255, 0.1);
-  }
-  
-  .submit-button:hover {
-    background: rgba(255, 255, 255, 0.2);
-  }
-  
-  .copy-notification {
-    color: #000000;
-    background-color: #ffffff;
-  }
-  
-  .email-divider,
-  .separator {
-    background-color: #333333;
-  }
-}
 
 /* Исправление для перекрытия элементов */
 .contact-section * {
