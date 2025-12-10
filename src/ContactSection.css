@@ -1,0 +1,400 @@
+.contact-section {
+  position: relative;
+  min-height: 100vh;
+  background-color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 80px 20px;
+}
+
+.contact-container {
+  width: 100%;
+  max-width: 1200px;
+  display: flex;
+  gap: 0;
+  height: 100%;
+}
+
+/* Левая колонка - 50% ширины */
+.left-column {
+  width: 50%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding-right: 60px;
+
+  height: 600px;
+}
+
+.emails-section {
+  width: 100%;
+}
+
+.email-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 30px;
+  width: 100%;
+}
+
+.email-item {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  min-width: 0; /* Для корректной работы flex с длинным текстом */
+}
+
+.email-label {
+
+
+font-style: normal;
+font-weight: 500;
+font-size: 16px;
+line-height: 16px;
+/* identical to box height, or 100% */
+text-transform: uppercase;
+
+color: #999797;
+
+
+
+  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  font-style: normal;
+ 
+  text-transform: uppercase;
+  
+  letter-spacing: -0.02em;
+  white-space: nowrap;
+}
+
+.email-value {
+  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  font-style: normal;
+  font-weight: 400;
+  font-size: 18px;
+  color: #000000;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  position: relative;
+  display: inline-block;
+  padding: 5px 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.email-value:hover {
+  opacity: 0.7;
+}
+
+.email-divider {
+  width: 1px;
+  height: 70px;
+  background-color: #e0e0e0;
+  margin-top: 10px;
+}
+
+.copy-notification {
+  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  font-style: normal;
+  font-weight: 400;
+  font-size: 14px;
+  color: #000000;
+  margin-left: 10px;
+  background-color: #e6e6e6;
+  padding: 4px 12px;
+  border-radius: 3px;
+  animation: fadeIn 0.3s ease;
+  white-space: nowrap;
+}
+
+.chat-section {
+  margin-top: auto;
+}
+
+.chat-text {
+font-family: 'Helvetica Neue';
+font-style: normal;
+font-weight: 700;
+font-size: 140px;
+line-height: 132px;
+
+
+
+white-space: nowrap;
+  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  font-style: normal;
+
+  line-height: 0.85;
+  text-transform: uppercase;
+  color: #000000;
+  letter-spacing: -0.05em;
+}
+
+/* Правая колонка - 50% ширины */
+.right-column {
+  width: 50%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding-left: 60px;
+  height: 600px;
+}
+
+.text-section {
+  margin-bottom: 40px;
+}
+
+.contact-text {
+
+font-family: 'Helvetica Neue';
+font-style: normal;
+font-weight: 400;
+font-size: 32px;
+line-height: 40px;
+
+letter-spacing: -0.03em;
+text-transform: uppercase;
+
+color: #000000;
+
+
+}
+
+.contact-form {
+  display: flex;
+  flex-direction: column;
+  gap: 56px;
+  flex-grow: 1;
+  justify-content: flex-end;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  width: 100%;
+}
+
+/* Строка для телефона и email */
+.form-row {
+  display: flex;
+  gap: 30px;
+  width: 100%;
+}
+
+.form-group-half {
+  flex: 1;
+  min-width: 0; /* Для корректной работы flex */
+}
+
+.form-label {
+  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  font-style: normal;
+  font-weight: 400;
+  font-size: 16px;
+  color: #000000;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+}
+
+.form-input,
+.form-textarea {
+  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  font-style: normal;
+  font-weight: 400;
+  font-size: 16px;
+  color: #000000;
+  padding: 10px 0;
+  border: none;
+  border-bottom: 1px solid #000000;
+  background: transparent;
+  outline: none;
+  transition: border-color 0.3s ease;
+  width: 100%;
+}
+
+.form-input::placeholder,
+.form-textarea::placeholder {
+  color: #999999;
+  opacity: 0.7;
+}
+
+.form-input:focus,
+.form-textarea:focus {
+  border-bottom-color: #007bff;
+}
+
+.form-textarea {
+  resize: vertical;
+  min-height: 80px;
+}
+
+.separator {
+  width: 100%;
+  height: 1px;
+  background-color: #e0e0e0;
+  margin: 10px 0;
+}
+
+.submit-button {
+  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  font-style: normal;
+  font-weight: 400;
+  font-size: 16px;
+  color: #000000;
+  text-transform: uppercase;
+  padding: 0;
+  border: none;
+  background: rgba(230, 230, 230, 0.72);
+  cursor: pointer;
+  transition: all 0.3s ease;
+  align-self: flex-end;
+  letter-spacing: 0.5px;
+  border-radius: 32px;
+  width: 122px;
+  height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 10px;
+}
+
+.submit-button:hover {
+  background: rgba(200, 200, 200, 0.8);
+}
+
+.submit-button:active {
+  transform: translateY(1px);
+}
+
+.submit-button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.submit-button:disabled:hover {
+  background: rgba(230, 230, 230, 0.72);
+}
+
+.success-message {
+  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  font-style: normal;
+  font-weight: 400;
+  font-size: 14px;
+  color: #4CAF50;
+  background-color: rgba(76, 175, 80, 0.1);
+  padding: 10px 15px;
+  border-radius: 4px;
+  margin-bottom: 20px;
+  animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+/* Адаптивность */
+@media (max-width: 1024px) {
+  .contact-container {
+    flex-direction: column;
+    gap: 60px;
+  }
+  
+  .left-column,
+  .right-column {
+    width: 100%;
+    height: auto;
+    padding: 0;
+ 
+    padding-bottom: 40px;
+  }
+  
+  .right-column {
+    padding-left: 0;
+    padding-top: 40px;
+    border-bottom: none;
+  }
+  
+  .chat-text {
+    font-size: 70px;
+  }
+  
+  .email-row {
+    flex-direction: column;
+    gap: 20px;
+  }
+  
+  .email-divider {
+    width: 100%;
+    height: 1px;
+    margin: 0;
+  }
+  
+  .form-row {
+    flex-direction: column;
+    gap: 25px;
+  }
+}
+
+@media (max-width: 768px) {
+  .contact-section {
+    padding: 60px 15px;
+  }
+  
+  .email-label {
+    font-size: 18px;
+  }
+  
+  .email-value {
+    font-size: 16px;
+  }
+  
+  .chat-text {
+    font-size: 60px;
+  }
+  
+  .contact-text {
+    font-size: 16px;
+  }
+}
+
+@media (max-width: 480px) {
+  .contact-section {
+    padding: 40px 15px;
+  }
+  
+  .email-label {
+    font-size: 16px;
+  }
+  
+  .email-value {
+    font-size: 14px;
+  }
+  
+  .chat-text {
+    font-size: 50px;
+  }
+  
+  .contact-text {
+    font-size: 14px;
+  }
+  
+  .form-label {
+    font-size: 14px;
+  }
+  
+  .form-input,
+  .form-textarea {
+    font-size: 14px;
+  }
+  
+  .submit-button {
+    width: 110px;
+    height: 55px;
+    font-size: 14px;
+  }
+}

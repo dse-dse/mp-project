@@ -1,0 +1,183 @@
+/* VideoBackground.css */
+
+.video-background-container {
+  position: relative;
+  width: 100%;
+  max-width: 1440px;
+  height: 100vh;
+  overflow: hidden;
+  margin: 0 auto;
+}
+
+.video-background {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: -1;
+}
+
+/* Навигация */
+.navigation {
+  position: absolute;
+  top: 20px;
+  width: 100%;
+  max-width: 1440px;
+  z-index: 1;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  box-sizing: border-box;
+  padding: 0 40px;
+}
+
+.nav-left {
+  display: flex;
+  align-items: center;
+  width: calc(50% - 52.5px); /* 50% минус половина логотипа (105px / 2) */
+  justify-content: flex-start;
+  gap: 220px; /* Расстояние между DIRECTIONS и PROJECTS */
+}
+
+.nav-right {
+  display: flex;
+  align-items: center;
+  width: calc(50% - 52.5px); /* 50% минус половина логотипа (105px / 2) */
+  justify-content: flex-end;
+  gap: 179px; /* Расстояние между ABOUT и CHAT WITH US */
+}
+
+.nav-item {
+  color: white;
+  font-size: 14px;
+  cursor: pointer;
+  text-align: center;
+  white-space: nowrap;
+}
+
+/* Отступы для элементов навигации */
+.nav-left .nav-item.directions {
+  margin-right: 48px; /* DIRECTIONS отступ справа 48px */
+}
+
+/* Логотип в центре */
+.logo {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.logo-image {
+  width: 105px;
+  height: 40px;
+  object-fit: contain;
+}
+
+.chat-button {
+  background-color: rgba(255, 255, 255, 0.2);
+  width: 176px;
+  height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 30px;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  padding: 0;
+  font-size: 14px;
+}
+
+/* Контент снизу */
+.content-wrapper {
+  position: absolute;
+  bottom: 50px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100%;
+  max-width: 1440px;
+  z-index: 1;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  padding: 0 40px;
+  box-sizing: border-box;
+}
+
+.awards-row {
+  display: flex;
+  gap: 60px;
+  align-items: flex-end;
+}
+
+.award-item {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  flex-shrink: 0;
+}
+
+/* Контейнеры для иконок с точными размерами */
+.award-icon-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 10px;
+}
+
+.icon-1 {
+  width: 65px;
+  height: 27px;
+}
+
+.icon-2 {
+  width: 100px;
+  height: 28px;
+}
+
+.icon-3 {
+  width: 77px;
+  height: 28px;
+}
+
+.icon-4 {
+  width: 119px;
+  height: 30px;
+}
+
+.award-icon {
+  max-width: 100%;
+  max-height: 100%;
+  width: auto;
+  height: auto;
+  object-fit: contain;
+}
+
+.award-text {
+  color: white;
+  font-size: 14px;
+  line-height: 1.4;
+  margin: 0;
+  text-align: left;
+  white-space: nowrap;
+}
+
+.view-project-button {
+  background-color: white;
+  color: black;
+  border: none;
+  padding: 15px 30px;
+  font-size: 16px;
+  font-weight: bold;
+  border-radius: 25px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  flex-shrink: 0;
+  margin-left: 40px;
+}
+
+.view-project-button:hover {
+  background-color: #f0f0f0;
+}

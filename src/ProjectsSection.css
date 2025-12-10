@@ -1,0 +1,168 @@
+.projects-section {
+  position: relative;
+  min-height: 200vh;
+  background-color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  padding: 100px 0;
+}
+
+.projects-content {
+  width: 100%;
+  max-width: 1400px;
+  padding: 0 40px;
+  position: sticky;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 1;
+}
+
+.words-container {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  position: relative;
+  width: 100%;
+}
+
+.word {
+  font-family: 'Arial', sans-serif;
+  font-weight: 900;
+  font-size: clamp(5rem, 12vw, 10rem);
+  line-height: 0.8;
+  text-transform: uppercase;
+  color: #000;
+  will-change: transform, opacity;
+  position: relative;
+  white-space: nowrap;
+  pointer-events: none;
+  transition: transform 0.2s cubic-bezier(0.165, 0.84, 0.44, 1), 
+              opacity 0.2s cubic-bezier(0.165, 0.84, 0.44, 1);
+}
+
+.word-1 {
+  align-self: flex-start;
+  font-size: clamp(4rem, 9vw, 8rem);
+  color: rgba(0, 0, 0, 0.9);
+}
+
+.word-2 {
+  align-self: center;
+  font-size: clamp(6rem, 14vw, 12rem);
+  color: rgba(0, 0, 0, 0.95);
+}
+
+.word-3 {
+  align-self: flex-end;
+  font-size: clamp(4.5rem, 10vw, 9rem);
+  color: rgba(0, 0, 0, 0.85);
+}
+
+/* Декоративные линии для контекста */
+.projects-section::before,
+.projects-section::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(0,0,0,0.1), transparent);
+  opacity: 0.5;
+}
+
+.projects-section::before {
+  top: 25%;
+}
+
+.projects-section::after {
+  bottom: 25%;
+}
+
+/* Адаптивность */
+@media (max-width: 1024px) {
+  .projects-section {
+    min-height: 150vh;
+  }
+  
+  .word {
+    font-size: clamp(3rem, 10vw, 8rem);
+  }
+  
+  .word-1 {
+    font-size: clamp(2.5rem, 8vw, 6rem);
+  }
+  
+  .word-2 {
+    font-size: clamp(4rem, 12vw, 10rem);
+  }
+  
+  .word-3 {
+    font-size: clamp(3rem, 9vw, 7rem);
+  }
+}
+
+@media (max-width: 768px) {
+  .projects-section {
+    min-height: 120vh;
+    padding: 50px 0;
+  }
+  
+  .projects-content {
+    padding: 0 20px;
+  }
+  
+  .words-container {
+    gap: 10px;
+  }
+  
+  .word {
+    white-space: normal;
+    text-align: center;
+    font-size: clamp(2.5rem, 9vw, 6rem);
+    line-height: 0.9;
+  }
+  
+  .word-1,
+  .word-2,
+  .word-3 {
+    align-self: center;
+    text-align: center;
+  }
+  
+  .word-1 {
+    font-size: clamp(2rem, 7vw, 5rem);
+  }
+  
+  .word-2 {
+    font-size: clamp(3rem, 11vw, 8rem);
+  }
+  
+  .word-3 {
+    font-size: clamp(2.2rem, 8vw, 6rem);
+  }
+}
+
+@media (max-width: 480px) {
+  .projects-section {
+    min-height: 100vh;
+  }
+  
+  .word {
+    font-size: clamp(2rem, 8vw, 4rem);
+    line-height: 1;
+  }
+  
+  .word-1 {
+    font-size: clamp(1.8rem, 7vw, 3.5rem);
+  }
+  
+  .word-2 {
+    font-size: clamp(2.5rem, 10vw, 6rem);
+  }
+  
+  .word-3 {
+    font-size: clamp(1.8rem, 8vw, 4rem);
+  }
+}
