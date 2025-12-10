@@ -826,12 +826,6 @@
   }
 }
 
-/* Поддержка темной темы */
-@media (prefers-color-scheme: dark) {
-  .contact-section {
-    background-color: #000000;
-  }
-
 /* Исправление для перекрытия элементов */
 .contact-section * {
   pointer-events: auto; /* Разрешаем события мыши */

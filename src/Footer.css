@@ -346,22 +346,6 @@
   }
 }
 
-/* Поддержка темной темы */
-@media (prefers-color-scheme: dark) {
-  .footer {
-    background-color: #000000;
-    border-top-color: #333;
-  }
-  
-  .footer-left,
-  .footer-links a {
-    color: #ffffff;
-  }
-  
-  .footer-social img {
-    filter: invert(1); /* Инвертируем иконки для темной темы */
-  }
-}
 
 /* Улучшение доступности */
 .footer-links a:focus,
