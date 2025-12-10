@@ -7,14 +7,14 @@ import ContactSection from "./ContactSection"; // Импортируем нов�
 import HomeSection from "./HomeSection";
 import ProjectsSection from "./ProjectsSection";
 import MensSection from "./MensSection";
-import CustomCursor from "./CustomCursor";
+// import CustomCursor from "./CustomCursor";
 import Footer from "./Footer";
 import "./App.css";
 
 function App() {
   return (
     <div className="App">
-      <CustomCursor />
+      {/* <CustomCursor /> */}
       <VideoBackground />
       <ScrollTextAnimation />
       <ThirdScrollBlock />

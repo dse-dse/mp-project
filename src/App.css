@@ -1,62 +1,9 @@
-.App {
-  width: 100%;
-  max-width: 1440px;
-  margin: 0 auto;
-  cursor: none;
-}
+
 
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  cursor: none !important;
+ 
 }
 
-/* Убираем отступ между первым и вторым блоком */
-.scroll-text-section {
-  margin-top: 0 !important; /* Убираем margin-top */
-}
-
-/* Делаем все анимации независимыми */
-.video-background-container,
-.scroll-text-section,
-.third-scroll-section,
-.mens-section {
-  position: relative;
-  z-index: 1;
-}
-
-/* Обеспечиваем плавность скролла */
-html {
-  scroll-behavior: smooth;
-}
-
-/* Для интерактивных элементов */
-button:hover, 
-a:hover, 
-.nav-item:hover, 
-.chat-button:hover, 
-.view-project-button:hover, 
-.third-button:hover, 
-.mens-button:hover {
-  opacity: 0.8;
-  transition: opacity 0.3s ease;
-}
-
-/* Стили для скроллбара (опционально) */
-::-webkit-scrollbar {
-  width: 8px;
-}
-
-::-webkit-scrollbar-track {
-  background: #f1f1f1;
-}
-
-::-webkit-scrollbar-thumb {
-  background: #888;
-  border-radius: 4px;
-}
-
-::-webkit-scrollbar-thumb:hover {
-  background: #555;
-}

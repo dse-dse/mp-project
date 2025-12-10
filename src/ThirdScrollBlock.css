@@ -1,7 +1,7 @@
 .third-scroll-section {
   height: 788px;
   width: 100%;
-  background-color: #f5f5f5; /* Светлый фон */
+  background-color: #ffff; /* Светлый фон */
   position: relative;
   overflow: hidden;
 }

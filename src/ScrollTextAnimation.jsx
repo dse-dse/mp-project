@@ -5,6 +5,7 @@ const ScrollTextAnimation = () => {
   const [scrollProgress, setScrollProgress] = useState(0);
   const [activeSection, setActiveSection] = useState(0);
   const [isInViewport, setIsInViewport] = useState(false);
+  const [windowWidth, setWindowWidth] = useState(window.innerWidth);
   const sectionRef = useRef(null);
   const containerRef = useRef(null);
   const textContainerRef = useRef(null);
@@ -20,38 +21,74 @@ const ScrollTextAnimation = () => {
     ]
   ];
 
+  // Адаптивная конфигурация в зависимости от ширины экрана
+  const getAnimationConfig = () => {
+    const baseConfig = {
+      fadeInDuration: 0.6,
+      fadeOutDuration: 0.4,
+      staggerDelay: 0.01,
+      scaleRange: [0.9, 1],
+      translateRange: [20, 0],
+      sectionThreshold: 0.3,
+    };
+
+    // Адаптация для мобильных устройств
+    if (windowWidth <= 768) {
+      return {
+        ...baseConfig,
+        fadeInDuration: 0.4,
+        fadeOutDuration: 0.3,
+        staggerDelay: 0.005,
+        translateRange: [15, 0],
+      };
+    }
+    
+    if (windowWidth >= 1441) {
+      // Масштабирование для больших экранов
+      const scaleFactor = Math.min(1.5, windowWidth / 1440);
+      return {
+        ...baseConfig,
+        fadeInDuration: 0.6 * scaleFactor,
+        fadeOutDuration: 0.4 * scaleFactor,
+        translateRange: [20 * scaleFactor, 0],
+      };
+    }
+
+    return baseConfig;
+  };
+
   // Состояния для каждой буквы каждого раздела
   const [letterStates, setLetterStates] = useState(
     textSections.map(section => 
       section.map(line => 
         Array(line.length).fill({ 
           opacity: 0, 
-          scale: 0.9,
-          translateY: 20
+          scale: getAnimationConfig().scaleRange[0],
+          translateY: getAnimationConfig().translateRange[0]
         })
       )
     )
   );
 
-  // Настройки анимации
-  const animationConfig = {
-    fadeInDuration: 0.6,
-    fadeOutDuration: 0.4,
-    staggerDelay: 0.01,
-    scaleRange: [0.9, 1],
-    translateRange: [20, 0],
-    sectionThreshold: 0.3,
-  };
+  // Обработчик изменения размера окна
+  useEffect(() => {
+    const handleResize = () => {
+      setWindowWidth(window.innerWidth);
+    };
+
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
 
   useEffect(() => {
     const updateAnimation = () => {
       if (!sectionRef.current || !containerRef.current || !textContainerRef.current) return;
 
+      const animationConfig = getAnimationConfig();
       const section = sectionRef.current;
-      const container = containerRef.current;
-      const textContainer = textContainerRef.current;
       const rect = section.getBoundingClientRect();
       const windowHeight = window.innerHeight;
+      const windowWidth = window.innerWidth;
       
       // Проверяем, находится ли секция в viewport
       const isVisible = rect.top <= windowHeight && rect.bottom >= 0;
@@ -66,8 +103,8 @@ const ScrollTextAnimation = () => {
           section.map(line => 
             Array(line.length).fill({ 
               opacity: 0, 
-              scale: 0.9,
-              translateY: 20
+              scale: animationConfig.scaleRange[0],
+              translateY: animationConfig.translateRange[0]
             })
           )
         );
@@ -76,14 +113,11 @@ const ScrollTextAnimation = () => {
       }
 
       // Рассчитываем прогресс скролла внутри секции
-      // Начинаем, когда верх секции достигает верха экрана
       const sectionTop = rect.top;
       const sectionHeight = rect.height;
       
-      // Прогресс от 0 до 1, когда секция проходит через экран
       let progress = 0;
       if (sectionTop <= 0) {
-        // Секция начала уходить за верх экрана
         const scrolledPast = Math.abs(sectionTop);
         const maxScroll = sectionHeight - windowHeight;
         progress = Math.min(1, scrolledPast / maxScroll);
@@ -94,7 +128,14 @@ const ScrollTextAnimation = () => {
 
       // Определяем активную секцию на основе прогресса
       const totalSections = textSections.length;
-      const sectionWidth = 0.8; // 80% скролла на первую секцию, 20% на вторую
+      let sectionWidth;
+      
+      // Адаптивное распределение секций в зависимости от ширины экрана
+      if (windowWidth <= 768) {
+        sectionWidth = 0.7; // Для мобильных - 70% на первую секцию
+      } else {
+        sectionWidth = 0.8; // Для десктопа - 80% на первую секцию
+      }
       
       let currentSection = 0;
       if (progress < sectionWidth) {
@@ -122,11 +163,12 @@ const ScrollTextAnimation = () => {
         
         section.forEach((line, lineIdx) => {
           const lettersInLine = line.length;
+          const staggerFactor = windowWidth <= 768 ? 0.8 : 1; // Меньшая задержка на мобильных
           
           line.split('').forEach((_, letterIdx) => {
             if (isActive) {
               // Активная секция - буквы появляются
-              const letterStartPoint = (letterIdx / lettersInLine) * 0.5;
+              const letterStartPoint = (letterIdx / lettersInLine) * 0.5 * staggerFactor;
               let letterProgress = 0;
               
               if (internalProgress > letterStartPoint) {
@@ -194,12 +236,13 @@ const ScrollTextAnimation = () => {
         cancelAnimationFrame(animationFrameRef.current);
       }
     };
-  }, [textSections.length]);
+  }, [textSections.length, windowWidth]);
 
   // Рендер текстовой строки
   const renderTextLine = (line, lineIdx, sectionIdx) => {
     const isActive = sectionIdx === activeSection;
     const isPrevious = sectionIdx < activeSection;
+    const animationConfig = getAnimationConfig();
     
     return (
       <div 

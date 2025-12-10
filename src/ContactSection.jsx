@@ -52,7 +52,6 @@ const ContactSection = () => {
           message: formData.project,
           _subject: `Новая заявка от ${formData.name}`,
           _replyto: formData.email,
-          // Добавляем поле для вашего email (опционально)
           _to: "manatin306@gmail.com"
         }),
       });
@@ -95,7 +94,6 @@ const ContactSection = () => {
                   {copiedEmail === "client" && <span className="copy-notification">copied!</span>}
                 </div>
               </div>
-              
               
               <div className="email-item">
                 <div className="email-label">WHAT TO WORK FOR US?</div>
@@ -182,20 +180,22 @@ const ContactSection = () => {
               </div>
             </div>
             
+            {/* БЛОК TELL US ABOUT YOUR PROJECT - Исправлен на textarea */}
             <div className="form-group">
               <label htmlFor="project" className="form-label">TELL US ABOUT YOUR PROJECT</label>
-              <input
+              <textarea
                 id="project"
                 name="project"
                 value={formData.project}
                 onChange={handleInputChange}
-                className="form-input"
+                className="form-textarea"
                 rows="4"
                 placeholder=""
                 required
               />
+              {/* Добавляем разделитель после поля проекта */}
+              <div className="separator"></div>
             </div>
-            
             
             <button 
               type="submit" 

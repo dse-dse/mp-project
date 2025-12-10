@@ -10,6 +10,9 @@ import designfestivalImg from "./image/designfestival.png";
 const VideoBackground = () => {
   return (
     <div className="video-background-container">
+      {/* Фон для больших экранов */}
+      <div className="video-background-overlay"></div>
+      
       <video autoPlay muted loop className="video-background">
         <source src={videoSrc} type="video/mp4" />
         Your browser does not support the video tag.
