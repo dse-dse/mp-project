@@ -27,7 +27,7 @@
 .words-container {
   display: flex;
   flex-direction: column;
-  gap: 24px; /* Растояние между текстами */
+  gap: 24px;
   position: relative;
   width: 100%;
   overflow: visible;
@@ -49,12 +49,12 @@
   white-space: nowrap;
   pointer-events: none;
   transition: none;
-  transform-origin: right center; /* Изменено на правый край */
+  transform-origin: right center;
   backface-visibility: hidden;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   filter: blur(0);
-  right: 0; /* Изменено с left на right */
+  right: 0;
   color: #000;
 }
 
@@ -62,7 +62,7 @@
 .word-1 {
   height: 120px;
   font-size: 120px;
-  top: calc(50% - 154px); /* 180px/2 + 24px + 120px/2 */
+  top: calc(50% - 154px);
   opacity: 0.95;
   font-weight: 600;
 }
@@ -81,7 +81,7 @@
 .word-3 {
   height: 140px;
   font-size: 140px;
-  top: calc(50% + 154px); /* 180px/2 + 24px + 140px/2 */
+  top: calc(50% + 154px);
   opacity: 0.9;
   font-weight: 650;
 }
@@ -99,24 +99,6 @@
     linear-gradient(to right, rgba(0,0,0,0.05) 1px, transparent 1px),
     linear-gradient(to bottom, rgba(0,0,0,0.05) 1px, transparent 1px);
   background-size: 100px 100px;
-  z-index: 0;
-}
-
-/* Центральная направляющая линия */
-.center-guide {
-  position: fixed;
-  top: 0;
-  left: 50%;
-  bottom: 0;
-  width: 1px;
-  background: linear-gradient(to bottom, 
-    transparent 0%,
-    rgba(0,0,0,0.1) 20%,
-    rgba(0,0,0,0.2) 50%,
-    rgba(0,0,0,0.1) 80%,
-    transparent 100%
-  );
-  transform: translateX(-50%);
   z-index: 0;
 }
 
@@ -166,7 +148,7 @@
   .word-1 {
     height: 100px;
     font-size: 100px;
-    top: calc(50% - 124px); /* 140px/2 + 24px + 100px/2 */
+    top: calc(50% - 124px);
   }
   
   .word-2 {
@@ -177,7 +159,7 @@
   .word-3 {
     height: 120px;
     font-size: 120px;
-    top: calc(50% + 124px); /* 140px/2 + 24px + 120px/2 */
+    top: calc(50% + 124px);
   }
 }
 
@@ -193,7 +175,7 @@
   .word-1 {
     height: 80px;
     font-size: 80px;
-    top: calc(50% - 102px); /* 110px/2 + 24px + 80px/2 */
+    top: calc(50% - 102px);
   }
   
   .word-2 {
@@ -204,120 +186,180 @@
   .word-3 {
     height: 100px;
     font-size: 100px;
-    top: calc(50% + 102px); /* 110px/2 + 24px + 100px/2 */
+    top: calc(50% + 102px);
   }
 }
 
+/* Мобильные устройства - ключевые изменения */
 @media (max-width: 992px) {
   .projects-section {
-    height: 250vh;
+    height: 200vh; /* Уменьшаем высоту для мобильных */
+  }
+  
+  .projects-content {
+    position: relative; /* Меняем fixed на relative для мобильных */
+    top: auto;
+    transform: none;
+    margin-top: 100vh; /* Отступ сверху для начала анимации */
+    margin-bottom: 100vh; /* Отступ снизу для завершения анимации */
   }
   
   .words-container {
-    padding: 0 4vw;
+    position: relative;
+    height: 100vh; /* Контейнер занимает высоту экрана */
+    padding: 0 5vw;
     gap: 20px;
+    align-items: center; /* Центрируем по горизонтали */
+  }
+  
+  .word {
+    position: absolute !important; /* Важно сохранить absolute */
+    left: 50% !important; /* Центрируем по горизонтали */
+    right: auto !important; /* Убираем right */
+    transform-origin: center !important; /* Меняем точку трансформации */
+    text-align: center; /* Центрируем текст */
+    width: 100%;
+    max-width: 90vw;
+    white-space: normal; /* Разрешаем перенос текста */
+    word-break: break-word; /* Перенос длинных слов */
+    padding: 0 5vw;
+    box-sizing: border-box;
   }
   
   .word-1 {
-    height: 60px;
-    font-size: 60px;
-    top: calc(50% - 82px); /* 85px/2 + 20px + 60px/2 */
+    height: auto;
+    min-height: 50px;
+    font-size: clamp(40px, 10vw, 60px); /* Адаптивный размер шрифта */
+    top: 20% !important;
+    opacity: 0.95;
   }
   
   .word-2 {
-    height: 85px;
-    font-size: 85px;
+    height: auto;
+    min-height: 70px;
+    font-size: clamp(50px, 12vw, 85px);
+    top: 50% !important;
+    transform: translate(-50%, -50%) !important; /* Центрируем */
   }
   
   .word-3 {
-    height: 75px;
-    font-size: 75px;
-    top: calc(50% + 82px); /* 85px/2 + 20px + 75px/2 */
+    height: auto;
+    min-height: 60px;
+    font-size: clamp(45px, 11vw, 75px);
+    top: 80% !important;
+    opacity: 0.9;
   }
 }
 
 @media (max-width: 768px) {
   .projects-section {
-    height: 200vh;
+    height: 180vh;
+  }
+  
+  .projects-content {
+    margin-top: 80vh;
+    margin-bottom: 80vh;
   }
   
   .words-container {
-    padding: 0 3vw;
+    height: 80vh;
+    padding: 0 4vw;
     gap: 16px;
   }
   
-  .word {
-    position: relative;
-    white-space: normal;
-    text-align: center; /* Центрируем текст на мобильных */
-    left: auto;
-    right: auto; /* Сбрасываем right */
-    transform: none !important;
-    margin-top: 0 !important;
-    top: auto !important;
-    width: 100%;
-    transform-origin: center; /* Центрируем для мобильных */
-  }
-  
   .word-1 {
-    height: 45px;
-    font-size: 45px;
-    position: relative;
-    margin-bottom: 16px;
+    font-size: clamp(35px, 9vw, 50px);
+    top: 15% !important;
   }
   
   .word-2 {
-    height: 65px;
-    font-size: 65px;
-    position: relative;
-    margin-bottom: 16px;
+    font-size: clamp(45px, 11vw, 70px);
+    top: 50% !important;
   }
   
   .word-3 {
-    height: 55px;
-    font-size: 55px;
-    position: relative;
+    font-size: clamp(40px, 10vw, 60px);
+    top: 85% !important;
   }
 }
 
 @media (max-width: 576px) {
   .projects-section {
-    height: 180vh;
+    height: 150vh;
+  }
+  
+  .projects-content {
+    margin-top: 60vh;
+    margin-bottom: 60vh;
   }
   
   .words-container {
-    padding: 0 2vw;
+    height: 70vh;
+    padding: 0 3vw;
     gap: 14px;
   }
   
   .word-1 {
-    height: 35px;
-    font-size: 35px;
-    margin-bottom: 14px;
+    font-size: clamp(30px, 8vw, 40px);
+    top: 10% !important;
   }
   
   .word-2 {
-    height: 50px;
-    font-size: 50px;
-    margin-bottom: 14px;
+    font-size: clamp(40px, 10vw, 55px);
+    top: 50% !important;
   }
   
   .word-3 {
-    height: 40px;
-    font-size: 40px;
+    font-size: clamp(35px, 9vw, 50px);
+    top: 90% !important;
   }
   
   .scroll-hint {
-    bottom: 40px;
+    display: none; /* Скрываем на очень маленьких экранах */
+  }
+}
+
+/* Очень маленькие устройства */
+@media (max-width: 400px) {
+  .projects-section {
+    height: 130vh;
   }
   
-  .scroll-text {
-    font-size: 10px;
-    letter-spacing: 1px;
+  .projects-content {
+    margin-top: 50vh;
+    margin-bottom: 50vh;
   }
   
-  .scroll-line {
-    height: 30px;
+  .words-container {
+    height: 60vh;
+    gap: 12px;
+  }
+  
+  .word-1 {
+    font-size: clamp(25px, 7vw, 35px);
+  }
+  
+  .word-2 {
+    font-size: clamp(35px, 9vw, 45px);
+  }
+  
+  .word-3 {
+    font-size: clamp(30px, 8vw, 40px);
+  }
+}
+
+/* Горизонтальная ориентация на мобильных */
+@media (max-height: 600px) and (orientation: landscape) {
+  .projects-section {
+    height: 250vh; /* Больше высоты для ландшафта */
+  }
+  
+  .words-container {
+    height: 60vh;
+  }
+  
+  .word {
+    font-size: 70% !important; /* Уменьшаем шрифт в ландшафте */
   }
 }
 
@@ -335,8 +377,10 @@
   animation: fadeIn 1.2s ease-out;
 }
 
-/* Состояние при загрузке */
-.word {
-  opacity: 0;
-  transform: translateX(-200vw);
+/* Отключение анимации для пользователей, предпочитающих уменьшенное движение */
+@media (prefers-reduced-motion: reduce) {
+  .word {
+    transition: none !important;
+    animation: none !important;
+  }
 }
