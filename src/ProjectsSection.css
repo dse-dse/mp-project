@@ -1,168 +1,342 @@
+/* ProjectsSection.css */
+@import url('https://fonts.cdnfonts.com/css/neue-haas-grotesk-display-pro');
+
 .projects-section {
   position: relative;
-  min-height: 200vh;
+  height: 400vh; /* Высота для плавного скролла */
   background-color: white;
   display: flex;
   align-items: center;
   justify-content: center;
   overflow: hidden;
-  padding: 100px 0;
 }
 
 .projects-content {
   width: 100%;
-  max-width: 1400px;
-  padding: 0 40px;
-  position: sticky;
+  max-width: 2000px;
+  padding: 0;
+  position: fixed;
   top: 50%;
+  left: 0;
+  right: 0;
   transform: translateY(-50%);
   z-index: 1;
+  pointer-events: none;
 }
 
 .words-container {
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  gap: 24px; /* Растояние между текстами */
   position: relative;
   width: 100%;
+  overflow: visible;
+  height: auto;
+  justify-content: center;
+  align-items: flex-start;
+  padding: 0 10vw;
 }
 
 .word {
-  font-family: 'Arial', sans-serif;
-  font-weight: 900;
-  font-size: clamp(5rem, 12vw, 10rem);
-  line-height: 0.8;
+  font-family: 'Neue Haas Grotesk Display Pro', sans-serif;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 1;
+  letter-spacing: -0.02em;
   text-transform: uppercase;
-  color: #000;
   will-change: transform, opacity;
-  position: relative;
+  position: absolute;
   white-space: nowrap;
   pointer-events: none;
-  transition: transform 0.2s cubic-bezier(0.165, 0.84, 0.44, 1), 
-              opacity 0.2s cubic-bezier(0.165, 0.84, 0.44, 1);
+  transition: none;
+  transform-origin: right center; /* Изменено на правый край */
+  backface-visibility: hidden;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  filter: blur(0);
+  right: 0; /* Изменено с left на right */
+  color: #000;
 }
 
+/* We have done */
 .word-1 {
-  align-self: flex-start;
-  font-size: clamp(4rem, 9vw, 8rem);
-  color: rgba(0, 0, 0, 0.9);
+  height: 120px;
+  font-size: 120px;
+  top: calc(50% - 154px); /* 180px/2 + 24px + 120px/2 */
+  opacity: 0.95;
+  font-weight: 600;
 }
 
+/* projects around */
 .word-2 {
-  align-self: center;
-  font-size: clamp(6rem, 14vw, 12rem);
-  color: rgba(0, 0, 0, 0.95);
+  height: 180px;
+  font-size: 180px;
+  top: 50%;
+  transform: translateY(-50%);
+  opacity: 1;
+  font-weight: 700;
 }
 
+/* the world */
 .word-3 {
-  align-self: flex-end;
-  font-size: clamp(4.5rem, 10vw, 9rem);
-  color: rgba(0, 0, 0, 0.85);
+  height: 140px;
+  font-size: 140px;
+  top: calc(50% + 154px); /* 180px/2 + 24px + 140px/2 */
+  opacity: 0.9;
+  font-weight: 650;
 }
 
-/* Декоративные линии для контекста */
-.projects-section::before,
-.projects-section::after {
-  content: '';
-  position: absolute;
+/* Фоновая сетка */
+.motion-grid {
+  position: fixed;
+  top: 0;
   left: 0;
   right: 0;
-  height: 1px;
-  background: linear-gradient(90deg, transparent, rgba(0,0,0,0.1), transparent);
-  opacity: 0.5;
+  bottom: 0;
+  pointer-events: none;
+  opacity: 0.02;
+  background-image: 
+    linear-gradient(to right, rgba(0,0,0,0.05) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(0,0,0,0.05) 1px, transparent 1px);
+  background-size: 100px 100px;
+  z-index: 0;
 }
 
-.projects-section::before {
-  top: 25%;
+/* Центральная направляющая линия */
+.center-guide {
+  position: fixed;
+  top: 0;
+  left: 50%;
+  bottom: 0;
+  width: 1px;
+  background: linear-gradient(to bottom, 
+    transparent 0%,
+    rgba(0,0,0,0.1) 20%,
+    rgba(0,0,0,0.2) 50%,
+    rgba(0,0,0,0.1) 80%,
+    transparent 100%
+  );
+  transform: translateX(-50%);
+  z-index: 0;
 }
 
-.projects-section::after {
-  bottom: 25%;
+/* Индикатор скролла */
+.scroll-hint {
+  position: fixed;
+  bottom: 60px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  z-index: 100;
+  opacity: 0.6;
+}
+
+.scroll-text {
+  font-family: 'Neue Haas Grotesk Display Pro', sans-serif;
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: #000;
+}
+
+.scroll-line {
+  width: 1px;
+  height: 40px;
+  background: linear-gradient(to bottom, 
+    rgba(0,0,0,0.3) 0%,
+    rgba(0,0,0,0.1) 50%,
+    transparent 100%
+  );
 }
 
 /* Адаптивность */
-@media (max-width: 1024px) {
+@media (max-width: 1600px) {
   .projects-section {
-    min-height: 150vh;
+    height: 350vh;
   }
   
-  .word {
-    font-size: clamp(3rem, 10vw, 8rem);
+  .words-container {
+    padding: 0 8vw;
   }
   
   .word-1 {
-    font-size: clamp(2.5rem, 8vw, 6rem);
+    height: 100px;
+    font-size: 100px;
+    top: calc(50% - 124px); /* 140px/2 + 24px + 100px/2 */
   }
   
   .word-2 {
-    font-size: clamp(4rem, 12vw, 10rem);
+    height: 140px;
+    font-size: 140px;
   }
   
   .word-3 {
-    font-size: clamp(3rem, 9vw, 7rem);
+    height: 120px;
+    font-size: 120px;
+    top: calc(50% + 124px); /* 140px/2 + 24px + 120px/2 */
+  }
+}
+
+@media (max-width: 1200px) {
+  .projects-section {
+    height: 300vh;
+  }
+  
+  .words-container {
+    padding: 0 6vw;
+  }
+  
+  .word-1 {
+    height: 80px;
+    font-size: 80px;
+    top: calc(50% - 102px); /* 110px/2 + 24px + 80px/2 */
+  }
+  
+  .word-2 {
+    height: 110px;
+    font-size: 110px;
+  }
+  
+  .word-3 {
+    height: 100px;
+    font-size: 100px;
+    top: calc(50% + 102px); /* 110px/2 + 24px + 100px/2 */
+  }
+}
+
+@media (max-width: 992px) {
+  .projects-section {
+    height: 250vh;
+  }
+  
+  .words-container {
+    padding: 0 4vw;
+    gap: 20px;
+  }
+  
+  .word-1 {
+    height: 60px;
+    font-size: 60px;
+    top: calc(50% - 82px); /* 85px/2 + 20px + 60px/2 */
+  }
+  
+  .word-2 {
+    height: 85px;
+    font-size: 85px;
+  }
+  
+  .word-3 {
+    height: 75px;
+    font-size: 75px;
+    top: calc(50% + 82px); /* 85px/2 + 20px + 75px/2 */
   }
 }
 
 @media (max-width: 768px) {
   .projects-section {
-    min-height: 120vh;
-    padding: 50px 0;
-  }
-  
-  .projects-content {
-    padding: 0 20px;
+    height: 200vh;
   }
   
   .words-container {
-    gap: 10px;
+    padding: 0 3vw;
+    gap: 16px;
   }
   
   .word {
+    position: relative;
     white-space: normal;
-    text-align: center;
-    font-size: clamp(2.5rem, 9vw, 6rem);
-    line-height: 0.9;
-  }
-  
-  .word-1,
-  .word-2,
-  .word-3 {
-    align-self: center;
-    text-align: center;
+    text-align: center; /* Центрируем текст на мобильных */
+    left: auto;
+    right: auto; /* Сбрасываем right */
+    transform: none !important;
+    margin-top: 0 !important;
+    top: auto !important;
+    width: 100%;
+    transform-origin: center; /* Центрируем для мобильных */
   }
   
   .word-1 {
-    font-size: clamp(2rem, 7vw, 5rem);
+    height: 45px;
+    font-size: 45px;
+    position: relative;
+    margin-bottom: 16px;
   }
   
   .word-2 {
-    font-size: clamp(3rem, 11vw, 8rem);
+    height: 65px;
+    font-size: 65px;
+    position: relative;
+    margin-bottom: 16px;
   }
   
   .word-3 {
-    font-size: clamp(2.2rem, 8vw, 6rem);
+    height: 55px;
+    font-size: 55px;
+    position: relative;
   }
 }
 
-@media (max-width: 480px) {
+@media (max-width: 576px) {
   .projects-section {
-    min-height: 100vh;
+    height: 180vh;
   }
   
-  .word {
-    font-size: clamp(2rem, 8vw, 4rem);
-    line-height: 1;
+  .words-container {
+    padding: 0 2vw;
+    gap: 14px;
   }
   
   .word-1 {
-    font-size: clamp(1.8rem, 7vw, 3.5rem);
+    height: 35px;
+    font-size: 35px;
+    margin-bottom: 14px;
   }
   
   .word-2 {
-    font-size: clamp(2.5rem, 10vw, 6rem);
+    height: 50px;
+    font-size: 50px;
+    margin-bottom: 14px;
   }
   
   .word-3 {
-    font-size: clamp(1.8rem, 8vw, 4rem);
+    height: 40px;
+    font-size: 40px;
   }
+  
+  .scroll-hint {
+    bottom: 40px;
+  }
+  
+  .scroll-text {
+    font-size: 10px;
+    letter-spacing: 1px;
+  }
+  
+  .scroll-line {
+    height: 30px;
+  }
+}
+
+/* Анимация загрузки */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.projects-section {
+  animation: fadeIn 1.2s ease-out;
+}
+
+/* Состояние при загрузке */
+.word {
+  opacity: 0;
+  transform: translateX(-200vw);
 }

@@ -193,8 +193,6 @@ const ContactSection = () => {
                 placeholder=""
                 required
               />
-              {/* Добавляем разделитель после поля проекта */}
-              <div className="separator"></div>
             </div>
             
             <button 
