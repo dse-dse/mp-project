@@ -51,27 +51,34 @@ const ProjectsSection = () => {
         // Рассчитываем прогресс скролла внутри секции
         const sectionTop = rect.top;
         const sectionHeight = section.offsetHeight;
+        const windowCenter = windowHeight / 2;
         
-        // Прогресс от 0 до 1, где 0 - верх секции у нижней границы окна, 1 - низ секции у верхней границы окна
-        const startPosition = windowHeight; // когда верх секции у нижней границы окна
-        const endPosition = -sectionHeight; // когда низ секции у верхней границы окна
-        const totalScrollDistance = startPosition - endPosition;
+        // Прогресс от 0 до 1, где:
+        // 0 - когда центр секции на 1.5 высоты окна ниже центра экрана
+        // 1 - когда центр секции на 1.5 высоты окна выше центра экрана
+        const startOffset = windowHeight * 1.5; // начинаем раньше
+        const endOffset = windowHeight * 1.5; // заканчиваем раньше
         
-        const currentPosition = startPosition - sectionTop;
-        let progress = currentPosition / totalScrollDistance;
+        const startPosition = windowCenter + startOffset;
+        const endPosition = windowCenter - endOffset;
+        const totalDistance = startPosition - endPosition;
+        
+        // Текущая позиция центра секции
+        const sectionCenter = sectionTop + (sectionHeight / 2);
+        let progress = (startPosition - sectionCenter) / totalDistance;
         
         progress = Math.max(0, Math.min(1, progress));
         
-        // Разделяем прогресс на 3 части для последовательного появления слов
-        const word1Progress = Math.max(0, Math.min(1, progress * 3));
-        const word2Progress = Math.max(0, Math.min(1, (progress - 0.33) * 3));
-        const word3Progress = Math.max(0, Math.min(1, (progress - 0.66) * 3));
+        // Ускоряем анимацию - слова появляются быстрее
+        const word1Progress = Math.max(0, Math.min(1, progress * 1.5)); // Быстрее
+        const word2Progress = Math.max(0, Math.min(1, (progress - 0.25) * 1.5)); // Сдвигаем ближе
+        const word3Progress = Math.max(0, Math.min(1, (progress - 0.5) * 1.5)); // Сдвигаем ближе
         
         // Функция для плавного появления и исчезновения
         const calculateOpacity = (p) => {
           if (p <= 0) return 0;
-          if (p <= 0.3) return p / 0.3; // Появление
-          if (p >= 0.7) return 1 - ((p - 0.7) / 0.3); // Исчезновение
+          if (p <= 0.2) return p / 0.2; // Быстрее появляемся
+          if (p >= 0.8) return 1 - ((p - 0.8) / 0.2); // Быстрее исчезаем
           return 1;
         };
         
@@ -239,7 +246,7 @@ const ProjectsSection = () => {
             } : { 
               opacity: wordOpacities[0],
               transform: 'translateY(0)',
-              transition: 'opacity 0.6s ease'
+              transition: 'opacity 0.4s ease' // Быстрее
             }}
           >
             We have done
@@ -254,7 +261,7 @@ const ProjectsSection = () => {
             } : { 
               opacity: wordOpacities[1],
               transform: 'translateY(0)',
-              transition: 'opacity 0.6s ease'
+              transition: 'opacity 0.4s ease' // Быстрее
             }}
           >
             projects around
@@ -269,7 +276,7 @@ const ProjectsSection = () => {
             } : { 
               opacity: wordOpacities[2],
               transform: 'translateY(0)',
-              transition: 'opacity 0.6s ease'
+              transition: 'opacity 0.4s ease' // Быстрее
             }}
           >
             the world

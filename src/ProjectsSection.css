@@ -86,14 +86,15 @@
   font-weight: 650;
 }
 
-/* Мобильная версия */
+/* Мобильная версия - компактная и быстрая */
 @media (max-width: 768px) {
   .projects-section {
-    height: 300vh; /* Достаточная высота для анимации */
+    height: 150vh; /* Сократили высоту в 2 раза */
+    min-height: 800px; /* Минимальная высота */
   }
   
   .projects-content {
-    position: fixed !important; /* Фиксированная позиция */
+    position: fixed !important;
     top: 50% !important;
     left: 0;
     right: 0;
@@ -102,6 +103,15 @@
     z-index: 10;
     width: 100%;
     margin: 0 !important;
+    opacity: 0;
+    animation: fadeInContent 0.3s ease forwards;
+    animation-delay: 0.1s;
+  }
+  
+  @keyframes fadeInContent {
+    to {
+      opacity: 1;
+    }
   }
   
   .words-container {
@@ -110,7 +120,7 @@
     transform: none !important;
     height: auto;
     padding: 0 20px;
-    gap: 20px; /* Уменьшаем расстояние между словами */
+    gap: 8px !important; /* Минимальный отступ */
     align-items: center;
     display: flex;
     flex-direction: column;
@@ -128,13 +138,13 @@
     transform-origin: center !important;
     text-align: center;
     width: 100%;
-    max-width: 90vw;
+    max-width: 95vw;
     white-space: normal;
     word-break: break-word;
     padding: 0;
     margin: 0;
-    opacity: 0 !important; /* Управляется через JavaScript */
-    transition: opacity 0.6s cubic-bezier(0.4, 0, 0.2, 1) !important;
+    opacity: 0 !important;
+    transition: opacity 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important; /* Быстрее */
     will-change: opacity;
   }
   
@@ -144,69 +154,41 @@
   
   .word-1 {
     height: auto;
-    min-height: 40px;
-    font-size: 36px;
+    min-height: 35px;
+    font-size: 32px;
     font-weight: 600;
     order: 1;
-    margin-bottom: 5px;
+    margin-bottom: 2px !important;
   }
   
   .word-2 {
     height: auto;
-    min-height: 60px;
-    font-size: 48px;
+    min-height: 50px;
+    font-size: 42px;
     font-weight: 700;
     order: 2;
-    margin: 5px 0;
+    margin: 2px 0 !important;
   }
   
   .word-3 {
     height: auto;
-    min-height: 50px;
-    font-size: 40px;
+    min-height: 40px;
+    font-size: 36px;
     font-weight: 650;
     order: 3;
-    margin-top: 5px;
+    margin-top: 2px !important;
   }
 }
 
 @media (max-width: 576px) {
   .projects-section {
-    height: 280vh;
+    height: 140vh;
+    min-height: 700px;
   }
   
   .words-container {
-    gap: 15px;
+    gap: 6px !important;
     padding: 0 16px;
-  }
-  
-  .word-1 {
-    font-size: 32px;
-    min-height: 35px;
-    margin-bottom: 3px;
-  }
-  
-  .word-2 {
-    font-size: 42px;
-    min-height: 50px;
-    margin: 3px 0;
-  }
-  
-  .word-3 {
-    font-size: 36px;
-    min-height: 40px;
-    margin-top: 3px;
-  }
-}
-
-@media (max-width: 400px) {
-  .projects-section {
-    height: 250vh;
-  }
-  
-  .words-container {
-    gap: 12px;
-    padding: 0 12px;
   }
   
   .word-1 {
@@ -222,5 +204,59 @@
   .word-3 {
     font-size: 32px;
     min-height: 35px;
+  }
+}
+
+@media (max-width: 400px) {
+  .projects-section {
+    height: 130vh;
+    min-height: 600px;
+  }
+  
+  .words-container {
+    gap: 4px !important;
+    padding: 0 12px;
+  }
+  
+  .word-1 {
+    font-size: 24px;
+    min-height: 25px;
+  }
+  
+  .word-2 {
+    font-size: 32px;
+    min-height: 40px;
+  }
+  
+  .word-3 {
+    font-size: 28px;
+    min-height: 30px;
+  }
+}
+
+/* Для очень маленьких экранов в альбомной ориентации */
+@media (max-height: 500px) and (orientation: landscape) {
+  .projects-section {
+    height: 200vh; /* Больше высоты для ландшафта */
+    min-height: 400px;
+  }
+  
+  .words-container {
+    gap: 4px !important;
+  }
+  
+  .word-1 {
+    font-size: 24px;
+    min-height: 25px;
+  }
+  
+  .word-2 {
+    font-size: 32px;
+    min-height: 35px;
+  }
+  
+  .word-3 {
+    font-size: 28px;
+    min-height: 30px;
   }
 }
