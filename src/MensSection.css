@@ -39,7 +39,7 @@
   z-index: 1;
   will-change: width;
   overflow: hidden;
-  transition: width 0.5s ease-out;
+  transition: width 0.1s ease-out;
 }
 
 .mens-photo {
@@ -53,42 +53,46 @@
 .mens-date-container {
   position: absolute;
   right: calc(30% + 187px); /* Отступ от фото */
-  top: calc(50% - 40px);
+  top: calc(30% - 100px); /* Позиция над главным текстом */
   width: 600px;
   z-index: 2;
   text-align: left;
-  transition: right 0.5s ease-out;
-  margin-bottom: 48px;
+  transition: right 0.1s ease-out;
+  white-space: nowrap;
+  
 }
 
 .mens-text-container {
   position: absolute;
   right: calc(30% + 187px); /* Отступ от фото */
-  top: calc(50% + 60px);
+  top: 50%;
+  transform: translateY(-50%);
   width: 600px;
   z-index: 2;
   text-align: left;
-  transition: right 0.5s ease-out;
-  margin-bottom: 80px;
+  transition: right 0.1s ease-out;
 }
 
 .mens-secondary-container {
   position: absolute;
   right: calc(30% + 147px); /* Отступ от фото */
-  top: calc(50% + 180px);
-  width: 600px;
+  top: calc(50% + 100px); /* Позиция под главным текстом */
+  width: 830px;
   z-index: 2;
   text-align: left;
-  transition: right 0.5s ease-out;
+  transition: right 0.1s ease-out;
+  
 }
 
 /* Стили для текста */
 .mens-date {
+  margin-left: 140px !important;
   font-family: 'Helvetica Neue', sans-serif;
   font-size: 14px;
   line-height: 20px;
   color: #000000;
   margin: 0;
+  
 }
 
 .mens-text-bold {
@@ -98,15 +102,8 @@
   letter-spacing: -0.03em;
   text-transform: uppercase;
   color: #282525;
-  margin: 0;
-}
-
-.mens-text {
-  font-family: 'Helvetica Neue', sans-serif;
-  font-size: 16px;
-  line-height: 24px;
-  color: #000000;
-  margin: 0;
+  margin-left: -200px;
+  white-space: nowrap;
 }
 
 /* Кнопка */
@@ -129,7 +126,7 @@
   justify-content: center;
   gap: 10px;
   transition: all 0.3s ease;
-  margin-top: 30px;
+  margin-top: 100px;
 }
 
 .mens-button:hover {
@@ -161,9 +158,6 @@
   .mens-text-bold {
     font-size: 28px;
   }
-  .mens-text {
-    font-size: 15px;
-  }
 }
 
 @media (max-width: 1024px) {
@@ -177,9 +171,6 @@
   }
   .mens-text-bold {
     font-size: 24px;
-  }
-  .mens-text {
-    font-size: 14px;
   }
 }
 
@@ -206,11 +197,9 @@
   }
   .mens-date-container {
     order: 1;
-    margin-bottom: 24px;
   }
   .mens-text-container {
     order: 2;
-    margin-bottom: 40px;
   }
   .mens-secondary-container {
     order: 3;
