@@ -190,70 +190,117 @@
   }
 }
 
-/* Мобильные устройства - ключевые изменения */
+/* Планшетная версия - оставляем боковую анимацию */
 @media (max-width: 992px) {
   .projects-section {
-    height: 200vh; /* Уменьшаем высоту для мобильных */
+    height: 250vh;
+  }
+  
+  .words-container {
+    padding: 0 4vw;
+    gap: 20px;
+  }
+  
+  .word-1 {
+    height: 60px;
+    font-size: 60px;
+    top: calc(50% - 82px);
+  }
+  
+  .word-2 {
+    height: 85px;
+    font-size: 85px;
+  }
+  
+  .word-3 {
+    height: 75px;
+    font-size: 75px;
+    top: calc(50% + 82px);
+  }
+}
+
+/* Мобильная версия - последовательное появление */
+@media (max-width: 768px) {
+  .projects-section {
+    height: 250vh; /* Увеличиваем высоту для мобильной анимации */
   }
   
   .projects-content {
     position: relative; /* Меняем fixed на relative для мобильных */
     top: auto;
     transform: none;
-    margin-top: 100vh; /* Отступ сверху для начала анимации */
-    margin-bottom: 100vh; /* Отступ снизу для завершения анимации */
+    margin-top: 100vh;
+    margin-bottom: 100vh;
+    pointer-events: all; /* Разрешаем события для лучшего скролла */
   }
   
   .words-container {
-    position: relative;
-    height: 100vh; /* Контейнер занимает высоту экрана */
-    padding: 0 5vw;
-    gap: 20px;
-    align-items: center; /* Центрируем по горизонтали */
+    position: sticky;
+    top: 50vh; /* Прилипаем к центру экрана */
+    transform: translateY(-50%);
+    height: auto;
+    padding: 0 20px;
+    gap: 40px; /* Увеличиваем расстояние между словами */
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    min-height: 100vh;
   }
   
   .word {
-    position: absolute !important; /* Важно сохранить absolute */
-    left: 50% !important; /* Центрируем по горизонтали */
-    right: auto !important; /* Убираем right */
-    transform-origin: center !important; /* Меняем точку трансформации */
-    text-align: center; /* Центрируем текст */
+    position: relative !important; /* Меняем на relative для мобильных */
+    left: auto !important;
+    right: auto !important;
+    top: auto !important;
+    transform: none !important;
+    transform-origin: center !important;
+    text-align: center;
     width: 100%;
     max-width: 90vw;
-    white-space: normal; /* Разрешаем перенос текста */
-    word-break: break-word; /* Перенос длинных слов */
-    padding: 0 5vw;
-    box-sizing: border-box;
+    white-space: normal;
+    word-break: break-word;
+    padding: 0;
+    margin: 0;
+    opacity: 0; /* Начальное состояние - скрыто */
+    transform: translateY(30px) !important; /* Начальное смещение снизу */
+    transition: opacity 0.8s ease, transform 0.8s ease;
+  }
+  
+  .word.visible {
+    opacity: 1;
+    transform: translateY(0) !important;
   }
   
   .word-1 {
     height: auto;
     min-height: 50px;
-    font-size: clamp(40px, 10vw, 60px); /* Адаптивный размер шрифта */
-    top: 20% !important;
-    opacity: 0.95;
+    font-size: 42px;
+    font-weight: 600;
+    order: 1;
   }
   
   .word-2 {
     height: auto;
     min-height: 70px;
-    font-size: clamp(50px, 12vw, 85px);
-    top: 50% !important;
-    transform: translate(-50%, -50%) !important; /* Центрируем */
+    font-size: 56px;
+    font-weight: 700;
+    order: 2;
+    margin: 20px 0;
   }
   
   .word-3 {
     height: auto;
     min-height: 60px;
-    font-size: clamp(45px, 11vw, 75px);
-    top: 80% !important;
-    opacity: 0.9;
+    font-size: 48px;
+    font-weight: 650;
+    order: 3;
   }
 }
 
-@media (max-width: 768px) {
+@media (max-width: 576px) {
   .projects-section {
-    height: 180vh;
+    height: 220vh;
   }
   
   .projects-content {
@@ -262,104 +309,85 @@
   }
   
   .words-container {
-    height: 80vh;
-    padding: 0 4vw;
-    gap: 16px;
+    gap: 30px;
+    padding: 0 16px;
   }
   
   .word-1 {
-    font-size: clamp(35px, 9vw, 50px);
-    top: 15% !important;
+    font-size: 36px;
+    min-height: 45px;
   }
   
   .word-2 {
-    font-size: clamp(45px, 11vw, 70px);
-    top: 50% !important;
+    font-size: 48px;
+    min-height: 60px;
+    margin: 15px 0;
   }
   
   .word-3 {
-    font-size: clamp(40px, 10vw, 60px);
-    top: 85% !important;
-  }
-}
-
-@media (max-width: 576px) {
-  .projects-section {
-    height: 150vh;
-  }
-  
-  .projects-content {
-    margin-top: 60vh;
-    margin-bottom: 60vh;
-  }
-  
-  .words-container {
-    height: 70vh;
-    padding: 0 3vw;
-    gap: 14px;
-  }
-  
-  .word-1 {
-    font-size: clamp(30px, 8vw, 40px);
-    top: 10% !important;
-  }
-  
-  .word-2 {
-    font-size: clamp(40px, 10vw, 55px);
-    top: 50% !important;
-  }
-  
-  .word-3 {
-    font-size: clamp(35px, 9vw, 50px);
-    top: 90% !important;
+    font-size: 40px;
+    min-height: 50px;
   }
   
   .scroll-hint {
-    display: none; /* Скрываем на очень маленьких экранах */
+    display: none;
   }
 }
 
 /* Очень маленькие устройства */
 @media (max-width: 400px) {
   .projects-section {
-    height: 130vh;
+    height: 200vh;
   }
   
   .projects-content {
-    margin-top: 50vh;
-    margin-bottom: 50vh;
+    margin-top: 70vh;
+    margin-bottom: 70vh;
   }
   
   .words-container {
-    height: 60vh;
-    gap: 12px;
+    gap: 25px;
+    padding: 0 12px;
   }
   
   .word-1 {
-    font-size: clamp(25px, 7vw, 35px);
+    font-size: 32px;
+    min-height: 40px;
   }
   
   .word-2 {
-    font-size: clamp(35px, 9vw, 45px);
+    font-size: 42px;
+    min-height: 55px;
+    margin: 12px 0;
   }
   
   .word-3 {
-    font-size: clamp(30px, 8vw, 40px);
+    font-size: 36px;
+    min-height: 45px;
   }
 }
 
 /* Горизонтальная ориентация на мобильных */
 @media (max-height: 600px) and (orientation: landscape) {
   .projects-section {
-    height: 250vh; /* Больше высоты для ландшафта */
+    height: 300vh;
   }
   
   .words-container {
-    height: 60vh;
+    gap: 20px;
   }
   
-  .word {
-    font-size: 70% !important; /* Уменьшаем шрифт в ландшафте */
+  .word-1 {
+    font-size: 30px;
+  }
+  
+  .word-2 {
+    font-size: 40px;
+    margin: 10px 0;
+  }
+  
+  .word-3 {
+    font-size: 34px;
   }
 }
 

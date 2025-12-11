@@ -16,6 +16,20 @@ const ProjectsSection = () => {
   const hasStartedRef = useRef(false);
   const startScrollYRef = useRef(0);
   const sectionTopRef = useRef(0);
+  const [isMobile, setIsMobile] = useState(false);
+  const [visibleWords, setVisibleWords] = useState([false, false, false]);
+
+  useEffect(() => {
+    // Проверяем, является ли устройство мобильным
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth <= 768);
+    };
+    
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
 
   useEffect(() => {
     isMountedRef.current = true;
@@ -23,54 +37,66 @@ const ProjectsSection = () => {
     const handleScroll = () => {
       if (!sectionRef.current || !isMountedRef.current) return;
 
+      // Если мобильное устройство, используем другую логику
+      if (isMobile) {
+        const section = sectionRef.current;
+        const rect = section.getBoundingClientRect();
+        const windowHeight = window.innerHeight;
+        
+        // Прогресс видимости секции (0-1)
+        const sectionTop = rect.top;
+        const sectionBottom = rect.bottom;
+        const visibleHeight = Math.min(sectionBottom, windowHeight) - Math.max(sectionTop, 0);
+        const progress = Math.max(0, Math.min(1, visibleHeight / windowHeight));
+        
+        // Показываем слова последовательно по мере скролла
+        const newVisibleWords = [...visibleWords];
+        
+        if (progress > 0.2) newVisibleWords[0] = true;
+        if (progress > 0.4) newVisibleWords[1] = true;
+        if (progress > 0.6) newVisibleWords[2] = true;
+        
+        setVisibleWords(newVisibleWords);
+        return;
+      }
+
+      // Оригинальная логика для ПК и планшетов
       const section = sectionRef.current;
-      const rect = section.getBoundingClientRect();
-      const windowHeight = window.innerHeight;
       const currentScrollY = window.scrollY;
       
-      // Сохраняем начальную позицию секции при первом скролле
       if (!hasStartedRef.current) {
         sectionTopRef.current = section.offsetTop;
         hasStartedRef.current = true;
         startScrollYRef.current = currentScrollY;
       }
       
-      // Прогресс скролла внутри секции (от 0 до 1)
       const sectionHeight = section.offsetHeight;
       const sectionScroll = currentScrollY - sectionTopRef.current;
       let progress = sectionScroll / sectionHeight;
       
-      // Нормализуем прогресс от 0 до 1
       progress = Math.max(0, Math.min(1, progress));
-      
-      // Увеличиваем зону видимости для более раннего начала
       const adjustedProgress = Math.max(0, progress - 0.1) / 0.8;
       
       scrollProgressRef.current = Math.max(0, Math.min(1, adjustedProgress));
       
-      // Устанавливаем целевой прогресс для каждого слова с задержкой
       const baseProgress = scrollProgressRef.current;
       animationStateRef.current.word1.targetProgress = baseProgress;
       animationStateRef.current.word2.targetProgress = Math.max(0, baseProgress - 0.15);
       animationStateRef.current.word3.targetProgress = Math.max(0, baseProgress - 0.3);
     };
 
-    // Плавная easing функция
     const easeOutCubic = (t) => {
       return 1 - Math.pow(1 - t, 3);
     };
 
-    // Функция интерполяции с плавностью
     const lerp = (start, end, factor) => {
       return start + (end - start) * factor;
     };
 
     const animateWord = (word, index, targetProgress) => {
-      if (!word) return;
+      if (!word || isMobile) return; // Не анимируем для мобильных
       
       const currentState = animationStateRef.current[`word${index + 1}`];
-      
-      // Плавное обновление прогресса
       currentState.progress = lerp(currentState.progress, targetProgress, 0.06);
       
       const wordWidth = word.offsetWidth;
@@ -83,23 +109,15 @@ const ProjectsSection = () => {
       const progress = currentState.progress;
       
       if (progress < 0) {
-        // До начала анимации - СПРАВА за экраном (изменено направление)
-        translateX = windowWidth * 1.5; // Положительное значение = справа
+        translateX = windowWidth * 1.5;
         opacity = 0;
         scale = 0.9;
       } else if (progress < 1) {
-        // Движение через экран СПРАВА НАЛЕВО
         const easedProgress = easeOutCubic(progress);
-        
-        // Начальная позиция: правее экрана (с запасом)
         const startX = windowWidth * 1.5;
-        // Конечная позиция: левее экрана (с запасом)
         const endX = -windowWidth * 1.5;
-        
-        // Вычисляем позицию X - движение справа налево
         translateX = startX + easedProgress * (endX - startX);
         
-        // Плавное появление и исчезновение
         if (progress < 0.25) {
           opacity = progress / 0.25;
         } else if (progress > 0.75) {
@@ -108,29 +126,28 @@ const ProjectsSection = () => {
           opacity = 1;
         }
         
-        // Легкое масштабирование
         if (progress < 0.5) {
           scale = 0.95 + (progress / 0.5) * 0.05;
         } else {
           scale = 1 - ((progress - 0.5) / 0.5) * 0.05;
         }
       } else {
-        // После окончания анимации - СЛЕВА за экраном (изменено направление)
-        translateX = -windowWidth * 1.5; // Отрицательное значение = слева
+        translateX = -windowWidth * 1.5;
         opacity = 0;
         scale = 0.9;
       }
 
-      // Применяем стили
       word.style.transform = `translateX(${translateX}px) scale(${scale})`;
       word.style.opacity = opacity;
       word.style.transition = 'none';
     };
 
     const animate = () => {
-      if (!isMountedRef.current) return;
+      if (!isMountedRef.current || isMobile) {
+        // Для мобильных не запускаем requestAnimationFrame анимацию
+        if (isMobile) return;
+      }
 
-      // Анимируем каждое слово с индивидуальными параметрами
       wordsRef.current.forEach((word, index) => {
         if (!word) return;
         
@@ -138,10 +155,11 @@ const ProjectsSection = () => {
         animateWord(word, index, animationStateRef.current[stateKey].targetProgress);
       });
 
-      rafIdRef.current = requestAnimationFrame(animate);
+      if (!isMobile) {
+        rafIdRef.current = requestAnimationFrame(animate);
+      }
     };
 
-    // Оптимизированный обработчик скролла с дебаунсом
     let ticking = false;
     const scrollHandler = () => {
       if (!ticking && isMountedRef.current) {
@@ -153,10 +171,8 @@ const ProjectsSection = () => {
       }
     };
 
-    // Ресайз хендлер
     const handleResize = () => {
-      // При ресайзе сбрасываем начальные позиции
-      if (sectionRef.current) {
+      if (sectionRef.current && !isMobile) {
         sectionTopRef.current = sectionRef.current.offsetTop;
       }
     };
@@ -164,10 +180,12 @@ const ProjectsSection = () => {
     window.addEventListener('scroll', scrollHandler, { passive: true });
     window.addEventListener('resize', handleResize, { passive: true });
     
-    // Инициализация
     handleResize();
     scrollHandler();
-    rafIdRef.current = requestAnimationFrame(animate);
+    
+    if (!isMobile) {
+      rafIdRef.current = requestAnimationFrame(animate);
+    }
 
     return () => {
       isMountedRef.current = false;
@@ -177,42 +195,42 @@ const ProjectsSection = () => {
         cancelAnimationFrame(rafIdRef.current);
       }
     };
-  }, []);
+  }, [isMobile, visibleWords]);
 
   return (
     <section className="projects-section" ref={sectionRef}>
       <div className="projects-content">
         <div className="words-container" ref={containerRef}>
           <div 
-            className="word word-1" 
+            className={`word word-1 ${visibleWords[0] ? 'visible' : ''}`}
             ref={el => { if (isMountedRef.current) wordsRef.current[0] = el; }}
-            style={{ 
+            style={!isMobile ? { 
               opacity: 0,
-              transform: `translateX(200vw)`, // Изменено: начинаем справа
+              transform: `translateX(200vw)`,
               willChange: 'transform, opacity'
-            }}
+            } : {}}
           >
             We have done
           </div>
           <div 
-            className="word word-2" 
+            className={`word word-2 ${visibleWords[1] ? 'visible' : ''}`}
             ref={el => { if (isMountedRef.current) wordsRef.current[1] = el; }}
-            style={{ 
+            style={!isMobile ? { 
               opacity: 0,
-              transform: `translateX(200vw)`, // Изменено: начинаем справа
+              transform: `translateX(200vw)`,
               willChange: 'transform, opacity'
-            }}
+            } : {}}
           >
             projects around
           </div>
           <div 
-            className="word word-3" 
+            className={`word word-3 ${visibleWords[2] ? 'visible' : ''}`}
             ref={el => { if (isMountedRef.current) wordsRef.current[2] = el; }}
-            style={{ 
+            style={!isMobile ? { 
               opacity: 0,
-              transform: `translateX(200vw)`, // Изменено: начинаем справа
+              transform: `translateX(200vw)`,
               willChange: 'transform, opacity'
-            }}
+            } : {}}
           >
             the world
           </div>
