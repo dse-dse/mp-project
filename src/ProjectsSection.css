@@ -1,9 +1,9 @@
-/* ProjectsSection.css - Обновленная мобильная версия */
+/* ProjectsSection.css */
 @import url('https://fonts.cdnfonts.com/css/neue-haas-grotesk-display-pro');
 
 .projects-section {
   position: relative;
-  height: 400vh;
+  height: 400vh; /* Высота для плавного скролла */
   background-color: white;
   display: flex;
   align-items: center;
@@ -89,30 +89,34 @@
 /* Мобильная версия */
 @media (max-width: 768px) {
   .projects-section {
-    height: 250vh;
+    height: 300vh; /* Достаточная высота для анимации */
   }
   
   .projects-content {
-    position: relative;
-    top: auto;
-    transform: none;
-    margin-top: 100vh;
-    margin-bottom: 100vh;
-    pointer-events: all;
+    position: fixed !important; /* Фиксированная позиция */
+    top: 50% !important;
+    left: 0;
+    right: 0;
+    transform: translateY(-50%) !important;
+    pointer-events: none;
+    z-index: 10;
+    width: 100%;
+    margin: 0 !important;
   }
   
   .words-container {
-    position: sticky;
-    top: 50vh;
-    transform: translateY(-50%);
+    position: relative;
+    top: auto !important;
+    transform: none !important;
     height: auto;
     padding: 0 20px;
-    gap: 40px;
+    gap: 20px; /* Уменьшаем расстояние между словами */
     align-items: center;
     display: flex;
     flex-direction: column;
     justify-content: center;
-    min-height: 100vh;
+    min-height: auto;
+    width: 100%;
   }
   
   .word {
@@ -120,7 +124,7 @@
     left: auto !important;
     right: auto !important;
     top: auto !important;
-    transform: translateY(0) !important;
+    transform: none !important;
     transform-origin: center !important;
     text-align: center;
     width: 100%;
@@ -129,82 +133,94 @@
     word-break: break-word;
     padding: 0;
     margin: 0;
-    opacity: 0; /* Начальная прозрачность */
-    transition: opacity 0.8s cubic-bezier(0.4, 0, 0.2, 1) !important; /* Плавное появление/исчезновение */
-    will-change: opacity; /* Оптимизация для opacity */
+    opacity: 0 !important; /* Управляется через JavaScript */
+    transition: opacity 0.6s cubic-bezier(0.4, 0, 0.2, 1) !important;
+    will-change: opacity;
   }
   
   .word.visible {
-    opacity: 1;
+    opacity: 1 !important;
   }
   
   .word-1 {
     height: auto;
-    min-height: 50px;
-    font-size: 42px;
+    min-height: 40px;
+    font-size: 36px;
     font-weight: 600;
     order: 1;
-    margin-bottom: 20px;
+    margin-bottom: 5px;
   }
   
   .word-2 {
     height: auto;
-    min-height: 70px;
-    font-size: 56px;
+    min-height: 60px;
+    font-size: 48px;
     font-weight: 700;
     order: 2;
-    margin: 20px 0;
+    margin: 5px 0;
   }
   
   .word-3 {
     height: auto;
-    min-height: 60px;
-    font-size: 48px;
+    min-height: 50px;
+    font-size: 40px;
     font-weight: 650;
     order: 3;
-    margin-top: 20px;
+    margin-top: 5px;
   }
 }
 
-/* Остальные медиа-запросы остаются без изменений */
 @media (max-width: 576px) {
   .projects-section {
-    height: 220vh;
-  }
-  
-  .projects-content {
-    margin-top: 80vh;
-    margin-bottom: 80vh;
+    height: 280vh;
   }
   
   .words-container {
-    gap: 30px;
+    gap: 15px;
     padding: 0 16px;
   }
   
   .word-1 {
-    font-size: 36px;
-    min-height: 45px;
-    margin-bottom: 15px;
+    font-size: 32px;
+    min-height: 35px;
+    margin-bottom: 3px;
   }
   
   .word-2 {
-    font-size: 48px;
-    min-height: 60px;
-    margin: 15px 0;
+    font-size: 42px;
+    min-height: 50px;
+    margin: 3px 0;
   }
   
   .word-3 {
-    font-size: 40px;
-    min-height: 50px;
-    margin-top: 15px;
+    font-size: 36px;
+    min-height: 40px;
+    margin-top: 3px;
   }
 }
 
-/* Отключение анимации для пользователей, предпочитающих уменьшенное движение */
-@media (prefers-reduced-motion: reduce) {
-  .word {
-    transition: none !important;
-    animation: none !important;
+@media (max-width: 400px) {
+  .projects-section {
+    height: 250vh;
+  }
+  
+  .words-container {
+    gap: 12px;
+    padding: 0 12px;
+  }
+  
+  .word-1 {
+    font-size: 28px;
+    min-height: 30px;
+  }
+  
+  .word-2 {
+    font-size: 36px;
+    min-height: 45px;
+  }
+  
+  .word-3 {
+    font-size: 32px;
+    min-height: 35px;
   }
 }

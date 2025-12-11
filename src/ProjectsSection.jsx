@@ -19,6 +19,7 @@ const ProjectsSection = () => {
   const [isMobile, setIsMobile] = useState(false);
   const [visibleWords, setVisibleWords] = useState([false, false, false]);
   const [wordOpacities, setWordOpacities] = useState([0, 0, 0]);
+  const [isInView, setIsInView] = useState(false);
 
   useEffect(() => {
     const checkMobile = () => {
@@ -37,55 +38,59 @@ const ProjectsSection = () => {
     const handleScroll = () => {
       if (!sectionRef.current || !isMountedRef.current) return;
 
+      const section = sectionRef.current;
+      const rect = section.getBoundingClientRect();
+      const windowHeight = window.innerHeight;
+      
+      // Проверяем, видна ли секция
+      const isSectionInView = rect.top < windowHeight && rect.bottom > 0;
+      setIsInView(isSectionInView);
+
       // Логика для мобильных устройств
       if (isMobile) {
-        const section = sectionRef.current;
-        const rect = section.getBoundingClientRect();
-        const windowHeight = window.innerHeight;
-        const sectionHeight = section.offsetHeight;
-        
         // Рассчитываем прогресс скролла внутри секции
         const sectionTop = rect.top;
-        const sectionStart = windowHeight; // когда секция появляется на экране
-        const sectionEnd = -sectionHeight; // когда секция полностью проскроллена
+        const sectionHeight = section.offsetHeight;
         
-        const scrollDistance = sectionStart - sectionEnd;
-        const currentPosition = sectionStart - sectionTop;
-        let progress = currentPosition / scrollDistance;
+        // Прогресс от 0 до 1, где 0 - верх секции у нижней границы окна, 1 - низ секции у верхней границы окна
+        const startPosition = windowHeight; // когда верх секции у нижней границы окна
+        const endPosition = -sectionHeight; // когда низ секции у верхней границы окна
+        const totalScrollDistance = startPosition - endPosition;
+        
+        const currentPosition = startPosition - sectionTop;
+        let progress = currentPosition / totalScrollDistance;
         
         progress = Math.max(0, Math.min(1, progress));
         
-        // Разделяем прогресс на 3 части для каждого слова
+        // Разделяем прогресс на 3 части для последовательного появления слов
         const word1Progress = Math.max(0, Math.min(1, progress * 3));
         const word2Progress = Math.max(0, Math.min(1, (progress - 0.33) * 3));
         const word3Progress = Math.max(0, Math.min(1, (progress - 0.66) * 3));
         
-        // Плавное появление и исчезновение
+        // Функция для плавного появления и исчезновения
         const calculateOpacity = (p) => {
           if (p <= 0) return 0;
-          if (p <= 0.2) return p / 0.2; // Появление
-          if (p >= 0.8) return 1 - ((p - 0.8) / 0.2); // Исчезновение
+          if (p <= 0.3) return p / 0.3; // Появление
+          if (p >= 0.7) return 1 - ((p - 0.7) / 0.3); // Исчезновение
           return 1;
         };
         
-        setWordOpacities([
+        const opacities = [
           calculateOpacity(word1Progress),
           calculateOpacity(word2Progress),
           calculateOpacity(word3Progress)
-        ]);
+        ];
+        
+        setWordOpacities(opacities);
         
         // Обновляем видимость для CSS классов
-        const newVisibleWords = [...visibleWords];
-        if (word1Progress > 0.1) newVisibleWords[0] = true;
-        if (word2Progress > 0.1) newVisibleWords[1] = true;
-        if (word3Progress > 0.1) newVisibleWords[2] = true;
-        
+        const newVisibleWords = opacities.map(opacity => opacity > 0);
         setVisibleWords(newVisibleWords);
+        
         return;
       }
 
       // Оригинальная логика для ПК и планшетов
-      const section = sectionRef.current;
       const currentScrollY = window.scrollY;
       
       if (!hasStartedRef.current) {
@@ -218,11 +223,11 @@ const ProjectsSection = () => {
         cancelAnimationFrame(rafIdRef.current);
       }
     };
-  }, [isMobile, visibleWords]);
+  }, [isMobile]);
 
   return (
     <section className="projects-section" ref={sectionRef}>
-      <div className="projects-content">
+      <div className="projects-content" style={isMobile && isInView ? { position: 'fixed', top: '50%' } : {}}>
         <div className="words-container" ref={containerRef}>
           <div 
             className={`word word-1 ${visibleWords[0] ? 'visible' : ''}`}
@@ -233,7 +238,8 @@ const ProjectsSection = () => {
               willChange: 'transform, opacity'
             } : { 
               opacity: wordOpacities[0],
-              transform: 'translateY(0)'
+              transform: 'translateY(0)',
+              transition: 'opacity 0.6s ease'
             }}
           >
             We have done
@@ -247,7 +253,8 @@ const ProjectsSection = () => {
               willChange: 'transform, opacity'
             } : { 
               opacity: wordOpacities[1],
-              transform: 'translateY(0)'
+              transform: 'translateY(0)',
+              transition: 'opacity 0.6s ease'
             }}
           >
             projects around
@@ -261,7 +268,8 @@ const ProjectsSection = () => {
               willChange: 'transform, opacity'
             } : { 
               opacity: wordOpacities[2],
-              transform: 'translateY(0)'
+              transform: 'translateY(0)',
+              transition: 'opacity 0.6s ease'
             }}
           >
             the world
