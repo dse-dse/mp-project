@@ -18,9 +18,9 @@ const ProjectsSection = () => {
   const sectionTopRef = useRef(0);
   const [isMobile, setIsMobile] = useState(false);
   const [visibleWords, setVisibleWords] = useState([false, false, false]);
+  const [wordOpacities, setWordOpacities] = useState([0, 0, 0]);
 
   useEffect(() => {
-    // Проверяем, является ли устройство мобильным
     const checkMobile = () => {
       setIsMobile(window.innerWidth <= 768);
     };
@@ -37,24 +37,48 @@ const ProjectsSection = () => {
     const handleScroll = () => {
       if (!sectionRef.current || !isMountedRef.current) return;
 
-      // Если мобильное устройство, используем другую логику
+      // Логика для мобильных устройств
       if (isMobile) {
         const section = sectionRef.current;
         const rect = section.getBoundingClientRect();
         const windowHeight = window.innerHeight;
+        const sectionHeight = section.offsetHeight;
         
-        // Прогресс видимости секции (0-1)
+        // Рассчитываем прогресс скролла внутри секции
         const sectionTop = rect.top;
-        const sectionBottom = rect.bottom;
-        const visibleHeight = Math.min(sectionBottom, windowHeight) - Math.max(sectionTop, 0);
-        const progress = Math.max(0, Math.min(1, visibleHeight / windowHeight));
+        const sectionStart = windowHeight; // когда секция появляется на экране
+        const sectionEnd = -sectionHeight; // когда секция полностью проскроллена
         
-        // Показываем слова последовательно по мере скролла
+        const scrollDistance = sectionStart - sectionEnd;
+        const currentPosition = sectionStart - sectionTop;
+        let progress = currentPosition / scrollDistance;
+        
+        progress = Math.max(0, Math.min(1, progress));
+        
+        // Разделяем прогресс на 3 части для каждого слова
+        const word1Progress = Math.max(0, Math.min(1, progress * 3));
+        const word2Progress = Math.max(0, Math.min(1, (progress - 0.33) * 3));
+        const word3Progress = Math.max(0, Math.min(1, (progress - 0.66) * 3));
+        
+        // Плавное появление и исчезновение
+        const calculateOpacity = (p) => {
+          if (p <= 0) return 0;
+          if (p <= 0.2) return p / 0.2; // Появление
+          if (p >= 0.8) return 1 - ((p - 0.8) / 0.2); // Исчезновение
+          return 1;
+        };
+        
+        setWordOpacities([
+          calculateOpacity(word1Progress),
+          calculateOpacity(word2Progress),
+          calculateOpacity(word3Progress)
+        ]);
+        
+        // Обновляем видимость для CSS классов
         const newVisibleWords = [...visibleWords];
-        
-        if (progress > 0.2) newVisibleWords[0] = true;
-        if (progress > 0.4) newVisibleWords[1] = true;
-        if (progress > 0.6) newVisibleWords[2] = true;
+        if (word1Progress > 0.1) newVisibleWords[0] = true;
+        if (word2Progress > 0.1) newVisibleWords[1] = true;
+        if (word3Progress > 0.1) newVisibleWords[2] = true;
         
         setVisibleWords(newVisibleWords);
         return;
@@ -94,7 +118,7 @@ const ProjectsSection = () => {
     };
 
     const animateWord = (word, index, targetProgress) => {
-      if (!word || isMobile) return; // Не анимируем для мобильных
+      if (!word || isMobile) return;
       
       const currentState = animationStateRef.current[`word${index + 1}`];
       currentState.progress = lerp(currentState.progress, targetProgress, 0.06);
@@ -144,7 +168,6 @@ const ProjectsSection = () => {
 
     const animate = () => {
       if (!isMountedRef.current || isMobile) {
-        // Для мобильных не запускаем requestAnimationFrame анимацию
         if (isMobile) return;
       }
 
@@ -208,7 +231,10 @@ const ProjectsSection = () => {
               opacity: 0,
               transform: `translateX(200vw)`,
               willChange: 'transform, opacity'
-            } : {}}
+            } : { 
+              opacity: wordOpacities[0],
+              transform: 'translateY(0)'
+            }}
           >
             We have done
           </div>
@@ -219,7 +245,10 @@ const ProjectsSection = () => {
               opacity: 0,
               transform: `translateX(200vw)`,
               willChange: 'transform, opacity'
-            } : {}}
+            } : { 
+              opacity: wordOpacities[1],
+              transform: 'translateY(0)'
+            }}
           >
             projects around
           </div>
@@ -230,7 +259,10 @@ const ProjectsSection = () => {
               opacity: 0,
               transform: `translateX(200vw)`,
               willChange: 'transform, opacity'
-            } : {}}
+            } : { 
+              opacity: wordOpacities[2],
+              transform: 'translateY(0)'
+            }}
           >
             the world
           </div>

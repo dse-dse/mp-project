@@ -1,9 +1,9 @@
-/* ProjectsSection.css */
+/* ProjectsSection.css - Обновленная мобильная версия */
 @import url('https://fonts.cdnfonts.com/css/neue-haas-grotesk-display-pro');
 
 .projects-section {
   position: relative;
-  height: 400vh; /* Высота для плавного скролла */
+  height: 400vh;
   background-color: white;
   display: flex;
   align-items: center;
@@ -86,161 +86,28 @@
   font-weight: 650;
 }
 
-/* Фоновая сетка */
-.motion-grid {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  pointer-events: none;
-  opacity: 0.02;
-  background-image: 
-    linear-gradient(to right, rgba(0,0,0,0.05) 1px, transparent 1px),
-    linear-gradient(to bottom, rgba(0,0,0,0.05) 1px, transparent 1px);
-  background-size: 100px 100px;
-  z-index: 0;
-}
-
-/* Индикатор скролла */
-.scroll-hint {
-  position: fixed;
-  bottom: 60px;
-  left: 50%;
-  transform: translateX(-50%);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 12px;
-  z-index: 100;
-  opacity: 0.6;
-}
-
-.scroll-text {
-  font-family: 'Neue Haas Grotesk Display Pro', sans-serif;
-  font-size: 12px;
-  font-weight: 500;
-  letter-spacing: 1.5px;
-  text-transform: uppercase;
-  color: #000;
-}
-
-.scroll-line {
-  width: 1px;
-  height: 40px;
-  background: linear-gradient(to bottom, 
-    rgba(0,0,0,0.3) 0%,
-    rgba(0,0,0,0.1) 50%,
-    transparent 100%
-  );
-}
-
-/* Адаптивность */
-@media (max-width: 1600px) {
-  .projects-section {
-    height: 350vh;
-  }
-  
-  .words-container {
-    padding: 0 8vw;
-  }
-  
-  .word-1 {
-    height: 100px;
-    font-size: 100px;
-    top: calc(50% - 124px);
-  }
-  
-  .word-2 {
-    height: 140px;
-    font-size: 140px;
-  }
-  
-  .word-3 {
-    height: 120px;
-    font-size: 120px;
-    top: calc(50% + 124px);
-  }
-}
-
-@media (max-width: 1200px) {
-  .projects-section {
-    height: 300vh;
-  }
-  
-  .words-container {
-    padding: 0 6vw;
-  }
-  
-  .word-1 {
-    height: 80px;
-    font-size: 80px;
-    top: calc(50% - 102px);
-  }
-  
-  .word-2 {
-    height: 110px;
-    font-size: 110px;
-  }
-  
-  .word-3 {
-    height: 100px;
-    font-size: 100px;
-    top: calc(50% + 102px);
-  }
-}
-
-/* Планшетная версия - оставляем боковую анимацию */
-@media (max-width: 992px) {
+/* Мобильная версия */
+@media (max-width: 768px) {
   .projects-section {
     height: 250vh;
   }
   
-  .words-container {
-    padding: 0 4vw;
-    gap: 20px;
-  }
-  
-  .word-1 {
-    height: 60px;
-    font-size: 60px;
-    top: calc(50% - 82px);
-  }
-  
-  .word-2 {
-    height: 85px;
-    font-size: 85px;
-  }
-  
-  .word-3 {
-    height: 75px;
-    font-size: 75px;
-    top: calc(50% + 82px);
-  }
-}
-
-/* Мобильная версия - последовательное появление */
-@media (max-width: 768px) {
-  .projects-section {
-    height: 250vh; /* Увеличиваем высоту для мобильной анимации */
-  }
-  
   .projects-content {
-    position: relative; /* Меняем fixed на relative для мобильных */
+    position: relative;
     top: auto;
     transform: none;
     margin-top: 100vh;
     margin-bottom: 100vh;
-    pointer-events: all; /* Разрешаем события для лучшего скролла */
+    pointer-events: all;
   }
   
   .words-container {
     position: sticky;
-    top: 50vh; /* Прилипаем к центру экрана */
+    top: 50vh;
     transform: translateY(-50%);
     height: auto;
     padding: 0 20px;
-    gap: 40px; /* Увеличиваем расстояние между словами */
+    gap: 40px;
     align-items: center;
     display: flex;
     flex-direction: column;
@@ -249,11 +116,11 @@
   }
   
   .word {
-    position: relative !important; /* Меняем на relative для мобильных */
+    position: relative !important;
     left: auto !important;
     right: auto !important;
     top: auto !important;
-    transform: none !important;
+    transform: translateY(0) !important;
     transform-origin: center !important;
     text-align: center;
     width: 100%;
@@ -262,14 +129,13 @@
     word-break: break-word;
     padding: 0;
     margin: 0;
-    opacity: 0; /* Начальное состояние - скрыто */
-    transform: translateY(30px) !important; /* Начальное смещение снизу */
-    transition: opacity 0.8s ease, transform 0.8s ease;
+    opacity: 0; /* Начальная прозрачность */
+    transition: opacity 0.8s cubic-bezier(0.4, 0, 0.2, 1) !important; /* Плавное появление/исчезновение */
+    will-change: opacity; /* Оптимизация для opacity */
   }
   
   .word.visible {
     opacity: 1;
-    transform: translateY(0) !important;
   }
   
   .word-1 {
@@ -278,6 +144,7 @@
     font-size: 42px;
     font-weight: 600;
     order: 1;
+    margin-bottom: 20px;
   }
   
   .word-2 {
@@ -295,9 +162,11 @@
     font-size: 48px;
     font-weight: 650;
     order: 3;
+    margin-top: 20px;
   }
 }
 
+/* Остальные медиа-запросы остаются без изменений */
 @media (max-width: 576px) {
   .projects-section {
     height: 220vh;
@@ -316,6 +185,7 @@
   .word-1 {
     font-size: 36px;
     min-height: 45px;
+    margin-bottom: 15px;
   }
   
   .word-2 {
@@ -327,82 +197,8 @@
   .word-3 {
     font-size: 40px;
     min-height: 50px;
+    margin-top: 15px;
   }
-  
-  .scroll-hint {
-    display: none;
-  }
-}
-
-/* Очень маленькие устройства */
-@media (max-width: 400px) {
-  .projects-section {
-    height: 200vh;
-  }
-  
-  .projects-content {
-    margin-top: 70vh;
-    margin-bottom: 70vh;
-  }
-  
-  .words-container {
-    gap: 25px;
-    padding: 0 12px;
-  }
-  
-  .word-1 {
-    font-size: 32px;
-    min-height: 40px;
-  }
-  
-  .word-2 {
-    font-size: 42px;
-    min-height: 55px;
-    margin: 12px 0;
-  }
-  
-  .word-3 {
-    font-size: 36px;
-    min-height: 45px;
-  }
-}
-
-/* Горизонтальная ориентация на мобильных */
-@media (max-height: 600px) and (orientation: landscape) {
-  .projects-section {
-    height: 300vh;
-  }
-  
-  .words-container {
-    gap: 20px;
-  }
-  
-  .word-1 {
-    font-size: 30px;
-  }
-  
-  .word-2 {
-    font-size: 40px;
-    margin: 10px 0;
-  }
-  
-  .word-3 {
-    font-size: 34px;
-  }
-}
-
-/* Анимация загрузки */
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-  }
-  to {
-    opacity: 1;
-  }
-}
-
-.projects-section {
-  animation: fadeIn 1.2s ease-out;
 }
 
 /* Отключение анимации для пользователей, предпочитающих уменьшенное движение */
