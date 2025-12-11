@@ -4,20 +4,8 @@ import "./ProjectsSection.css";
 const ProjectsSection = () => {
   const sectionRef = useRef(null);
   const wordsRef = useRef([]);
-  const containerRef = useRef(null);
-  const scrollProgressRef = useRef(0);
-  const rafIdRef = useRef(null);
-  const animationStateRef = useRef({
-    word1: { progress: 0, targetProgress: 0 },
-    word2: { progress: 0, targetProgress: 0 },
-    word3: { progress: 0, targetProgress: 0 }
-  });
-  const isMountedRef = useRef(true);
-  const hasStartedRef = useRef(false);
-  const startScrollYRef = useRef(0);
-  const sectionTopRef = useRef(0);
   const [isMobile, setIsMobile] = useState(false);
-  const [visibleWords, setVisibleWords] = useState([false, false, false]);
+  const [wordProgress, setWordProgress] = useState([0, 0, 0]);
 
   useEffect(() => {
     // Проверяем, является ли устройство мобильным
@@ -32,205 +20,128 @@ const ProjectsSection = () => {
   }, []);
 
   useEffect(() => {
-    isMountedRef.current = true;
+    const section = sectionRef.current;
+    if (!section) return;
 
     const handleScroll = () => {
-      if (!sectionRef.current || !isMountedRef.current) return;
-
-      // Если мобильное устройство, используем другую логику
+      const rect = section.getBoundingClientRect();
+      const windowHeight = window.innerHeight;
+      
+      // Рассчитываем прогресс видимости секции
+      const sectionTop = rect.top;
+      const sectionHeight = rect.height;
+      
+      // Насколько секция видна на экране (0-1)
+      let visibility = 0;
+      
+      if (sectionTop < windowHeight && sectionTop + sectionHeight > 0) {
+        // Секция видна хотя бы частично
+        const visibleTop = Math.max(0, -sectionTop);
+        const visibleBottom = Math.min(sectionHeight, windowHeight - sectionTop);
+        const visibleHeight = visibleBottom - visibleTop;
+        visibility = visibleHeight / windowHeight;
+      }
+      
+      // Для мобильных: последовательное появление слов
       if (isMobile) {
-        const section = sectionRef.current;
-        const rect = section.getBoundingClientRect();
-        const windowHeight = window.innerHeight;
+        // Показываем слова с задержкой по мере скролла
+        const newProgress = [0, 0, 0];
         
-        // Прогресс видимости секции (0-1)
-        const sectionTop = rect.top;
-        const sectionBottom = rect.bottom;
-        const visibleHeight = Math.min(sectionBottom, windowHeight) - Math.max(sectionTop, 0);
-        const progress = Math.max(0, Math.min(1, visibleHeight / windowHeight));
+        if (visibility > 0.2) newProgress[0] = Math.min(1, (visibility - 0.2) / 0.4);
+        if (visibility > 0.4) newProgress[1] = Math.min(1, (visibility - 0.4) / 0.4);
+        if (visibility > 0.6) newProgress[2] = Math.min(1, (visibility - 0.6) / 0.4);
         
-        // Показываем слова последовательно по мере скролла
-        const newVisibleWords = [...visibleWords];
-        
-        if (progress > 0.2) newVisibleWords[0] = true;
-        if (progress > 0.4) newVisibleWords[1] = true;
-        if (progress > 0.6) newVisibleWords[2] = true;
-        
-        setVisibleWords(newVisibleWords);
-        return;
+        setWordProgress(newProgress);
       }
+    };
 
-      // Оригинальная логика для ПК и планшетов
+    // Для десктопа - оригинальная логика
+    const handleDesktopScroll = () => {
+      if (!sectionRef.current || isMobile) return;
+
       const section = sectionRef.current;
-      const currentScrollY = window.scrollY;
+      const rect = section.getBoundingClientRect();
+      const windowHeight = window.innerHeight;
       
-      if (!hasStartedRef.current) {
-        sectionTopRef.current = section.offsetTop;
-        hasStartedRef.current = true;
-        startScrollYRef.current = currentScrollY;
+      // Прогресс скролла внутри секции
+      const sectionTop = rect.top;
+      const sectionHeight = rect.height;
+      
+      let visibility = 0;
+      
+      if (sectionTop < windowHeight && sectionTop + sectionHeight > 0) {
+        const visibleTop = Math.max(0, -sectionTop);
+        const visibleBottom = Math.min(sectionHeight, windowHeight - sectionTop);
+        const visibleHeight = visibleBottom - visibleTop;
+        visibility = visibleHeight / windowHeight;
       }
       
-      const sectionHeight = section.offsetHeight;
-      const sectionScroll = currentScrollY - sectionTopRef.current;
-      let progress = sectionScroll / sectionHeight;
-      
-      progress = Math.max(0, Math.min(1, progress));
-      const adjustedProgress = Math.max(0, progress - 0.1) / 0.8;
-      
-      scrollProgressRef.current = Math.max(0, Math.min(1, adjustedProgress));
-      
-      const baseProgress = scrollProgressRef.current;
-      animationStateRef.current.word1.targetProgress = baseProgress;
-      animationStateRef.current.word2.targetProgress = Math.max(0, baseProgress - 0.15);
-      animationStateRef.current.word3.targetProgress = Math.max(0, baseProgress - 0.3);
-    };
-
-    const easeOutCubic = (t) => {
-      return 1 - Math.pow(1 - t, 3);
-    };
-
-    const lerp = (start, end, factor) => {
-      return start + (end - start) * factor;
-    };
-
-    const animateWord = (word, index, targetProgress) => {
-      if (!word || isMobile) return; // Не анимируем для мобильных
-      
-      const currentState = animationStateRef.current[`word${index + 1}`];
-      currentState.progress = lerp(currentState.progress, targetProgress, 0.06);
-      
-      const wordWidth = word.offsetWidth;
-      const windowWidth = window.innerWidth;
-      
-      let translateX = 0;
-      let opacity = 0;
-      let scale = 1;
-      
-      const progress = currentState.progress;
-      
-      if (progress < 0) {
-        translateX = windowWidth * 1.5;
-        opacity = 0;
-        scale = 0.9;
-      } else if (progress < 1) {
-        const easedProgress = easeOutCubic(progress);
-        const startX = windowWidth * 1.5;
-        const endX = -windowWidth * 1.5;
-        translateX = startX + easedProgress * (endX - startX);
-        
-        if (progress < 0.25) {
-          opacity = progress / 0.25;
-        } else if (progress > 0.75) {
-          opacity = 1 - ((progress - 0.75) / 0.25);
-        } else {
-          opacity = 1;
-        }
-        
-        if (progress < 0.5) {
-          scale = 0.95 + (progress / 0.5) * 0.05;
-        } else {
-          scale = 1 - ((progress - 0.5) / 0.5) * 0.05;
-        }
-      } else {
-        translateX = -windowWidth * 1.5;
-        opacity = 0;
-        scale = 0.9;
-      }
-
-      word.style.transform = `translateX(${translateX}px) scale(${scale})`;
-      word.style.opacity = opacity;
-      word.style.transition = 'none';
-    };
-
-    const animate = () => {
-      if (!isMountedRef.current || isMobile) {
-        // Для мобильных не запускаем requestAnimationFrame анимацию
-        if (isMobile) return;
-      }
-
+      // Применяем анимацию к словам для десктопа
       wordsRef.current.forEach((word, index) => {
         if (!word) return;
         
-        const stateKey = `word${index + 1}`;
-        animateWord(word, index, animationStateRef.current[stateKey].targetProgress);
+        // Рассчитываем прогресс для каждого слова с задержкой
+        let wordVisibility = Math.max(0, visibility - index * 0.2);
+        wordVisibility = Math.min(1, wordVisibility * 2);
+        
+        const translateX = isMobile ? 0 : 200 * (1 - wordVisibility);
+        const opacity = isMobile ? wordVisibility : Math.min(1, wordVisibility * 2);
+        
+        word.style.transform = isMobile 
+          ? `translateY(${20 * (1 - wordVisibility)}px)`
+          : `translateX(${translateX}vw)`;
+        word.style.opacity = opacity;
       });
-
-      if (!isMobile) {
-        rafIdRef.current = requestAnimationFrame(animate);
-      }
     };
 
-    let ticking = false;
-    const scrollHandler = () => {
-      if (!ticking && isMountedRef.current) {
-        ticking = true;
-        requestAnimationFrame(() => {
-          handleScroll();
-          ticking = false;
-        });
-      }
-    };
-
-    const handleResize = () => {
-      if (sectionRef.current && !isMobile) {
-        sectionTopRef.current = sectionRef.current.offsetTop;
-      }
-    };
-
-    window.addEventListener('scroll', scrollHandler, { passive: true });
-    window.addEventListener('resize', handleResize, { passive: true });
+    const scrollHandler = isMobile ? handleScroll : handleDesktopScroll;
     
-    handleResize();
-    scrollHandler();
+    window.addEventListener('scroll', scrollHandler);
     
-    if (!isMobile) {
-      rafIdRef.current = requestAnimationFrame(animate);
-    }
-
+    // Инициализируем начальное состояние
+    setTimeout(() => {
+      scrollHandler();
+    }, 100);
+    
     return () => {
-      isMountedRef.current = false;
       window.removeEventListener('scroll', scrollHandler);
-      window.removeEventListener('resize', handleResize);
-      if (rafIdRef.current) {
-        cancelAnimationFrame(rafIdRef.current);
-      }
     };
-  }, [isMobile, visibleWords]);
+  }, [isMobile]);
 
   return (
     <section className="projects-section" ref={sectionRef}>
       <div className="projects-content">
-        <div className="words-container" ref={containerRef}>
+        <div className="words-container">
           <div 
-            className={`word word-1 ${visibleWords[0] ? 'visible' : ''}`}
-            ref={el => { if (isMountedRef.current) wordsRef.current[0] = el; }}
-            style={!isMobile ? { 
-              opacity: 0,
-              transform: `translateX(200vw)`,
-              willChange: 'transform, opacity'
-            } : {}}
+            className="word word-1"
+            ref={el => wordsRef.current[0] = el}
+            style={{
+              transform: isMobile ? `translateY(20px)` : `translateX(200vw)`,
+              opacity: isMobile ? 0 : 0,
+              transition: isMobile ? 'transform 0.6s ease, opacity 0.6s ease' : 'none'
+            }}
           >
             We have done
           </div>
           <div 
-            className={`word word-2 ${visibleWords[1] ? 'visible' : ''}`}
-            ref={el => { if (isMountedRef.current) wordsRef.current[1] = el; }}
-            style={!isMobile ? { 
-              opacity: 0,
-              transform: `translateX(200vw)`,
-              willChange: 'transform, opacity'
-            } : {}}
+            className="word word-2"
+            ref={el => wordsRef.current[1] = el}
+            style={{
+              transform: isMobile ? `translateY(20px)` : `translateX(200vw)`,
+              opacity: isMobile ? 0 : 0,
+              transition: isMobile ? 'transform 0.6s ease, opacity 0.6s ease' : 'none'
+            }}
           >
             projects around
           </div>
           <div 
-            className={`word word-3 ${visibleWords[2] ? 'visible' : ''}`}
-            ref={el => { if (isMountedRef.current) wordsRef.current[2] = el; }}
-            style={!isMobile ? { 
-              opacity: 0,
-              transform: `translateX(200vw)`,
-              willChange: 'transform, opacity'
-            } : {}}
+            className="word word-3"
+            ref={el => wordsRef.current[2] = el}
+            style={{
+              transform: isMobile ? `translateY(20px)` : `translateX(200vw)`,
+              opacity: isMobile ? 0 : 0,
+              transition: isMobile ? 'transform 0.6s ease, opacity 0.6s ease' : 'none'
+            }}
           >
             the world
           </div>
