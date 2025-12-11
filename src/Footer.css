@@ -55,6 +55,7 @@
   font-size: 16px;
   line-height: 16px;
   color: #000000;
+  white-space: nowrap;
 }
 
 /* Масштабирование для больших экранов */
@@ -80,6 +81,7 @@
   line-height: 16px;
   color: #000000;
   transition: opacity 0.3s ease;
+  white-space: nowrap;
 }
 
 /* Масштабирование для больших экранов */
@@ -187,7 +189,7 @@
 @media (max-width: 768px) {
   .footer-content {
     flex-direction: column;
-    gap: 25px;
+    gap: 20px;
     text-align: center;
   }
   
@@ -197,19 +199,22 @@
   
   .footer-left {
     order: 3;
-    margin-top: 15px;
+    margin-top: 10px;
   }
   
   .footer-links {
     order: 2;
+    display: flex;
     flex-wrap: wrap;
     justify-content: center;
-    gap: 15px;
+    gap: 15px 20px;
+    align-items: center;
   }
   
   .footer-links a {
-    margin: 0 8px;
+    margin: 0;
     font-size: 13px;
+    white-space: nowrap; /* Не разбиваем слова внутри ссылок */
   }
   
   .footer-social {
@@ -219,13 +224,12 @@
   .footer-left,
   .footer-links a {
     font-size: 13px;
-    line-height: 13px;
   }
   
   .footer-social img {
-    width: 15px;
-    height: 15px;
-    margin: 0 6px;
+    width: 32px; /* Увеличенный размер для мобильных */
+    height: 32px; /* Увеличенный размер для мобильных */
+    margin: 0 12px;
   }
 }
 
@@ -240,40 +244,61 @@
   }
   
   .footer-links {
-    flex-direction: column;
-    gap: 12px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 10px 15px;
+    width: 100%;
   }
   
   .footer-links a {
     margin: 0;
     font-size: 12px;
     display: block;
+    white-space: nowrap; /* Запрещаем перенос внутри слов */
   }
+  
+  /* На очень маленьких экранах - все ссылки в одну строку если возможно */
+  /* Если не помещается - ACCESSIBILITY STATEMENT переносится целиком */
   
   .footer-left {
     font-size: 12px;
-    line-height: 12px;
-    margin-top: 10px;
+    line-height: 1.4;
+    margin-top: 5px;
   }
   
   .footer-social {
-    gap: 15px;
+    gap: 20px;
   }
   
   .footer-social img {
-    width: 14px;
-    height: 14px;
+    width: 32px; /* Увеличенный размер для мобильных */
+    height: 32px; /* Увеличенный размер для мобильных */
     margin: 0;
-  }
-  
-  .footer-links a,
-  .footer-left {
-    line-height: 1.4;
   }
 }
 
-/* Очень маленькие мобильные (360px и меньше) */
-@media (max-width: 360px) {
+/* Средние мобильные (400px - 480px) - переносим только ACCESSIBILITY STATEMENT */
+@media (max-width: 480px) and (min-width: 401px) {
+  .footer-links {
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  
+  .footer-links a:nth-child(1),
+  .footer-links a:nth-child(2) {
+    flex-shrink: 0;
+  }
+  
+  .footer-links a:nth-child(3) {
+    flex-basis: 100%;
+    text-align: center;
+    margin-top: 5px;
+  }
+}
+
+/* Маленькие мобильные (360px - 400px) */
+@media (max-width: 400px) {
   .footer {
     padding: 20px 10px;
   }
@@ -283,20 +308,95 @@
   }
   
   .footer-links {
-    gap: 10px;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 8px 12px;
   }
   
+  /* Первые две ссылки в одну строку, третья - на новой строке по центру */
   .footer-links a {
     font-size: 11px;
   }
   
+  .footer-links a:nth-child(1),
+  .footer-links a:nth-child(2) {
+    flex-shrink: 0;
+  }
+  
+  .footer-links a:nth-child(3) {
+    flex-basis: 100%;
+    text-align: center;
+    margin-top: 2px;
+  }
+  
   .footer-left {
     font-size: 11px;
+    margin-top: 3px;
   }
   
   .footer-social img {
-    width: 13px;
-    height: 13px;
+    width: 32px;
+    height: 32px;
+  }
+}
+
+/* Очень маленькие мобильные (320px - 360px) */
+@media (max-width: 360px) {
+  .footer {
+    padding: 15px 8px;
+  }
+  
+  .footer-content {
+    gap: 12px;
+  }
+  
+  .footer-links {
+    gap: 6px 10px;
+  }
+  
+  .footer-links a {
+    font-size: 10px;
+  }
+  
+  .footer-links a:nth-child(3) {
+    font-size: 10px;
+    margin-top: 0;
+  }
+  
+  .footer-left {
+    font-size: 10px;
+  }
+}
+
+/* Супер маленькие мобильные (менее 320px) */
+@media (max-width: 320px) {
+  .footer {
+    padding: 12px 5px;
+  }
+  
+  .footer-content {
+    gap: 10px;
+  }
+  
+  .footer-links {
+    gap: 5px 8px;
+  }
+  
+  .footer-links a {
+    font-size: 9px;
+  }
+  
+  .footer-links a:nth-child(3) {
+    font-size: 9px;
+  }
+  
+  .footer-left {
+    font-size: 9px;
+  }
+  
+  .footer-social img {
+    width: 28px;
+    height: 28px;
   }
 }
 
@@ -304,34 +404,49 @@
 @media (max-height: 600px) and (orientation: landscape) {
   .footer-content {
     flex-direction: row;
-    gap: 20px;
+    gap: 15px;
+    flex-wrap: wrap;
+    justify-content: center;
   }
   
   .footer {
-    padding: 20px 15px;
+    padding: 15px 15px;
   }
   
   .footer-left {
     order: 1;
     margin-top: 0;
+    flex: 1 0 100%;
+    text-align: center;
   }
   
   .footer-links {
     order: 2;
     flex-direction: row;
-  }
-  
-  .footer-social {
-    order: 3;
+    flex-wrap: nowrap;
+    gap: 15px;
+    justify-content: center;
   }
   
   .footer-links a {
-    margin: 0 10px;
-    font-size: 12px;
+    margin: 0;
+    font-size: 11px;
+    white-space: nowrap;
   }
   
-  .footer-left {
-    font-size: 12px;
+  /* В ландшафтном режиме обычно все помещается в одну строку */
+  
+  .footer-social {
+    order: 3;
+    flex: 1 0 100%;
+    justify-content: center;
+    margin-top: 8px;
+  }
+  
+  .footer-social img {
+    width: 28px;
+    height: 28px;
+    margin: 0 10px;
   }
 }
 
@@ -345,7 +460,6 @@
     padding: 60px 60px;
   }
 }
-
 
 /* Улучшение доступности */
 .footer-links a:focus,
@@ -362,26 +476,16 @@
   transition: all 0.2s ease;
 }
 
-/* Улучшенное выравнивание на очень маленьких экранах */
-@media (max-width: 320px) {
-  .footer {
-    padding: 15px 8px;
+/* Дополнительный медиа-запрос для очень специфичного поведения */
+@media (max-width: 380px) {
+  .footer-links {
+    /* Альтернативный вариант: все три ссылки в колонку */
+    flex-direction: column;
+    gap: 8px;
   }
   
-  .footer-content {
-    gap: 12px;
-  }
-  
-  .footer-links a {
-    font-size: 10px;
-  }
-  
-  .footer-left {
-    font-size: 10px;
-  }
-  
-  .footer-social img {
-    width: 12px;
-    height: 12px;
+  .footer-links a:nth-child(3) {
+    flex-basis: auto;
+    margin-top: 0;
   }
 }

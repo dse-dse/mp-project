@@ -1,29 +1,37 @@
-/* ContactSection.css */
-
 :root {
   --base-width: 1440px;
   --scale-factor: 1;
 }
 
-/* Автоматическое вычисление масштаба для больших экранов */
 @media (min-width: 1441px) {
   :root {
     --scale-factor: min(1.5, calc(100vw / var(--base-width)));
   }
 }
 
+/* Разделительная полоса теперь вне блока contact-section */
+.global-divider {
+  height: 2px;
+  background: #D9D9D9;
+  width: 100%;
+  margin: 0 auto;
+  display: block;
+}
+
+/* Удалены внутренние отступы сверху для правильного разделения блоков */
 .contact-section {
+  border-top: 1px solid #eee;
   position: relative;
   min-height: 100vh;
   background-color: white;
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 80px 20px;
-  z-index: 1; /* Добавляем z-index */
+  padding: 80px 20px; /* Удален padding-top - полоса теперь снаружи */
+  z-index: 1;
+  overflow-x: hidden;
 }
 
-/* Масштабирование для больших экранов */
 @media (min-width: 1441px) {
   .contact-section {
     padding: calc(80px * var(--scale-factor)) calc(20px * var(--scale-factor));
@@ -36,18 +44,16 @@
   display: flex;
   gap: 0;
   height: 100%;
-  position: relative; /* Добавляем position */
-  z-index: 2; /* Увеличиваем z-index */
+  position: relative;
+  z-index: 2;
 }
 
-/* Масштабирование для больших экранов */
 @media (min-width: 1441px) {
   .contact-container {
     max-width: calc(1200px * var(--scale-factor));
   }
 }
 
-/* Левая колонка - 50% ширины */
 .left-column {
   width: 50%;
   display: flex;
@@ -59,7 +65,6 @@
   z-index: 1;
 }
 
-/* Масштабирование для больших экранов */
 @media (min-width: 1441px) {
   .left-column {
     padding-right: calc(60px * var(--scale-factor));
@@ -78,7 +83,6 @@
   width: 100%;
 }
 
-/* Масштабирование для больших экранов */
 @media (min-width: 1441px) {
   .email-row {
     gap: calc(30px * var(--scale-factor));
@@ -90,10 +94,9 @@
   display: flex;
   flex-direction: column;
   gap: 10px;
-  min-width: 0; /* Для корректной работы flex с длинным текстом */
+  min-width: 0;
 }
 
-/* Масштабирование для больших экранов */
 @media (min-width: 1441px) {
   .email-item {
     gap: calc(10px * var(--scale-factor));
@@ -112,7 +115,6 @@
   white-space: nowrap;
 }
 
-/* Масштабирование для больших экранов */
 @media (min-width: 1441px) {
   .email-label {
     font-size: calc(16px * var(--scale-factor));
@@ -135,10 +137,9 @@
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  z-index: 2; /* Увеличиваем z-index для кликабельности */
+  z-index: 2;
 }
 
-/* Масштабирование для больших экранов */
 @media (min-width: 1441px) {
   .email-value {
     font-size: calc(18px * var(--scale-factor));
@@ -150,45 +151,27 @@
   opacity: 0.7;
 }
 
-.email-divider {
-  width: 1px;
-  height: 70px;
-  background-color: #e0e0e0;
-  margin-top: 10px;
-}
-
-/* Масштабирование для больших экранов */
-@media (min-width: 1441px) {
-  .email-divider {
-    width: 1px;
-    height: calc(70px * var(--scale-factor));
-    margin-top: calc(10px * var(--scale-factor));
-  }
-}
-
+/* Уведомление о копировании для десктопной версии */
 .copy-notification {
   font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
   font-style: normal;
   font-weight: 400;
   font-size: 14px;
-  color: #000000;
+  color: #4CAF50;
   margin-left: 10px;
-  background-color: #e6e6e6;
+  background-color: rgba(76, 175, 80, 0.1);
   padding: 4px 12px;
   border-radius: 3px;
   animation: fadeIn 0.3s ease;
   white-space: nowrap;
   position: relative;
-  z-index: 3; /* Выше других элементов */
+  z-index: 3;
 }
 
-/* Масштабирование для больших экранов */
 @media (min-width: 1441px) {
   .copy-notification {
     font-size: calc(14px * var(--scale-factor));
-    margin-left: calc(10px * var(--scale-factor));
     padding: calc(4px * var(--scale-factor)) calc(12px * var(--scale-factor));
-    border-radius: calc(3px * var(--scale-factor));
   }
 }
 
@@ -211,7 +194,6 @@
   z-index: 1;
 }
 
-/* Масштабирование для больших экранов */
 @media (min-width: 1441px) {
   .chat-text {
     font-size: calc(140px * var(--scale-factor));
@@ -220,23 +202,21 @@
   }
 }
 
-/* Правая колонка - 50% ширины */
 .right-column {
   width: 50%;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
   padding-left: 60px;
-  height: 600px;
   position: relative;
-  z-index: 3; /* Увеличиваем z-index для формы */
+  z-index: 3;
+  height: auto;
+  min-height: 600px;
 }
 
-/* Масштабирование для больших экранов */
 @media (min-width: 1441px) {
   .right-column {
     padding-left: calc(60px * var(--scale-factor));
-    height: calc(600px * var(--scale-factor));
+    min-height: calc(600px * var(--scale-factor));
   }
 }
 
@@ -246,7 +226,6 @@
   z-index: 2;
 }
 
-/* Масштабирование для больших экранов */
 @media (min-width: 1441px) {
   .text-section {
     margin-bottom: calc(40px * var(--scale-factor));
@@ -262,12 +241,11 @@
   letter-spacing: -0.03em;
   text-transform: uppercase;
   color: #000000;
-  display: block; /* Убедимся что блок отображается */
-  opacity: 1; /* Явно указываем opacity */
-  visibility: visible; /* Явно указываем visibility */
+  display: block;
+  opacity: 1;
+  visibility: visible;
 }
 
-/* Масштабирование для больших экранов */
 @media (min-width: 1441px) {
   .contact-text {
     font-size: calc(32px * var(--scale-factor));
@@ -281,12 +259,12 @@
   flex-direction: column;
   gap: 56px;
   flex-grow: 1;
-  justify-content: flex-end;
   position: relative;
-  z-index: 4; /* Форма должна быть выше всех */
+  z-index: 4;
+  height: 100%;
+  overflow: visible;
 }
 
-/* Масштабирование для больших экранов */
 @media (min-width: 1441px) {
   .contact-form {
     gap: calc(56px * var(--scale-factor));
@@ -302,14 +280,12 @@
   z-index: 4;
 }
 
-/* Масштабирование для больших экранов */
 @media (min-width: 1441px) {
   .form-group {
     gap: calc(5px * var(--scale-factor));
   }
 }
 
-/* Строка для телефона и email */
 .form-row {
   display: flex;
   gap: 30px;
@@ -318,7 +294,6 @@
   z-index: 4;
 }
 
-/* Масштабирование для больших экранов */
 @media (min-width: 1441px) {
   .form-row {
     gap: calc(30px * var(--scale-factor));
@@ -327,7 +302,7 @@
 
 .form-group-half {
   flex: 1;
-  min-width: 0; /* Для корректной работы flex */
+  min-width: 0;
   position: relative;
   z-index: 4;
 }
@@ -344,7 +319,6 @@
   z-index: 4;
 }
 
-/* Масштабирование для больших экранов */
 @media (min-width: 1441px) {
   .form-label {
     font-size: calc(16px * var(--scale-factor));
@@ -367,10 +341,9 @@
   transition: border-color 0.3s ease;
   width: 100%;
   position: relative;
-  z-index: 5; /* Поля ввода должны быть выше всего */
+  z-index: 5;
 }
 
-/* Масштабирование для больших экранов */
 @media (min-width: 1441px) {
   .form-input,
   .form-textarea {
@@ -394,31 +367,16 @@
 .form-textarea {
   resize: vertical;
   min-height: 80px;
+  max-height: 200px;
   position: relative;
   z-index: 5;
+  overflow-y: auto;
 }
 
-/* Масштабирование для больших экранов */
 @media (min-width: 1441px) {
   .form-textarea {
     min-height: calc(80px * var(--scale-factor));
-  }
-}
-
-.separator {
-  width: 100%;
-  height: 1px;
-  background-color: #e0e0e0;
-  margin: 10px 0;
-  position: relative;
-  z-index: 4;
-}
-
-/* Масштабирование для больших экранов */
-@media (min-width: 1441px) {
-  .separator {
-    height: calc(1px * var(--scale-factor));
-    margin: calc(10px * var(--scale-factor)) 0;
+    max-height: calc(200px * var(--scale-factor));
   }
 }
 
@@ -442,12 +400,11 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-top: 10px;
+  margin-top: 20px;
   position: relative;
-  z-index: 5; /* Кнопка должна быть кликабельной */
+  z-index: 5;
 }
 
-/* Масштабирование для больших экранов */
 @media (min-width: 1441px) {
   .submit-button {
     font-size: calc(16px * var(--scale-factor));
@@ -455,7 +412,7 @@
     border-radius: calc(32px * var(--scale-factor));
     width: calc(122px * var(--scale-factor));
     height: calc(60px * var(--scale-factor));
-    margin-top: calc(10px * var(--scale-factor));
+    margin-top: calc(20px * var(--scale-factor));
   }
 }
 
@@ -491,7 +448,6 @@
   z-index: 4;
 }
 
-/* Масштабирование для больших экранов */
 @media (min-width: 1441px) {
   .success-message {
     font-size: calc(14px * var(--scale-factor));
@@ -506,332 +462,491 @@
   to { opacity: 1; }
 }
 
-/* ========== АДАПТИВНОСТЬ ========== */
+/* Мобильные email кнопки - ПОСЛЕ кнопки SEND */
+.mobile-emails-section {
+  display: none;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  gap: 25px;
+  margin-top: 40px; /* Отступ от кнопки SEND */
+  padding-top: 30px;
+  
+}
 
-/* Планшеты и маленькие десктопы (1024px - 1440px) */
+.mobile-email-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  width: 100%;
+}
+
+.mobile-email-label {
+  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  font-style: normal;
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 14px;
+  text-transform: uppercase;
+  color: #999797;
+  letter-spacing: -0.02em;
+  margin-bottom: 8px;
+  white-space: nowrap;
+}
+
+.mobile-email-value {
+  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  font-style: normal;
+  font-weight: 400;
+  font-size: 16px;
+  color: #000000;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  position: relative;
+  display: inline-block;
+  padding: 5px 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  z-index: 2;
+}
+
+.mobile-email-value:hover {
+  opacity: 0.7;
+}
+
+.mobile-copy-notification {
+  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  font-style: normal;
+  font-weight: 400;
+  font-size: 12px;
+  color: #4CAF50;
+  margin-left: 8px;
+  background-color: rgba(76, 175, 80, 0.1);
+  padding: 3px 10px;
+  border-radius: 3px;
+  animation: fadeIn 0.3s ease;
+  white-space: nowrap;
+  position: relative;
+  z-index: 3;
+}
+
+/* Адаптивность для 1440px и меньше */
 @media (max-width: 1440px) {
   .contact-container {
     max-width: 1100px;
   }
-  
+
   .left-column {
     padding-right: 50px;
     height: 550px;
   }
-  
+
   .right-column {
     padding-left: 50px;
-    height: 550px;
+    min-height: 550px;
   }
-  
+
   .chat-text {
     font-size: 120px;
     line-height: 110px;
   }
-  
+
   .contact-text {
     font-size: 28px;
     line-height: 36px;
   }
-  
+
   .email-row {
     gap: 25px;
   }
-  
+
   .form-row {
     gap: 25px;
   }
+
+  .contact-form {
+    gap: 50px;
+  }
 }
 
-/* Планшеты горизонтальные (1024px) */
-@media (max-width: 1024px) {
+/* ОСНОВНЫЕ ИЗМЕНЕНИЯ: Для размера до 1040px делаем мобильное расположение */
+@media (max-width: 1040px) {
   .contact-container {
     flex-direction: column;
     gap: 60px;
   }
-  
+
   .left-column,
   .right-column {
     width: 100%;
     height: auto;
     padding: 0;
-    padding-bottom: 40px;
   }
-  
+
+  .left-column {
+    order: 1;
+    padding-top: 0;
+    border-top: none;
+    height: auto;
+    display: flex;
+    flex-direction: column;
+  }
+
   .right-column {
+    order: 2;
     padding-left: 0;
-    padding-top: 40px;
-    border-bottom: none;
+    min-height: auto;
   }
-  
+
   .chat-text {
     font-size: 100px;
     line-height: 90px;
+    text-align: center;
+    margin-bottom: 30px;
+    margin-top: 0;
   }
-  
-  .email-row {
-    flex-direction: column;
-    gap: 20px;
+
+  /* Скрываем десктопные email блоки уже на 1040px */
+  .emails-section {
+    display: none;
   }
-  
-  .email-divider {
-    width: 100%;
-    height: 1px;
-    margin: 20px 0;
+
+  .chat-section {
+    margin-bottom: 40px;
+    margin-top: 0;
+    order: -1;
   }
-  
+
+  .contact-text {
+    text-align: center;
+    font-size: 28px;
+    line-height: 36px;
+    margin-bottom: 30px;
+  }
+
   .form-row {
     flex-direction: column;
     gap: 25px;
   }
+
+  .contact-form {
+    gap: 40px;
+  }
+
+  .submit-button {
+    margin-top: 30px;
+    align-self: center;
+  }
+
+  /* ПОКАЗЫВАЕМ мобильные email блоки на 1040px и меньше */
+  .mobile-emails-section {
+    display: flex;
+  }
 }
 
-/* Планшеты вертикальные (768px) */
+/* НОВЫЕ ИЗМЕНЕНИЯ: Делаем мобильные email блоки видимыми уже на 768px */
 @media (max-width: 768px) {
   .contact-section {
     padding: 60px 15px;
+    min-height: auto;
   }
-  
+
   .contact-container {
     gap: 50px;
   }
-  
-  .left-column,
-  .right-column {
-    padding-bottom: 30px;
+
+  .left-column {
+    padding-top: 0;
+    order: 1;
   }
-  
+
   .right-column {
-    padding-top: 30px;
+    order: 2;
   }
-  
+
   .chat-text {
     font-size: 80px;
     line-height: 70px;
     letter-spacing: -0.03em;
+    margin-bottom: 30px;
   }
-  
+
   .contact-text {
     font-size: 24px;
     line-height: 30px;
+    text-align: center;
+    margin-bottom: 30px;
   }
-  
-  .email-label {
-    font-size: 14px;
-    line-height: 14px;
+
+  /* Скрываем десктопные email блоки */
+  .emails-section {
+    display: none;
   }
-  
-  .email-value {
-    font-size: 16px;
+
+  /* Показываем мобильные email блоки */
+  .mobile-emails-section {
+    display: flex;
   }
-  
+
   .contact-form {
-    gap: 40px;
+    gap: 35px;
   }
-  
+
   .form-label {
     font-size: 14px;
+    text-align: center;
   }
-  
+
   .form-input,
   .form-textarea {
     font-size: 16px;
   }
-  
+
   .submit-button {
-    width: 110px;
+    width: 120px;
     height: 55px;
     font-size: 15px;
+    margin-top: 25px;
+    align-self: center;
   }
 }
 
-/* Мобильные устройства (480px) */
+/* Мобильные устройства (480px и меньше) */
 @media (max-width: 480px) {
   .contact-section {
     padding: 40px 15px;
     min-height: auto;
   }
-  
+
   .contact-container {
+    flex-direction: column;
     gap: 40px;
   }
-  
-  .left-column,
-  .right-column {
+
+  .left-column {
+    order: 1;
+    width: 100%;
+    padding: 0;
+    border-top: none;
     padding-bottom: 20px;
+    height: auto;
   }
-  
+
   .right-column {
+    order: 2;
+    width: 100%;
+    padding: 0;
     padding-top: 20px;
+    min-height: auto;
   }
-  
-  .chat-text {
-    font-size: 60px;
-    line-height: 55px;
-    letter-spacing: -0.02em;
+
+  /* Мобильные email кнопки уже видны */
+  .mobile-emails-section {
+    display: flex;
   }
-  
-  .contact-text {
-    font-size: 20px;
-    line-height: 26px;
-  }
-  
-  .email-label {
-    font-size: 12px;
-    line-height: 12px;
-    white-space: normal;
-  }
-  
-  .email-value {
+
+  .submit-button {
+    width: 120px !important;
+    max-width: 120px !important;
+    height: 50px;
     font-size: 14px;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
+    align-self: center !important;
+    margin-top: 20px;
   }
-  
+
+  .chat-text {
+    font-size: 50px;
+    line-height: 45px;
+    text-align: center;
+    margin-bottom: 0;
+  }
+
+  .contact-text {
+    font-size: 18px;
+    line-height: 24px;
+    text-align: center;
+    margin-bottom: 25px;
+  }
+
   .contact-form {
-    gap: 35px;
+    gap: 25px;
   }
-  
+
   .form-label {
     font-size: 12px;
+    text-align: center;
   }
-  
+
   .form-input,
   .form-textarea {
     font-size: 14px;
     padding: 8px 0;
+    text-align: center;
   }
-  
+
   .form-textarea {
     min-height: 60px;
+    text-align: left;
   }
-  
-  .submit-button {
-    width: 100px;
-    height: 50px;
+
+  .mobile-email-label {
     font-size: 14px;
-    align-self: center;
-    width: 100%;
-    max-width: 300px;
   }
-  
+
+  .mobile-email-value {
+    font-size: 16px;
+  }
+
   .success-message {
     font-size: 12px;
     padding: 8px 12px;
+    text-align: center;
   }
-  
-  .copy-notification {
+
+  .mobile-copy-notification {
     font-size: 12px;
-    margin-left: 5px;
     padding: 3px 8px;
+  }
+
+  .form-row {
+    flex-direction: column;
+    gap: 20px;
   }
 }
 
-/* Очень маленькие мобильные (360px и меньше) */
 @media (max-width: 360px) {
   .contact-section {
     padding: 30px 10px;
   }
-  
+
   .chat-text {
-    font-size: 50px;
-    line-height: 45px;
+    font-size: 45px;
+    line-height: 40px;
   }
-  
+
   .contact-text {
-    font-size: 18px;
-    line-height: 24px;
+    font-size: 16px;
+    line-height: 22px;
   }
-  
-  .email-label {
-    font-size: 11px;
-  }
-  
-  .email-value {
+
+  .submit-button {
+    width: 110px !important;
+    height: 45px;
     font-size: 13px;
   }
-  
-  .form-label {
-    font-size: 11px;
+
+  .mobile-email-label {
+    font-size: 12px;
   }
-  
-  .form-input,
-  .form-textarea {
-    font-size: 13px;
+
+  .mobile-email-value {
+    font-size: 14px;
   }
 }
 
-/* Ландшафтная ориентация на мобильных */
+/* Особенности для ландшафтной ориентации */
 @media (max-height: 600px) and (orientation: landscape) {
   .contact-section {
     padding: 30px 20px;
+    min-height: auto;
   }
-  
+
   .contact-container {
     flex-direction: row;
     gap: 40px;
   }
-  
+
   .left-column,
   .right-column {
     width: 50%;
     height: auto;
     padding: 0;
   }
-  
+
   .left-column {
     padding-right: 20px;
+    order: 1;
   }
-  
+
   .right-column {
     padding-left: 20px;
+    order: 2;
   }
-  
+
   .chat-text {
     font-size: 60px;
     line-height: 55px;
   }
-  
+
   .contact-text {
     font-size: 20px;
     line-height: 26px;
   }
-  
+
   .email-row {
     flex-direction: column;
     gap: 15px;
   }
-  
+
   .form-row {
     flex-direction: column;
     gap: 15px;
   }
+
+  .contact-form {
+    gap: 25px;
+  }
+
+  .submit-button {
+    align-self: flex-end;
+  }
+
+  /* В ландшафтной ориентации показываем десктопные email блоки */
+  .emails-section {
+    display: block !important;
+  }
+  
+  /* Скрываем мобильные email блоки в ландшафтной ориентации */
+  .mobile-emails-section {
+    display: none !important;
+  }
 }
 
-/* Для очень больших экранов (более 2000px) */
+/* Большие экраны */
 @media (min-width: 2000px) {
   .contact-container {
     max-width: 1600px;
   }
-  
+
   .left-column {
     padding-right: 80px;
     height: 700px;
   }
-  
+
   .right-column {
     padding-left: 80px;
-    height: 700px;
+    min-height: 700px;
   }
 }
 
-/* Исправление для перекрытия элементов */
-.contact-section * {
-  pointer-events: auto; /* Разрешаем события мыши */
+@media (min-height: 1200px) {
+  .left-column,
+  .right-column {
+    height: auto;
+    min-height: 700px;
+  }
+
+  .contact-form {
+    justify-content: space-between;
+  }
 }
 
-/* Гарантируем что форма всегда будет видима */
+.contact-section * {
+  pointer-events: auto;
+}
+
 .contact-form,
 .form-group,
 .form-input,
@@ -840,9 +955,30 @@
   pointer-events: auto !important;
 }
 
-/* Исправление для текста над формой */
 .text-section {
   opacity: 1 !important;
   visibility: visible !important;
   display: block !important;
+}
+
+.contact-form {
+  -webkit-overflow-scrolling: touch;
+  overflow-y: visible;
+}
+
+@media (max-width: 1040px) {
+  .email-item,
+  .form-group,
+  .form-group-half {
+    align-items: center;
+    text-align: center;
+  }
+
+  .form-input {
+    text-align: center;
+  }
+
+  .form-textarea {
+    text-align: left;
+  }
 }

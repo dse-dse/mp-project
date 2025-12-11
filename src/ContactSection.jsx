@@ -12,7 +12,6 @@ const ContactSection = () => {
   const [messageSent, setMessageSent] = useState(false);
   const [copiedEmail, setCopiedEmail] = useState("");
 
-  // Функция для копирования email
   const copyEmailToClipboard = (email, type) => {
     navigator.clipboard.writeText(email)
       .then(() => {
@@ -24,7 +23,6 @@ const ContactSection = () => {
       });
   };
 
-  // Обработчик изменения полей формы
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setFormData(prev => ({
@@ -33,13 +31,11 @@ const ContactSection = () => {
     }));
   };
 
-  // Обработчик отправки формы через ваш Formspree
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsSubmitting(true);
 
     try {
-      // ВАШ Formspree endpoint
       const response = await fetch('https://formspree.io/f/xvgewwby', {
         method: 'POST',
         headers: {
@@ -55,12 +51,11 @@ const ContactSection = () => {
           _to: "manatin306@gmail.com"
         }),
       });
-      
+
       if (response.ok) {
         setMessageSent(true);
         setFormData({ name: "", phone: "", email: "", project: "" });
-        
-        // Сбрасываем сообщение об успехе через 5 секунд
+
         setTimeout(() => {
           setMessageSent(false);
         }, 5000);
@@ -68,7 +63,7 @@ const ContactSection = () => {
         throw new Error('Ошибка отправки');
       }
     } catch (error) {
-      alert('Произошла ошибка при отправке. Пожалуйста, попробуйте еще раз или напишите нам напрямую на hello@moviepatipero.com');
+      alert('Произошла ошибка при отправке. Пожалуйста, попробуйте еще раз или напишите нам напрямую на info@novlepships.com');
       console.error('Ошибка:', error);
     } finally {
       setIsSubmitting(false);
@@ -77,15 +72,15 @@ const ContactSection = () => {
 
   return (
     <section className="contact-section">
+      {/* УДАЛЕНО: Разделительная полоса теперь находится ВНЕ этого компонента */}
       <div className="contact-container">
-        {/* Левая колонка - 50% ширины */}
+        {/* ЛЕВАЯ КОЛОНКА */}
         <div className="left-column">
-          {/* Верхняя часть - кнопки для копирования почты В ОДНУ СТРОКУ */}
           <div className="emails-section">
             <div className="email-row">
               <div className="email-item">
                 <div className="email-label">WHAT TO BECOME OUR CLIENT?</div>
-                <div 
+                <div
                   className="email-value"
                   onClick={() => copyEmailToClipboard("info@novlepships.com", "client")}
                   title="Нажмите чтобы скопировать"
@@ -94,10 +89,10 @@ const ContactSection = () => {
                   {copiedEmail === "client" && <span className="copy-notification">copied!</span>}
                 </div>
               </div>
-              
+
               <div className="email-item">
                 <div className="email-label">WHAT TO WORK FOR US?</div>
-                <div 
+                <div
                   className="email-value"
                   onClick={() => copyEmailToClipboard("job@novlepships.com", "work")}
                   title="Нажмите чтобы скопировать"
@@ -108,31 +103,28 @@ const ContactSection = () => {
               </div>
             </div>
           </div>
-          
-          {/* Нижняя часть - CHAT WITH US */}
+
           <div className="chat-section">
             <div className="chat-text">CHAT<br />WITH US</div>
           </div>
         </div>
-        
-        {/* Правая колонка - 50% ширины */}
+
+        {/* ПРАВАЯ КОЛОНКА */}
         <div className="right-column">
-          {/* Верхняя часть - текст */}
           <div className="text-section">
             <div className="contact-text">
               FEEL FREE TO WRITE AND CALL US.<br />
               WE REALLY LOVE TO COMMUNICATE WITH OUR CLIENTS
             </div>
           </div>
-          
-          {/* Нижняя часть - форма */}
+
           <form className="contact-form" onSubmit={handleSubmit}>
             {messageSent && (
               <div className="success-message">
                 ✓ Сообщение успешно отправлено! Мы свяжемся с вами в ближайшее время.
               </div>
             )}
-            
+
             <div className="form-group">
               <label htmlFor="name" className="form-label">YOUR NAME:*</label>
               <input
@@ -146,8 +138,7 @@ const ContactSection = () => {
                 placeholder=""
               />
             </div>
-            
-            {/* Телефон и Email В ОДНУ СТРОКУ */}
+
             <div className="form-row">
               <div className="form-group form-group-half">
                 <label htmlFor="phone" className="form-label">PHONE NUMBER:*</label>
@@ -164,7 +155,7 @@ const ContactSection = () => {
                   title="Введите корректный номер телефона"
                 />
               </div>
-              
+
               <div className="form-group form-group-half">
                 <label htmlFor="email" className="form-label">EMAIL ADDRESS:*</label>
                 <input
@@ -179,8 +170,7 @@ const ContactSection = () => {
                 />
               </div>
             </div>
-            
-            {/* БЛОК TELL US ABOUT YOUR PROJECT - Исправлен на textarea */}
+
             <div className="form-group">
               <label htmlFor="project" className="form-label">TELL US ABOUT YOUR PROJECT</label>
               <textarea
@@ -194,14 +184,40 @@ const ContactSection = () => {
                 required
               />
             </div>
-            
-            <button 
-              type="submit" 
+
+            <button
+              type="submit"
               className="submit-button"
               disabled={isSubmitting}
             >
               {isSubmitting ? "Отправка..." : "SEND"}
             </button>
+
+            {/* Мобильные email кнопки - ТОЛЬКО для мобильной версии */}
+            <div className="mobile-emails-section">
+              <div className="mobile-email-item">
+                <div className="mobile-email-label">WHAT TO BECOME OUR CLIENT?</div>
+                <div
+                  className="mobile-email-value"
+                  onClick={() => copyEmailToClipboard("info@novlepships.com", "client-mobile")}
+                  title="Нажмите чтобы скопировать"
+                >
+                  info@novlepships.com
+                  {copiedEmail === "client-mobile" && <span className="mobile-copy-notification">copied!</span>}
+                </div>
+              </div>
+              <div className="mobile-email-item">
+                <div className="mobile-email-label">WHAT TO WORK FOR US?</div>
+                <div
+                  className="mobile-email-value"
+                  onClick={() => copyEmailToClipboard("job@novlepships.com", "work-mobile")}
+                  title="Нажмите чтобы скопировать"
+                >
+                  job@novlepships.com
+                  {copiedEmail === "work-mobile" && <span className="mobile-copy-notification">copied!</span>}
+                </div>
+              </div>
+            </div>
           </form>
         </div>
       </div>
