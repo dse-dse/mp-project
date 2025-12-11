@@ -1,210 +1,112 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useEffect, useRef } from "react";
 import "./MensSection.css";
-
-// Импортируем изображение (предположим, что оно есть в папке images)
 import mensPhoto from "./image/mens.png";
 
 const MensSection = () => {
-  const [scrollProgress, setScrollProgress] = useState(0);
-  const [isScrollingDown, setIsScrollingDown] = useState(true);
   const sectionRef = useRef(null);
-  const lastScrollY = useRef(0);
-
-  // Текст блока
-  const paragraphs = [
-    "Founded in 2013 by Fedor Blakeworthy and Stanislav Klasslov, Movie Park aims to make a lasting focus in the industry for bringing both ideas to life and turning them into powerful visual stories that inspire and endure.",
-    "MOVIE PARK IS AN INTERNATIONAL PRODUCTION STUDIO CREATING UNIQUE VISUAL SOLUTIONS ACROSS VIDEO, MARKETING, AND EVENT INDUSTRIES. OUR PORTFOLIO SPANS COMMERCIAL AND CREATIVE PROJECTS FOR BRANDS, PRIVATE CLIENTS, AND MAJOR COMPANIES."
-  ];
-
-  const buttonText = "READ MORE";
+  const photoContainerRef = useRef(null);
+  const dateTextRef = useRef(null);
+  const textContainerRef = useRef(null);
+  const secondaryContainerRef = useRef(null);
 
   useEffect(() => {
     const handleScroll = () => {
-      if (!sectionRef.current) return;
+      if (
+        !sectionRef.current ||
+        !photoContainerRef.current ||
+        !dateTextRef.current ||
+        !textContainerRef.current ||
+        !secondaryContainerRef.current
+      )
+        return;
 
       const section = sectionRef.current;
       const rect = section.getBoundingClientRect();
       const windowHeight = window.innerHeight;
-      
-      // Определяем направление скролла
-      const currentScrollY = window.scrollY;
-      if (currentScrollY > lastScrollY.current) {
-        setIsScrollingDown(true);
-      } else if (currentScrollY < lastScrollY.current) {
-        setIsScrollingDown(false);
-      }
-      lastScrollY.current = currentScrollY;
-      
-      // Рассчитываем прогресс видимости центра секции
-      const sectionTop = rect.top;
-      const sectionHeight = rect.height;
-      const sectionCenter = sectionTop + sectionHeight / 2;
+
+      const sectionCenter = rect.top + rect.height / 2;
       const windowCenter = windowHeight / 2;
-      
-      // Прогресс от 0 до 1, где 0.5 - центр секции в центре экрана
-      const distanceFromCenter = Math.abs(sectionCenter - windowCenter);
-      const maxVisibleDistance = windowHeight * 0.8; // 80% высоты окна
-      const progress = Math.max(0, 1 - (distanceFromCenter / maxVisibleDistance));
-      
-      setScrollProgress(progress);
+      let progress = (windowCenter - sectionCenter) / (windowHeight / 2);
+      progress = Math.max(-1, Math.min(1, progress));
+
+      const normalizedProgress = (progress + 1) / 2;
+      const smoothProgress = normalizedProgress < 0.5
+        ? 2 * normalizedProgress * normalizedProgress
+        : 1 - Math.pow(-2 * normalizedProgress + 2, 2) / 2;
+
+      // Анимация ширины фото
+      const minPhotoWidth = 30;
+      const centerPhotoWidth = 50;
+      const maxPhotoWidth = 80;
+      let photoWidth;
+      if (smoothProgress < 0.5) {
+        photoWidth = minPhotoWidth + (smoothProgress * 2 * (centerPhotoWidth - minPhotoWidth));
+      } else {
+        photoWidth = centerPhotoWidth + ((smoothProgress - 0.5) * 2 * (maxPhotoWidth - centerPhotoWidth));
+      }
+      photoContainerRef.current.style.width = `${photoWidth}%`;
+
+      // Позиционирование текста относительно фото
+      const mainTextOffset = 187;
+      const secondaryTextOffset = 147;
+      const textRightPosition = `calc(${photoWidth}% + ${mainTextOffset}px)`;
+      const secondaryTextRightPosition = `calc(${photoWidth}% + ${secondaryTextOffset}px)`;
+
+      dateTextRef.current.style.right = textRightPosition;
+      textContainerRef.current.style.right = textRightPosition;
+      secondaryContainerRef.current.style.right = secondaryTextRightPosition;
     };
 
-    const handleScrollThrottled = () => {
-      requestAnimationFrame(handleScroll);
+    let ticking = false;
+    const scrollHandler = () => {
+      if (!ticking) {
+        requestAnimationFrame(() => {
+          handleScroll();
+          ticking = false;
+        });
+        ticking = true;
+      }
     };
 
-    window.addEventListener("scroll", handleScrollThrottled, { passive: true });
-    window.addEventListener("resize", handleScrollThrottled);
+    window.addEventListener("scroll", scrollHandler, { passive: true });
+    window.addEventListener("resize", handleScroll);
     handleScroll();
 
     return () => {
-      window.removeEventListener("scroll", handleScrollThrottled);
-      window.removeEventListener("resize", handleScrollThrottled);
+      window.removeEventListener("scroll", scrollHandler);
+      window.removeEventListener("resize", handleScroll);
     };
   }, []);
 
-  // Функция для расчета видимости элементов
-  const getElementVisibility = (elementDelay = 0) => {
-    if (isScrollingDown) {
-      // При скролле вниз: появляется справа
-      return Math.max(0, Math.min(1, (scrollProgress - 0.3 - elementDelay) * 3));
-    } else {
-      // При скролле вверх: уходит налево (инвертированная анимация)
-      return Math.max(0, Math.min(1, (1 - scrollProgress - elementDelay) * 3));
-    }
-  };
-
-  // Функция для расчета трансформации
-  const getElementTransform = (visibility, isPhoto = false) => {
-    if (isScrollingDown) {
-      // При скролле вниз: выдвигается справа
-      const translateX = (1 - visibility) * 100;
-      return `translateX(${translateX}px)`;
-    } else {
-      // При скролле вверх: уходит налево
-      const translateX = -(1 - visibility) * 100;
-      return `translateX(${translateX}px)`;
-    }
-  };
-
-  // Видимость фото
-  const photoVisibility = getElementVisibility(0);
-  const photoTransform = getElementTransform(photoVisibility, true);
-
-  // Видимость первого параграфа
-  const firstParagraphVisibility = getElementVisibility(0.1);
-  const firstParagraphTransform = getElementTransform(firstParagraphVisibility);
-
-  // Видимость второго параграфа
-  const secondParagraphVisibility = getElementVisibility(0.2);
-  const secondParagraphTransform = getElementTransform(secondParagraphVisibility);
-
-  // Видимость кнопки
-  const buttonVisibility = getElementVisibility(0.3);
-  const buttonTransform = getElementTransform(buttonVisibility);
-
   return (
     <section className="mens-section" ref={sectionRef}>
-      <div className="mens-container">
-        {/* Фото (справа) */}
-        <div 
-          className="mens-photo-container"
-          style={{
-            opacity: photoVisibility,
-            transform: photoTransform,
-          }}
-        >
-          <div className="mens-photo-placeholder">
-            {/* Замените на реальное изображение */}
-            <div className="photo-mock">
-            
-              <div className="photo-frame">
-                <div className="photo-content">
-                  {/* Здесь будет изображение */}
-                </div>
-              </div>
-            </div>
-           
-            <img src={mensPhoto} alt="Mens" className="mens-photo" />
-         
-          </div>
-        </div>
-
-        {/* Текст (слева) */}
+      <div className="mens-sticky">
         <div className="mens-content">
-          {/* Первый параграф */}
-          <div 
-            className="mens-paragraph"
-            style={{
-              opacity: firstParagraphVisibility,
-              transform: firstParagraphTransform,
-            }}
-          >
-            <p className="paragraph-text">
-              {paragraphs[0].split("").map((letter, index) => (
-                <span
-                  key={index}
-                  className="paragraph-letter"
-                  style={{
-                    opacity: firstParagraphVisibility,
-                    transitionDelay: `${index * 10}ms`
-                  }}
-                >
-                  {letter}
-                </span>
-              ))}
+          {/* Дата */}
+          <div className="mens-date-container" ref={dateTextRef}>
+            <p className="mens-date">
+              Founded in 2013 by Fedor Balvanovich and Stanislav Kasatov, Movie Park aims to make a lasting mark in the industry by bringing bold ideas to life and turning them into powerful visual stories that inspire and endure.
             </p>
           </div>
 
-          {/* Второй параграф */}
-          <div 
-            className="mens-paragraph"
-            style={{
-              opacity: secondParagraphVisibility,
-              transform: secondParagraphTransform,
-            }}
-          >
-            <p className="paragraph-text paragraph-bold">
-              {paragraphs[1].split("").map((letter, index) => (
-                <span
-                  key={index}
-                  className="paragraph-letter"
-                  style={{
-                    opacity: secondParagraphVisibility,
-                    transitionDelay: `${index * 10}ms`
-                  }}
-                >
-                  {letter}
-                </span>
-              ))}
+          {/* Основной текст */}
+          <div className="mens-text-container" ref={textContainerRef}>
+            <p className="mens-text-bold">
+              Movie Park is an international production studio creating unique visual solutions across video, marketing, and event industries.
             </p>
           </div>
 
           {/* Кнопка */}
-          <div 
-            className="mens-button-container"
-            style={{
-              opacity: buttonVisibility,
-              transform: buttonTransform,
-            }}
-          >
+          <div className="mens-secondary-container" ref={secondaryContainerRef}>
             <button className="mens-button">
-              <span className="button-text">
-                {buttonText.split("").map((letter, index) => (
-                  <span
-                    key={index}
-                    className="button-letter"
-                    style={{
-                      opacity: buttonVisibility,
-                      transitionDelay: `${index * 30}ms`
-                    }}
-                  >
-                    {letter}
-                  </span>
-                ))}
-              </span>
-              <span className="button-arrow">›</span>
+              READ MORE
+              <span className="button-arrow">→</span>
             </button>
+          </div>
+
+          {/* Фото */}
+          <div className="mens-photo-container" ref={photoContainerRef}>
+            <img src={mensPhoto} alt="Movie Park team" className="mens-photo" />
           </div>
         </div>
       </div>
