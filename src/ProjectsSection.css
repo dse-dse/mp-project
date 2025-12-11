@@ -3,7 +3,7 @@
 
 .projects-section {
   position: relative;
-  height: 400vh;
+  height: 400vh; /* Высота для плавного скролла */
   background-color: white;
   display: flex;
   align-items: center;
@@ -48,13 +48,14 @@
   position: absolute;
   white-space: nowrap;
   pointer-events: none;
+  transition: none;
+  transform-origin: right center;
   backface-visibility: hidden;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   filter: blur(0);
   right: 0;
   color: #000;
-  transition: transform 0.6s ease, opacity 0.6s ease;
 }
 
 /* We have done */
@@ -85,89 +86,112 @@
   font-weight: 650;
 }
 
-/* Мобильная версия */
-@media (max-width: 768px) {
+/* Фоновая сетка */
+.motion-grid {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  pointer-events: none;
+  opacity: 0.02;
+  background-image: 
+    linear-gradient(to right, rgba(0,0,0,0.05) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(0,0,0,0.05) 1px, transparent 1px);
+  background-size: 100px 100px;
+  z-index: 0;
+}
+
+/* Индикатор скролла */
+.scroll-hint {
+  position: fixed;
+  bottom: 60px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  z-index: 100;
+  opacity: 0.6;
+}
+
+.scroll-text {
+  font-family: 'Neue Haas Grotesk Display Pro', sans-serif;
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: #000;
+}
+
+.scroll-line {
+  width: 1px;
+  height: 40px;
+  background: linear-gradient(to bottom, 
+    rgba(0,0,0,0.3) 0%,
+    rgba(0,0,0,0.1) 50%,
+    transparent 100%
+  );
+}
+
+/* Адаптивность */
+@media (max-width: 1600px) {
   .projects-section {
-    height: 200vh;
-  }
-  
-  .projects-content {
-    position: relative;
-    top: auto;
-    transform: none;
-    margin-top: 50vh;
-    margin-bottom: 50vh;
-    pointer-events: all;
+    height: 350vh;
   }
   
   .words-container {
-    position: sticky;
-    top: 50vh;
-    transform: translateY(-50%);
-    height: auto;
-    padding: 0 20px;
-    gap: 30px;
-    align-items: center;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-  }
-  
-  .word {
-    position: relative !important;
-    left: auto !important;
-    right: auto !important;
-    top: auto !important;
-    transform: none !important;
-    text-align: center;
-    width: 100%;
-    max-width: 90vw;
-    white-space: normal;
-    word-break: break-word;
-    padding: 0;
-    margin: 0;
-    opacity: 0;
-    transform: translateY(20px) !important;
-    transition: transform 0.6s ease, opacity 0.6s ease;
-    will-change: transform, opacity;
-  }
-  
-  .word.visible {
-    opacity: 1 !important;
-    transform: translateY(0) !important;
+    padding: 0 8vw;
   }
   
   .word-1 {
-    height: auto;
-    min-height: 50px;
-    font-size: 42px;
-    font-weight: 600;
-    order: 1;
-    transition-delay: 0.1s;
+    height: 100px;
+    font-size: 100px;
+    top: calc(50% - 124px);
   }
   
   .word-2 {
-    height: auto;
-    min-height: 70px;
-    font-size: 56px;
-    font-weight: 700;
-    order: 2;
-    margin: 10px 0;
-    transition-delay: 0.2s;
+    height: 140px;
+    font-size: 140px;
   }
   
   .word-3 {
-    height: auto;
-    min-height: 60px;
-    font-size: 48px;
-    font-weight: 650;
-    order: 3;
-    transition-delay: 0.3s;
+    height: 120px;
+    font-size: 120px;
+    top: calc(50% + 124px);
   }
 }
 
-/* Планшетная версия */
-@media (max-width: 992px) and (min-width: 769px) {
+@media (max-width: 1200px) {
+  .projects-section {
+    height: 300vh;
+  }
+  
+  .words-container {
+    padding: 0 6vw;
+  }
+  
+  .word-1 {
+    height: 80px;
+    font-size: 80px;
+    top: calc(50% - 102px);
+  }
+  
+  .word-2 {
+    height: 110px;
+    font-size: 110px;
+  }
+  
+  .word-3 {
+    height: 100px;
+    font-size: 100px;
+    top: calc(50% + 102px);
+  }
+}
+
+/* Планшетная версия - оставляем боковую анимацию */
+@media (max-width: 992px) {
   .projects-section {
     height: 250vh;
   }
@@ -195,10 +219,175 @@
   }
 }
 
-/* Десктоп версия */
-@media (min-width: 993px) {
+/* Мобильная версия - последовательное появление */
+@media (max-width: 768px) {
+  .projects-section {
+    height: 250vh; /* Увеличиваем высоту для мобильной анимации */
+  }
+  
+  .projects-content {
+    position: relative; /* Меняем fixed на relative для мобильных */
+    top: auto;
+    transform: none;
+    margin-top: 100vh;
+    margin-bottom: 100vh;
+    pointer-events: all; /* Разрешаем события для лучшего скролла */
+  }
+  
+  .words-container {
+    position: sticky;
+    top: 50vh; /* Прилипаем к центру экрана */
+    transform: translateY(-50%);
+    height: auto;
+    padding: 0 20px;
+    gap: 40px; /* Увеличиваем расстояние между словами */
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    min-height: 100vh;
+  }
+  
   .word {
-    transition: none !important;
+    position: relative !important; /* Меняем на relative для мобильных */
+    left: auto !important;
+    right: auto !important;
+    top: auto !important;
+    transform: none !important;
+    transform-origin: center !important;
+    text-align: center;
+    width: 100%;
+    max-width: 90vw;
+    white-space: normal;
+    word-break: break-word;
+    padding: 0;
+    margin: 0;
+    opacity: 0; /* Начальное состояние - скрыто */
+    transform: translateY(30px) !important; /* Начальное смещение снизу */
+    transition: opacity 0.8s ease, transform 0.8s ease;
+  }
+  
+  .word.visible {
+    opacity: 1;
+    transform: translateY(0) !important;
+  }
+  
+  .word-1 {
+    height: auto;
+    min-height: 50px;
+    font-size: 42px;
+    font-weight: 600;
+    order: 1;
+  }
+  
+  .word-2 {
+    height: auto;
+    min-height: 70px;
+    font-size: 56px;
+    font-weight: 700;
+    order: 2;
+    margin: 20px 0;
+  }
+  
+  .word-3 {
+    height: auto;
+    min-height: 60px;
+    font-size: 48px;
+    font-weight: 650;
+    order: 3;
+  }
+}
+
+@media (max-width: 576px) {
+  .projects-section {
+    height: 220vh;
+  }
+  
+  .projects-content {
+    margin-top: 80vh;
+    margin-bottom: 80vh;
+  }
+  
+  .words-container {
+    gap: 30px;
+    padding: 0 16px;
+  }
+  
+  .word-1 {
+    font-size: 36px;
+    min-height: 45px;
+  }
+  
+  .word-2 {
+    font-size: 48px;
+    min-height: 60px;
+    margin: 15px 0;
+  }
+  
+  .word-3 {
+    font-size: 40px;
+    min-height: 50px;
+  }
+  
+  .scroll-hint {
+    display: none;
+  }
+}
+
+/* Очень маленькие устройства */
+@media (max-width: 400px) {
+  .projects-section {
+    height: 200vh;
+  }
+  
+  .projects-content {
+    margin-top: 70vh;
+    margin-bottom: 70vh;
+  }
+  
+  .words-container {
+    gap: 25px;
+    padding: 0 12px;
+  }
+  
+  .word-1 {
+    font-size: 32px;
+    min-height: 40px;
+  }
+  
+  .word-2 {
+    font-size: 42px;
+    min-height: 55px;
+    margin: 12px 0;
+  }
+  
+  .word-3 {
+    font-size: 36px;
+    min-height: 45px;
+  }
+}
+
+/* Горизонтальная ориентация на мобильных */
+@media (max-height: 600px) and (orientation: landscape) {
+  .projects-section {
+    height: 300vh;
+  }
+  
+  .words-container {
+    gap: 20px;
+  }
+  
+  .word-1 {
+    font-size: 30px;
+  }
+  
+  .word-2 {
+    font-size: 40px;
+    margin: 10px 0;
+  }
+  
+  .word-3 {
+    font-size: 34px;
   }
 }
 
@@ -216,9 +405,10 @@
   animation: fadeIn 1.2s ease-out;
 }
 
-/* Отключение анимации */
+/* Отключение анимации для пользователей, предпочитающих уменьшенное движение */
 @media (prefers-reduced-motion: reduce) {
   .word {
     transition: none !important;
+    animation: none !important;
   }
 }
