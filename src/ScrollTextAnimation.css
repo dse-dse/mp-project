@@ -1,367 +1,159 @@
 /* ScrollTextAnimation.css */
 
-:root {
-  --base-width: 1440px;
-  --scale-factor: 1;
-  --desktop-font-size: 5.5vw;
-  --tablet-font-size: 6.5vw;
-  --mobile-font-size: 10vw;
-}
-
-/* Автоматическое вычисление масштаба для больших экранов */
-@media (min-width: 1441px) {
-  :root {
-    --scale-factor: min(1.5, calc(100vw / var(--base-width)));
-  }
-}
-
-.scroll-text-section {
-  height: 200vh; /* Высота для скролла через секцию */
-  width: 100%;
-  background-color: #ffffff;
-  position: relative;
-  overflow: hidden;
-}
-
-/* Масштабирование высоты для больших экранов */
-@media (min-width: 1441px) {
-  .scroll-text-section {
-    height: calc(200vh * var(--scale-factor));
-  }
-}
-
-@media (max-width: 768px) {
-  .scroll-text-section {
-    height: 150vh;
-  }
-}
-
-@media (max-width: 480px) {
-  .scroll-text-section {
-    height: 130vh;
-  }
-}
-
-.scroll-container {
+.scroll-text-animation-wrapper {
   position: relative;
   width: 100%;
-  height: 100%;
+  height: 400vh; /* Немного уменьшил высоту для более быстрой анимации */
+  z-index: 100;
 }
 
-.sticky-text-container {
-  position: sticky;
-  top: 50%; /* Начинается с центра экрана */
-  left: 0;
-  width: 100%;
-  transform: translateY(-50%);
-  height: auto;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  overflow: hidden;
-  padding: 10vh 0;
-  height: 200px;
-}
-
-/* Масштабирование для больших экранов */
-@media (min-width: 1441px) {
-  .sticky-text-container {
-    padding: calc(10vh * var(--scale-factor)) 0;
-    height: calc(200px * var(--scale-factor));
-  }
-}
-
-.text-section {
-  position: absolute;
+/* ФИКСИРОВАННЫЙ контейнер */
+.scroll-text-fixed-container {
+  position: fixed;
   top: 0;
   left: 0;
   width: 100%;
-  height: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  opacity: 0;
-  transition: opacity 0.4s cubic-bezier(0.22, 0.61, 0.36, 1);
+  height: 100vh;
+  pointer-events: none;
+  z-index: 1000;
 }
 
-.text-section[data-section-index="0"] {
-  opacity: 1;
-}
-
-.text-section[data-section-index="1"] {
-  opacity: 0;
-}
-
-.text-block {
-  text-align: center;
-  width: 100%;
-  max-width: 1400px;
-  padding: 0 40px;
-  margin: 0 auto;
+/* Общий контейнер для ВСЕГО текста */
+.scroll-text-content {
   position: relative;
+  width: 100%;
+  height: 100%;
 }
 
-/* Масштабирование для больших экранов */
-@media (min-width: 1441px) {
-  .text-block {
-    max-width: calc(1400px * var(--scale-factor));
-    padding: 0 calc(40px * var(--scale-factor));
-  }
+/* КАЖДОЕ ПРЕДЛОЖЕНИЕ */
+.text-section {
+  position: absolute;
+  text-align: left;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.8s ease-out, transform 0.8s ease-out;
 }
 
-@media (max-width: 1440px) {
-  .text-block {
-    padding: 0 35px;
-    max-width: 1200px;
-  }
+/* ПЕРВОЕ ПРЕДЛОЖЕНИЕ - СВЕРХУ СЛЕВА */
+.text-section[data-section-index="0"] {
+  top: 15%;
+  left: 10%;
+  transform: translateY(-10px);
 }
 
-@media (max-width: 1200px) {
-  .text-block {
-    padding: 0 30px;
-    max-width: 1000px;
-  }
+/* ВТОРОЕ ПРЕДЛОЖЕНИЕ - СНИЗУ СПРАВА (ИСПРАВЛЕНО) */
+.text-section[data-section-index="1"] {
+  bottom: -55%; /* bottom вместо top */
+  right: 10%; /* right вместо left */
+  text-align: right;
+  transform: translateY(10px);
 }
 
-@media (max-width: 1024px) {
-  .text-block {
-    padding: 0 25px;
-    max-width: 900px;
-  }
+/* Активное предложение */
+.text-section.active {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
 }
 
-@media (max-width: 768px) {
-  .text-block {
-    padding: 0 20px;
-  }
-}
-
-@media (max-width: 480px) {
-  .text-block {
-    padding: 0 15px;
-  }
-}
-
+/* Строка внутри предложения */
 .text-line {
+  display: block;
+  width: 100%;
+  line-height: 1.1;
+  margin-bottom: 5px;
+}
+
+/* Отдельное слово - БЫСТРЕЕ появление */
+.text-word {
+  display: inline-block;
   font-family: 'Helvetica Neue', Arial, sans-serif;
-  font-style: normal;
-  font-weight: 500;
-  font-size: var(--desktop-font-size);
-  line-height: 1;
-  letter-spacing: -0.03em;
+  font-weight: 400;
+  font-size: 64px;
+  letter-spacing: -1px;
   text-transform: uppercase;
   color: #000000;
-  margin-bottom: 0.5vw;
   white-space: nowrap;
-  display: block;
-  overflow: hidden;
-}
-
-/* Масштабирование текста для больших экранов */
-@media (min-width: 1441px) {
-  .text-line {
-    font-size: calc(5.5vw * var(--scale-factor));
-    margin-bottom: calc(0.5vw * var(--scale-factor));
-    letter-spacing: calc(-0.03em * var(--scale-factor));
-  }
-}
-
-/* Адаптивные размеры шрифта */
-@media (max-width: 1600px) {
-  .text-line {
-    font-size: 6vw;
-  }
-}
-
-@media (max-width: 1440px) {
-  .text-line {
-    font-size: var(--tablet-font-size);
-  }
-}
-
-@media (max-width: 1200px) {
-  .text-line {
-    font-size: 7vw;
-    margin-bottom: 0.8vw;
-  }
-}
-
-@media (max-width: 1024px) {
-  .text-line {
-    font-size: 8vw;
-    margin-bottom: 1vw;
-  }
-}
-
-@media (max-width: 768px) {
-  .text-line {
-    font-size: var(--mobile-font-size);
-    margin-bottom: 1.5vw;
-    white-space: normal;
-    line-height: 1.1;
-  }
-}
-
-@media (max-width: 480px) {
-  .text-line {
-    font-size: 12vw;
-    line-height: 1.1;
-    margin-bottom: 2vw;
-  }
-}
-
-.text-line:last-child {
-  margin-bottom: 0;
-}
-
-/* Масштабирование для последней строки */
-@media (min-width: 1441px) {
-  .text-line:last-child {
-    margin-bottom: 0;
-  }
-}
-
-.letter {
-  display: inline-block;
-  will-change: opacity, transform;
-  transform-origin: center center;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+  
+  /* Слова изначально скрыты */
   opacity: 0;
-  transform: translateY(20px) scale(0.9);
+  transform: translateY(20px); /* Меньше смещение для быстрого появления */
+  
+  /* БЫСТРЕЕ АНИМАЦИЯ - 0.5s вместо 1s */
+  transition: opacity 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+              transform 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
 }
 
-/* Масштабирование анимации для больших экранов */
-@media (min-width: 1441px) {
-  .letter {
-    transform: translateY(calc(20px * var(--scale-factor))) scale(0.9);
-  }
+/* Активное слово */
+.text-word.active {
+  opacity: 1;
+  transform: translateY(0);
 }
 
-/* Плавные easing функции */
-.text-section,
-.text-line,
-.letter {
-  transition-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
+/* Пробел между словами */
+.word-space {
+  display: inline-block;
+  width: 15px;
+  height: 1px;
 }
 
-/* Масштабирование transition для больших экранов */
-@media (min-width: 1441px) {
-  .text-section {
-    transition: opacity calc(0.4s * var(--scale-factor)) cubic-bezier(0.22, 0.61, 0.36, 1);
-  }
-}
-
-/* Убираем стандартные отступы */
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
-
-/* Позиционирование sticky контейнера на мобильных */
-@media (max-width: 768px) {
-  .sticky-text-container {
-    top: 45%;
-  }
-}
-
-@media (max-width: 480px) {
-  .sticky-text-container {
-    top: 40%;
-  }
-}
-
-/* Для очень высоких экранов */
-@media (min-height: 1200px) {
-  .scroll-text-section {
-    height: 250vh;
+/* Адаптивность */
+@media (max-width: 1024px) {
+  .text-section[data-section-index="0"] {
+    top: 20%;
+    left: 5%;
   }
   
-  .text-line {
-    font-size: 5vw;
+  .text-section[data-section-index="1"] {
+    bottom: 20%;
+    right: 5%;
+  }
+  
+  .text-word {
+    font-size: 56px;
   }
 }
 
-/* Для очень больших экранов (широких) */
-@media (min-width: 2000px) {
-  .text-line {
-    font-size: 4.5vw;
+@media (max-width: 768px) {
+  .text-section[data-section-index="0"] {
+    top: 25%;
+    left: 5%;
+  }
+  
+  .text-section[data-section-index="1"] {
+    bottom: 25%;
+    right: 5%;
+  }
+  
+  .text-word {
+    font-size: 48px;
+  }
+  
+  .scroll-text-animation-wrapper {
+    height: 350vh;
   }
 }
 
-/* Оптимизация производительности */
-.sticky-text-container,
-.text-section,
-.text-block {
-  transform: translateZ(0);
-  backface-visibility: hidden;
-}
-
-/* Анимация появления текста при скролле */
-@keyframes scrollReveal {
-  0% {
-    opacity: 0;
-    transform: translateY(20px) scale(0.9);
+@media (max-width: 480px) {
+  .text-section[data-section-index="0"] {
+    top: 30%;
+    left: 5%;
   }
-  100% {
-    opacity: 1;
-    transform: translateY(0) scale(1);
+  
+  .text-section[data-section-index="1"] {
+    bottom: 30%;
+    right: 5%;
   }
-}
-
-/* Масштабирование анимации для больших экранов */
-@media (min-width: 1441px) {
-  @keyframes scrollReveal {
-    0% {
-      opacity: 0;
-      transform: translateY(calc(20px * var(--scale-factor))) scale(0.9);
-    }
-    100% {
-      opacity: 1;
-      transform: translateY(0) scale(1);
-    }
+  
+  .text-word {
+    font-size: 36px;
   }
-}
-
-/* Поддержка разных разрешений экрана */
-@media (min-width: 1920px) and (max-width: 2560px) {
-  .text-line {
-    font-size: 4.8vw;
-  }
-}
-
-@media (min-width: 2561px) {
-  .text-line {
-    font-size: 4.2vw;
-  }
-}
-
-/* Горизонтальная ориентация на мобильных */
-@media (max-height: 600px) and (orientation: landscape) {
-  .scroll-text-section {
+  
+  .scroll-text-animation-wrapper {
     height: 300vh;
   }
   
-  .text-line {
-    font-size: 8vw;
-    white-space: nowrap;
+  .word-space {
+    width: 8px;
   }
-  
-  .sticky-text-container {
-    top: 40%;
-  }
-}
-
-
-/* Улучшенный рендеринг текста */
-.text-line {
-  text-rendering: optimizeLegibility;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-}
-
-/* Плавность скролла на iOS */
-.scroll-container {
-  -webkit-overflow-scrolling: touch;
 }

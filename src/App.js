@@ -16,7 +16,12 @@ function App() {
     <div className="App">
       {/* <CustomCursor /> */}
       <VideoBackground />
+        <div style={{height: '50vh', display: 'flex', alignItems: 'center', justifyContent: 'center'}}>
+      </div>
+      
       <ScrollTextAnimation />
+         <div style={{height: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center'}}>
+      </div>
       <ThirdScrollBlock />
       <HomeSection />
       <MensSection />
