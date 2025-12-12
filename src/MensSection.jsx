@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import "./MensSection.css";
 import mensPhoto from "./image/mens.png";
 
@@ -8,8 +8,25 @@ const MensSection = () => {
   const dateTextRef = useRef(null);
   const textContainerRef = useRef(null);
   const secondaryContainerRef = useRef(null);
+  const [isMobile, setIsMobile] = useState(false);
 
   useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth <= 768);
+    };
+
+    checkMobile();
+    window.addEventListener("resize", checkMobile);
+
+    return () => {
+      window.removeEventListener("resize", checkMobile);
+    };
+  }, []);
+
+  useEffect(() => {
+    // На мобильных устройствах не запускаем анимацию скролла
+    if (isMobile) return;
+
     const handleScroll = () => {
       if (
         !sectionRef.current ||
@@ -23,6 +40,7 @@ const MensSection = () => {
       const section = sectionRef.current;
       const rect = section.getBoundingClientRect();
       const windowHeight = window.innerHeight;
+      const windowWidth = window.innerWidth;
 
       const sectionCenter = rect.top + rect.height / 2;
       const windowCenter = windowHeight / 2;
@@ -44,13 +62,37 @@ const MensSection = () => {
       } else {
         photoWidth = centerPhotoWidth + ((smoothProgress - 0.5) * 2 * (maxPhotoWidth - centerPhotoWidth));
       }
+      
       photoContainerRef.current.style.width = `${photoWidth}%`;
 
+      // Определяем отступы в зависимости от ширины экрана
+      let mainTextOffset, dateTextOffset, buttonOffset;
+      
+      if (windowWidth <= 1024) {
+        // Для планшетов
+        mainTextOffset = 40;
+        dateTextOffset = 40;
+        buttonOffset = 20;
+      } else if (windowWidth <= 1440) {
+        // Для 1440px
+        mainTextOffset = 40;
+        dateTextOffset = 40;
+        buttonOffset = 20;
+      } else {
+        // Для широких экранов
+        mainTextOffset = 187; // Основной текст: 187px от фото
+        dateTextOffset = 187; // Второй текст: 187px от фото
+        buttonOffset = 147;   // Кнопка: 147px от фото
+      }
+
       // Позиционирование текста относительно фото
-      const textRightPosition = `calc(${photoWidth}% + 187px)`;
-      dateTextRef.current.style.right = textRightPosition;
-      textContainerRef.current.style.right = textRightPosition;
-      secondaryContainerRef.current.style.right = `calc(${photoWidth}% + 147px)`;
+      const mainTextRightPosition = `calc(${photoWidth}% + ${mainTextOffset}px)`;
+      const dateTextRightPosition = `calc(${photoWidth}% + ${dateTextOffset}px)`;
+      const buttonRightPosition = `calc(${photoWidth}% + ${buttonOffset}px)`;
+      
+      dateTextRef.current.style.right = dateTextRightPosition;
+      textContainerRef.current.style.right = mainTextRightPosition;
+      secondaryContainerRef.current.style.right = buttonRightPosition;
     };
 
     let ticking = false;
@@ -72,7 +114,7 @@ const MensSection = () => {
       window.removeEventListener("scroll", scrollHandler);
       window.removeEventListener("resize", handleScroll);
     };
-  }, []);
+  }, [isMobile]);
 
   return (
     <section className="mens-section" ref={sectionRef}>
@@ -81,18 +123,18 @@ const MensSection = () => {
           {/* Дата */}
           <div className="mens-date-container" ref={dateTextRef}>
             <p className="mens-date">
-              Founded in 2013 by Fedor Balvanovich and Stanislav Kasatov, Movie Park aims <br /> to make a lasting mark in the industry by bringing bold ideas to life and turning <br /> them into powerful visual stories that inspire and endure.
+              Founded in 2013 by Fedor Balvanovich and Stanislav Kasatov, Movie Park aims to make a lasting mark in the industry by bringing bold ideas to life and turning them into powerful visual stories that inspire and endure.
             </p>
           </div>
 
           {/* Основной текст */}
           <div className="mens-text-container" ref={textContainerRef}>
             <p className="mens-text-bold">
-              Movie Park is an international production <br />studio creating unique visual solutions <br />  across video, marketing, and event industries. <br /> Our portfolio spans commercial and creative <br /> projects for brands, private clients, and <br /> major companies.
+              Movie Park is an international production studio creating unique visual solutions across video, marketing, and event industries. Our portfolio spans commercial and creative projects for brands, private clients, and major companies.
             </p>
           </div>
 
-          {/* Кнопка */}
+          {/* Кнопка - выровнена по левому краю основного текста */}
           <div className="mens-secondary-container" ref={secondaryContainerRef}>
             <button className="mens-button">
               READ MORE
