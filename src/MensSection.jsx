@@ -123,14 +123,14 @@ const MensSection = () => {
           {/* Дата */}
           <div className="mens-date-container" ref={dateTextRef}>
             <p className="mens-date">
-              Founded in 2013 by Fedor Balvanovich and Stanislav Kasatov, Movie Park aims to make a lasting mark in the industry by bringing bold ideas to life and turning them into powerful visual stories that inspire and endure.
+             Founded in 2013 by Fedor Balvanovich and Stanislav Kasatov, Movie Park aims to make a lasting mark in the industry by bringing bold ideas to life and turning them into powerful visual stories that inspire and remain relevant for a long time.
             </p>
           </div>
 
           {/* Основной текст */}
           <div className="mens-text-container" ref={textContainerRef}>
             <p className="mens-text-bold">
-              Movie Park is an international production studio creating unique visual solutions across video, marketing, and event industries. Our portfolio spans commercial and creative projects for brands, private clients, and major companies.
+            Movie park is an international production studio creating unique visual solutions across video, marketing, and event industries. Our portfolio spans commercial and creative projects for brands, private clients, and major companies.
             </p>
           </div>
 

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "./VideoBackground.css";
 import videoSrc from "./video/Brunello.mp4";
 import logoImg from "./image/logo.png";
@@ -13,6 +13,32 @@ const VideoBackground = () => {
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
   };
+
+  const closeMenu = () => {
+    setIsMenuOpen(false);
+  };
+
+  // Закрытие меню при нажатии Escape
+  useEffect(() => {
+    const handleEscape = (e) => {
+      if (e.key === 'Escape') {
+        closeMenu();
+      }
+    };
+
+    // Предотвращение скролла при открытом меню
+    if (isMenuOpen) {
+      document.body.style.overflow = 'hidden';
+      document.addEventListener('keydown', handleEscape);
+    } else {
+      document.body.style.overflow = 'unset';
+    }
+
+    return () => {
+      document.body.style.overflow = 'unset';
+      document.removeEventListener('keydown', handleEscape);
+    };
+  }, [isMenuOpen]);
 
   return (
     <div className="video-background-container">
@@ -39,27 +65,57 @@ const VideoBackground = () => {
         {/* Десктопная навигация - ПРАВАЯ ЧАСТЬ */}
         <div className="nav-right">
           <span className="nav-item about">ABOUT</span>
-          <button className="nav-item chat-button">CHAT WITH US</button>
+          <button 
+            className="nav-item chat-button"
+            onClick={() => alert("Opening chat...")}
+          >
+            CHAT WITH US
+          </button>
         </div>
         
         {/* Мобильная навигация */}
-        <button className="burger-menu" onClick={toggleMenu} aria-label="Open menu">
-          <svg width="16" height="11" viewBox="0 0 16 11" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M0 11L0 9.16667H16V11H0ZM0 6.41667L0 4.58333H16V6.41667H0ZM0 1.83333L0 0L16 0V1.83333H0Z" fill="white"/>
+        <button 
+          className="burger-menu" 
+          onClick={toggleMenu} 
+          aria-label={isMenuOpen ? "Close menu" : "Open menu"}
+          aria-expanded={isMenuOpen}
+        >
+          {isMenuOpen ? (
+            <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M1 1L19 19M19 1L1 19" stroke="white" strokeWidth="2" strokeLinecap="round"/>
+            </svg>
+          ) : (
+            <svg width="18" height="12" viewBox="0 0 18 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M0 12L0 10H18V12H0ZM0 7L0 5H18V7H0ZM0 2L0 0H18V2H0Z" fill="white"/>
+            </svg>
+          )}
+        </button>
+        
+        <button 
+          className="mobile-chat-button" 
+          aria-label="Chat with us"
+          onClick={() => {
+            closeMenu();
+            alert("Opening chat...");
+          }}
+        >
+          <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M16.2 0H1.8C0.81 0 0 0.81 0 1.8V18L3.6 14.4H16.2C17.19 14.4 18 13.59 18 12.6V1.8C18 0.81 17.19 0 16.2 0ZM16.2 12.6H2.88L1.8 13.68V1.8H16.2V12.6Z" fill="white"/>
           </svg>
         </button>
         
-        <button className="mobile-chat-button" aria-label="Chat with us">
-          <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M14.4 0H1.6C0.72 0 0 0.72 0 1.6V16L3.2 12.8H14.4C15.28 12.8 16 12.08 16 11.2V1.6C16 0.72 15.28 0 14.4 0ZM14.4 11.2H2.56L1.6 12.16V1.6H14.4V11.2Z" fill="white"/>
-          </svg>
-        </button>
-        
-        {/* Мобильное выпадающее меню (ТОЛЬКО навигация) */}
+        {/* Мобильное выпадающее меню с эффектом стекла */}
         <div className={`mobile-dropdown ${isMenuOpen ? 'active' : ''}`}>
-          <span className="mobile-nav-item" onClick={() => setIsMenuOpen(false)}>DIRECTIONS</span>
-          <span className="mobile-nav-item" onClick={() => setIsMenuOpen(false)}>PROJECTS</span>
-          <span className="mobile-nav-item" onClick={() => setIsMenuOpen(false)}>ABOUT</span>
+          {isMenuOpen && (
+            <>
+           
+              
+              <button className="mobile-nav-item" onClick={closeMenu}>DIRECTIONS</button>
+              <button className="mobile-nav-item" onClick={closeMenu}>PROJECTS</button>
+              <button className="mobile-nav-item" onClick={closeMenu}>ABOUT</button>
+         
+            </>
+          )}
         </div>
       </nav>
 
@@ -94,7 +150,12 @@ const VideoBackground = () => {
         </div>
 
         {/* КНОПКА VIEW PROJECT */}
-        <button className="view-project-button">VIEW PROJECT</button>
+        <button 
+          className="view-project-button"
+          onClick={() => alert("Viewing project...")}
+        >
+          VIEW PROJECT
+        </button>
       </div>
     </div>
   );

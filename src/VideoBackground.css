@@ -373,75 +373,144 @@
     height: 30px;
   }
   
-  /* Бургер-меню слева */
+  /* БУРГЕР-МЕНЮ С ЭФФЕКТОМ СТЕКЛА */
   .burger-menu {
     width: 48px;
     height: 48px;
     background: rgba(185, 185, 185, 0.32);
     backdrop-filter: blur(8px);
-    border-radius: 8px;
+    border-radius: 12px; /* Более мягкие углы как у кнопок */
     align-items: center;
     justify-content: center;
     cursor: pointer;
-    z-index: 100;
-    border: none;
+    z-index: 101; /* Выше чем меню */
+    border: 1px solid rgba(255, 255, 255, 0.3); /* Граница как у кнопки CHAT WITH US */
     order: 1;
+    transition: all 0.3s ease; /* Плавный переход */
   }
   
-  /* Кнопка чата справа (иконка) */
+  .burger-menu:hover {
+    background-color: rgba(255, 255, 255, 0.2);
+    transform: translateY(-2px); /* Эффект подъема как у кнопок */
+  }
+  
+  .burger-menu svg {
+    width: 18px;
+    height: 12px;
+    transition: transform 0.3s ease;
+  }
+  
+  /* КНОПКА ЧАТА СПРАВА (ЭФФЕКТ СТЕКЛА) */
   .mobile-chat-button {
     width: 48px;
     height: 48px;
     background: rgba(185, 185, 185, 0.32);
     backdrop-filter: blur(8px);
-    border-radius: 8px;
+    border-radius: 12px;
     align-items: center;
     justify-content: center;
     cursor: pointer;
-    border: none;
+    border: 1px solid rgba(255, 255, 255, 0.3);
     order: 3;
+    transition: all 0.3s ease;
+    z-index: 101; /* Выше чем меню */
   }
   
-  /* Выпадающее меню */
+  .mobile-chat-button:hover {
+    background-color: rgba(255, 255, 255, 0.2);
+    transform: translateY(-2px);
+  }
+  
+  .mobile-chat-button svg {
+    width: 18px;
+    height: 18px;
+  }
+  
+  /* ВЫПАДАЮЩЕЕ МЕНЮ С ЭФФЕКТОМ СТЕКЛА - ИСПРАВЛЕНО */
   .mobile-dropdown {
+    display: flex !important; /* Важно: принудительно показываем когда active */
     position: fixed;
     top: 0;
     left: 0;
+    right: 0;
+    bottom: 0;
     width: 100%;
     height: 100vh;
-    background: rgba(0, 0, 0, 0.95);
-    backdrop-filter: blur(20px);
-    z-index: 99;
+    background: rgba(0, 0, 0, 0.85); /* Полупрозрачный черный фон */
+    backdrop-filter: blur(20px); /* Сильный эффект стекла */
+    -webkit-backdrop-filter: blur(20px);
+    z-index: 100; /* Ниже кнопок бургера/чата */
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    gap: 24px;
+    gap: 16px;
     padding: 80px 20px;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-20px);
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
   }
   
   .mobile-dropdown.active {
-    display: flex;
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
   }
   
-  /* Элементы меню (ТОЛЬКО навигация, без кнопки CHAT WITH US) */
+  /* ЭЛЕМЕНТЫ МЕНЮ С ЭФФЕКТОМ СТЕКЛА */
   .mobile-nav-item {
     color: white;
-    font-size: 20px;
+    font-size: 18px;
     font-weight: 500;
     text-decoration: none;
     padding: 16px 32px;
     transition: all 0.3s ease;
-    background: rgba(255, 255, 255, 0.1);
+    background: rgba(255, 255, 255, 0.15); /* Полупрозрачный белый фон */
     backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
     border-radius: 12px;
     width: 250px;
+    max-width: 80%;
     text-align: center;
+    border: 1px solid rgba(255, 255, 255, 0.2); /* Легкая граница */
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2); /* Тень для объема */
+    cursor: pointer;
   }
   
   .mobile-nav-item:hover {
-    color: rgba(255, 255, 255, 0.9);
+    color: rgba(255, 255, 255, 0.95);
+    background: rgba(255, 255, 255, 0.25);
+    transform: translateY(-3px); /* Эффект подъема */
+    box-shadow: 0 6px 25px rgba(0, 0, 0, 0.3);
+  }
+  
+  /* КРЕСТИК ДЛЯ ЗАКРЫТИЯ */
+  .close-menu {
+    position: absolute;
+    top: 24px;
+    right: 24px;
+    width: 40px;
+    height: 40px;
     background: rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(10px);
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    transition: all 0.3s ease;
+    z-index: 102;
+  }
+  
+  .close-menu:hover {
+    background: rgba(255, 255, 255, 0.25);
     transform: translateY(-2px);
+  }
+  
+  .close-menu svg {
+    width: 20px;
+    height: 20px;
   }
   
   /* КОНТЕНТ СНИЗУ - МОБИЛЬНАЯ ВЕРСИЯ */
@@ -456,6 +525,7 @@
     align-items: center;
     gap: 32px;
     max-width: 100%;
+    z-index: 1; /* Над видео, но под меню */
   }
   
   /* Награды в 2 колонки */
@@ -575,5 +645,16 @@
     width: 200px;
     padding: 14px 24px;
     font-size: 18px;
+  }
+  
+  .burger-menu,
+  .mobile-chat-button {
+    width: 44px;
+    height: 44px;
+  }
+  
+  .mobile-dropdown {
+    padding: 60px 20px;
+    gap: 12px;
   }
 }
