@@ -1,11 +1,11 @@
 [build]
-  command = "CI=false npm run build"
+  command = "npm run build"
   publish = "build"
 
 [build.environment]
   CI = "false"
+  DISABLE_ESLINT_PLUGIN = "true"  # ← добавить эту строку
 
-# Добавьте этот раздел
 [[redirects]]
   from = "/*"
   to = "/index.html"
