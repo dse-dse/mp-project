@@ -31,7 +31,7 @@
   }
 }
 
-/* Навигация - базовая версия */
+/* НАВИГАЦИЯ - ПК ВЕРСИЯ (КОРРЕКТНАЯ) */
 .navigation {
   position: absolute;
   top: 20px;
@@ -56,12 +56,13 @@
   }
 }
 
+/* ЛЕВАЯ ЧАСТЬ НАВИГАЦИИ */
 .nav-left {
   display: flex;
   align-items: center;
-  width: calc(50% - 52.5px);
   justify-content: flex-start;
   gap: 220px;
+  width: calc(50% - 52.5px);
 }
 
 @media (min-width: 1441px) {
@@ -71,12 +72,13 @@
   }
 }
 
+/* ПРАВАЯ ЧАСТЬ НАВИГАЦИИ */
 .nav-right {
   display: flex;
   align-items: center;
-  width: calc(50% - 52.5px);
   justify-content: flex-end;
   gap: 179px;
+  width: calc(50% - 52.5px);
 }
 
 @media (min-width: 1441px) {
@@ -136,6 +138,7 @@
   }
 }
 
+/* Кнопка CHAT WITH US - ПК версия */
 .chat-button {
   background-color: rgba(255, 255, 255, 0.2);
   width: 176px;
@@ -151,6 +154,7 @@
   cursor: pointer;
   transition: all 0.3s ease;
   backdrop-filter: blur(5px);
+  white-space: nowrap;
 }
 
 @media (min-width: 1441px) {
@@ -167,7 +171,7 @@
   transform: translateY(-2px);
 }
 
-/* Контент снизу - ОСНОВНОЙ ИСПРАВЛЕННЫЙ БЛОК */
+/* КОНТЕНТ СНИЗУ - ПК ВЕРСИЯ */
 .content-wrapper {
   position: absolute;
   bottom: 50px;
@@ -183,7 +187,7 @@
   box-sizing: border-box;
 }
 
-/* Масштабирование контента для больших экранов БЕЗ transform: scale() */
+/* Масштабирование контента для больших экранов */
 @media (min-width: 1441px) {
   .content-wrapper {
     bottom: calc(50px * var(--scale-factor));
@@ -192,6 +196,7 @@
   }
 }
 
+/* НАГРАДЫ - ПК ВЕРСИЯ */
 .awards-row {
   display: flex;
   gap: 60px;
@@ -289,6 +294,7 @@
   }
 }
 
+/* Кнопка VIEW PROJECT - ПК версия */
 .view-project-button {
   background-color: white;
   color: black;
@@ -319,10 +325,210 @@
   box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
 }
 
-/* Дополнительные медиа-запросы для контроля */
+/* ============================================= */
+/* ЭЛЕМЕНТЫ МОБИЛЬНОЙ ВЕРСИИ - СКРЫТЫ ДЛЯ ПК */
+/* ============================================= */
+.burger-menu,
+.mobile-chat-button,
+.mobile-dropdown {
+  display: none;
+}
+
+/* ============================================= */
+/* МОБИЛЬНАЯ ВЕРСИЯ (768px и меньше) */
+/* ============================================= */
+@media (max-width: 768px) {
+  /* НАВИГАЦИЯ - МОБИЛЬНАЯ */
+  .navigation {
+    top: 16px;
+    padding: 0 16px;
+    height: 48px;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  /* Скрываем десктопную навигацию в мобильной версии */
+  .nav-left, 
+  .nav-right,
+  .chat-button {
+    display: none !important;
+  }
+  
+  /* Показываем элементы мобильной версии */
+  .burger-menu,
+  .mobile-chat-button {
+    display: flex;
+  }
+  
+  /* Логотип в центре */
+  .logo {
+    position: static;
+    left: auto;
+    transform: none;
+    order: 2;
+  }
+  
+  .logo-image {
+    width: 80px;
+    height: 30px;
+  }
+  
+  /* Бургер-меню слева */
+  .burger-menu {
+    width: 48px;
+    height: 48px;
+    background: rgba(185, 185, 185, 0.32);
+    backdrop-filter: blur(8px);
+    border-radius: 8px;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    z-index: 100;
+    border: none;
+    order: 1;
+  }
+  
+  /* Кнопка чата справа (иконка) */
+  .mobile-chat-button {
+    width: 48px;
+    height: 48px;
+    background: rgba(185, 185, 185, 0.32);
+    backdrop-filter: blur(8px);
+    border-radius: 8px;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    border: none;
+    order: 3;
+  }
+  
+  /* Выпадающее меню */
+  .mobile-dropdown {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.95);
+    backdrop-filter: blur(20px);
+    z-index: 99;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 24px;
+    padding: 80px 20px;
+  }
+  
+  .mobile-dropdown.active {
+    display: flex;
+  }
+  
+  /* Элементы меню (ТОЛЬКО навигация, без кнопки CHAT WITH US) */
+  .mobile-nav-item {
+    color: white;
+    font-size: 20px;
+    font-weight: 500;
+    text-decoration: none;
+    padding: 16px 32px;
+    transition: all 0.3s ease;
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    border-radius: 12px;
+    width: 250px;
+    text-align: center;
+  }
+  
+  .mobile-nav-item:hover {
+    color: rgba(255, 255, 255, 0.9);
+    background: rgba(255, 255, 255, 0.15);
+    transform: translateY(-2px);
+  }
+  
+  /* КОНТЕНТ СНИЗУ - МОБИЛЬНАЯ ВЕРСИЯ */
+  .content-wrapper {
+    position: absolute;
+    bottom: 40px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100%;
+    padding: 0 16px;
+    flex-direction: column;
+    align-items: center;
+    gap: 32px;
+    max-width: 100%;
+  }
+  
+  /* Награды в 2 колонки */
+  .awards-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 32px 20px;
+    width: 100%;
+    order: 1; /* Награды сверху */
+  }
+  
+  .award-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    flex: 1;
+  }
+  
+  .award-icon-container {
+    margin-bottom: 8px;
+  }
+  
+  .award-text {
+    font-size: 12px;
+    line-height: 1.3;
+    white-space: normal;
+    text-align: center;
+  }
+  
+  /* Кнопка VIEW PROJECT под наградами */
+  .view-project-button {
+    margin-left: 0;
+    width: 100%;
+    max-width: 280px;
+    font-size: 14px;
+    padding: 12px 24px;
+    order: 2; /* Кнопка снизу */
+  }
+}
+
+/* ДЛЯ ПЛАНШЕТОВ (769px - 1024px) */
+@media (min-width: 769px) and (max-width: 1024px) {
+  .navigation {
+    padding: 0 24px;
+  }
+  
+  .nav-left, .nav-right {
+    width: auto;
+  }
+  
+  .nav-left {
+    gap: 100px;
+  }
+  
+  .nav-right {
+    gap: 80px;
+  }
+  
+  .content-wrapper {
+    padding: 0 24px;
+    bottom: 40px;
+  }
+  
+  .awards-row {
+    gap: 40px;
+  }
+}
+
+/* ДЛЯ ОЧЕНЬ БОЛЬШИХ ЭКРАНОВ */
 @media (min-width: 2000px) {
   :root {
-    --scale-factor: 1.2; /* Фиксированный масштаб для очень больших экранов */
+    --scale-factor: 1.2;
   }
 }
 
@@ -344,54 +550,30 @@
   }
 }
 
-/* Для маленьких экранов */
-@media (max-width: 768px) {
-  .navigation {
-    padding: 0 20px;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 20px;
-  }
-  
-  .nav-left, .nav-right {
-    width: 100%;
-    justify-content: center;
-    gap: 40px;
-  }
-  
-  .logo {
-    position: relative;
-    order: -1;
-    left: auto;
-    transform: none;
-    width: 100%;
-    text-align: center;
-    margin-bottom: 10px;
-  }
-  
-  .content-wrapper {
-    padding: 0 20px;
-    bottom: 30px;
-    flex-direction: column;
-    align-items: center;
-    gap: 30px;
-  }
-  
+/* ДЛЯ ОЧЕНЬ МАЛЕНЬКИХ ТЕЛЕФОНОВ */
+@media (max-width: 360px) {
   .awards-row {
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 30px;
-  }
-  
-  .award-item {
-    align-items: center;
+    gap: 24px 16px;
   }
   
   .award-text {
-    text-align: center;
+    font-size: 11px;
   }
   
   .view-project-button {
-    margin-left: 0;
+    max-width: 240px;
+    font-size: 13px;
+    padding: 10px 20px;
+  }
+  
+  .logo-image {
+    width: 70px;
+    height: 26px;
+  }
+  
+  .mobile-nav-item {
+    width: 200px;
+    padding: 14px 24px;
+    font-size: 18px;
   }
 }

@@ -1,5 +1,3 @@
-/* ScrollTextAnimation.css */
-
 .scroll-text-animation-wrapper {
   position: relative;
   width: 100%;
@@ -135,25 +133,100 @@
 }
 
 @media (max-width: 480px) {
-  .text-section[data-section-index="0"] {
-    top: 30%;
-    left: 5%;
-  }
-  
+  /* МОБИЛЬНАЯ ВЕРСИЯ: весь текст в центре с переносами */
+  .text-section[data-section-index="0"],
   .text-section[data-section-index="1"] {
-    bottom: 30%;
-    right: 5%;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 100%;
+    max-width: 95%;
+    text-align: center !important;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.5s ease-out;
+    padding: 0 5%;
+    box-sizing: border-box;
   }
   
-  .text-word {
-    font-size: 36px;
+  /* Первое предложение появляется первым */
+  .text-section[data-section-index="0"].active {
+    opacity: 1;
+    visibility: visible;
   }
   
+  /* Второе предложение появляется вместо первого */
+  .text-section[data-section-index="1"] {
+    opacity: 0;
+    visibility: hidden;
+  }
+  
+  .text-section[data-section-index="1"].active {
+    opacity: 1;
+    visibility: visible;
+  }
+  
+  /* Строки с переносами */
+  .text-line.mobile-line {
+    display: block;
+    width: 100%;
+    text-align: center;
+    line-height: 1.3;
+    margin-bottom: 0;
+    white-space: normal;
+    word-wrap: break-word;
+  }
+  
+  /* Размер шрифта для мобильной версии - 46px */
+  .text-word.mobile-word {
+    font-size: 46px !important;
+    opacity: 0;
+    transform: translateY(0);
+    transition: opacity 0.3s ease-out;
+    white-space: normal;
+    display: inline-block;
+    text-align: center;
+    line-height: 1.3;
+    margin: 0;
+    padding: 0 2px;
+  }
+  
+  /* Для мобильной версии все слова активны одновременно */
+  .text-word.mobile-word.active {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  
+  /* Меньшие пробелы на мобильных */
+  .word-space.mobile-space {
+    width: 6px;
+  }
+  
+  /* Уменьшаем отступы между строками */
+  .text-line.mobile-line + .text-line.mobile-line {
+    margin-top: 5px;
+  }
+  
+  /* Уменьшаем высоту контейнера для быстрого скролла */
   .scroll-text-animation-wrapper {
-    height: 300vh;
+    height: 200vh;
   }
   
-  .word-space {
-    width: 8px;
+  /* Дополнительные медиа-запросы для очень маленьких экранов */
+  @media (max-width: 360px) {
+    .text-word.mobile-word {
+      font-size: 42px !important;
+    }
+  }
+  
+  @media (max-width: 320px) {
+    .text-word.mobile-word {
+      font-size: 38px !important;
+    }
+    
+    .text-line.mobile-line {
+      line-height: 1.4;
+    }
   }
 }

@@ -4,6 +4,7 @@ import "./ScrollTextAnimation.css";
 const ScrollTextAnimation = () => {
   const [activeSection, setActiveSection] = useState(0);
   const [wordStates, setWordStates] = useState({});
+  const [isMobile, setIsMobile] = useState(false);
   const wrapperRef = useRef(null);
   
   // ДВА ПРЕДЛОЖЕНИЯ
@@ -24,6 +25,42 @@ const ScrollTextAnimation = () => {
       position: "bottom-right"
     }
   ];
+  
+  // Мобильная версия с переносами
+  const mobileSections = [
+    // Первое предложение с переносами
+    {
+      lines: [
+        ["WE", "BRING", "IDEAS"],
+        ["TO", "LIFE", "THROUGH"],
+        ["BRANDING,", "VISUALS"],
+        ["AND", "HYPE"]
+      ],
+      position: "center"
+    },
+    // Второе предложение
+    {
+      lines: [
+        ["EVERY", "PROJECT"],
+        ["SUCCEEDS"]
+      ],
+      position: "center"
+    }
+  ];
+  
+  // Определение мобильного устройства
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth <= 480);
+    };
+    
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    
+    return () => {
+      window.removeEventListener('resize', checkMobile);
+    };
+  }, []);
   
   // Функция для получения ключа слова
   const getWordKey = (sectionIdx, lineIdx, wordIdx) => 
@@ -53,7 +90,38 @@ const ScrollTextAnimation = () => {
         return;
       }
       
-      // Рассчитываем прогресс (0-1)
+      if (isMobile) {
+        // Для мобильной версии: весь текст сразу появляется в центре
+        const newWordStates = {};
+        
+        mobileSections.forEach((section, sectionIdx) => {
+          section.lines.forEach((line, lineIdx) => {
+            line.forEach((_, wordIdx) => {
+              const key = getWordKey(sectionIdx, lineIdx, wordIdx);
+              newWordStates[key] = true;
+            });
+          });
+        });
+        
+        // Активируем все слова
+        setWordStates(newWordStates);
+        
+        // Переключаем секции при скролле для мобильной версии
+        const progress = Math.abs(rect.top) / (rect.height - windowHeight);
+        let newActiveSection = 0;
+        
+        if (progress > 0.5) {
+          newActiveSection = 1;
+        }
+        
+        if (newActiveSection !== activeSection) {
+          setActiveSection(newActiveSection);
+        }
+        
+        return;
+      }
+      
+      // Рассчитываем прогресс (0-1) - только для десктоп версии
       let progress = 0;
       if (rect.top <= 0) {
         const scrolled = Math.abs(rect.top);
@@ -149,21 +217,22 @@ const ScrollTextAnimation = () => {
         cancelAnimationFrame(rafId);
       }
     };
-  }, [activeSection, wordStates, sections]);
+  }, [activeSection, wordStates, sections, isMobile, mobileSections]);
   
   // Рендер секции
   const renderSection = (sectionIdx) => {
-    const section = sections[sectionIdx];
+    const currentSections = isMobile ? mobileSections : sections;
+    const section = currentSections[sectionIdx];
     const isActive = sectionIdx === activeSection;
     
     return (
       <div 
         key={`section-${sectionIdx}`}
-        className={`text-section ${isActive ? 'active' : ''}`}
+        className={`text-section ${isActive ? 'active' : ''} ${isMobile ? 'mobile-section' : ''}`}
         data-section-index={sectionIdx}
       >
         {section.lines.map((line, lineIdx) => (
-          <div key={`line-${lineIdx}`} className="text-line">
+          <div key={`line-${lineIdx}`} className={`text-line ${isMobile ? 'mobile-line' : ''}`}>
             {line.map((word, wordIdx) => {
               const key = getWordKey(sectionIdx, lineIdx, wordIdx);
               const isWordActive = wordStates[key] || false;
@@ -171,17 +240,17 @@ const ScrollTextAnimation = () => {
               return (
                 <React.Fragment key={`word-${key}`}>
                   <span 
-                    className={`text-word ${isWordActive ? 'active' : ''}`}
+                    className={`text-word ${isWordActive ? 'active' : ''} ${isMobile ? 'mobile-word' : ''}`}
                     style={{
                       // МЕНЬШАЯ ЗАДЕРЖКА ДЛЯ БЫСТРОГО ПОЯВЛЕНИЯ
-                      transitionDelay: `${(lineIdx * line.length + wordIdx) * 0.03}s`
+                      transitionDelay: isMobile ? '0s' : `${(lineIdx * line.length + wordIdx) * 0.03}s`
                     }}
                   >
                     {word}
                   </span>
                   
                   {wordIdx < line.length - 1 && (
-                    <span className="word-space"> </span>
+                    <span className={`word-space ${isMobile ? 'mobile-space' : ''}`}> </span>
                   )}
                 </React.Fragment>
               );
@@ -196,7 +265,7 @@ const ScrollTextAnimation = () => {
     <div className="scroll-text-animation-wrapper" ref={wrapperRef}>
       <div className="scroll-text-fixed-container">
         <div className="scroll-text-content">
-          {sections.map((_, idx) => renderSection(idx))}
+          {(isMobile ? mobileSections : sections).map((_, idx) => renderSection(idx))}
         </div>
       </div>
     </div>
