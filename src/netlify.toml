@@ -4,3 +4,9 @@
 
 [build.environment]
   CI = "false"
+
+# Добавьте этот раздел
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
