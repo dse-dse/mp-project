@@ -12,7 +12,7 @@ const Footer = () => {
           <span>© 2025 MOVIE PARK</span>
         </div>
         <div className="footer-links">
-          <a href="/privacy-policy">PRIVACY POLICY</a>
+          <a href="/privacy-policy">PRIVACYffffff POLICY</a>
           <a href="/terms-of-use">TERMS OF USE</a>
           <a href="/accessibility-statement">ACCESSIBILITY STATEMENT</a>
         </div>
