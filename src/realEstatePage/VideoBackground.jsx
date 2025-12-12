@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 import "./VideoBackground.css";
-import videoSrc from "./video/Brunello.mp4";
-import logoImg from "./image/logo.png";
-import taglineImg from "./image/tagline.png";
-import awardsImg from "./image/awards.png";
-import silverImg from "./image/silver.png";
-import designfestivalImg from "./image/designfestival.png";
+import videoSrc from "../video/hero-video.mp4";
+import logoImg from "../image/logo.png";
+import taglineImg from "../image/tagline.png";
+import awardsImg from "../image/awards.png";
+import silverImg from "../image/silver.png";
+import designfestivalImg from "../image/designfestival.png";
 
 const VideoBackground = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -53,13 +54,18 @@ const VideoBackground = () => {
       <nav className="navigation">
         {/* Десктопная навигация - ЛЕВАЯ ЧАСТЬ */}
         <div className="nav-left">
-          <span className="nav-item directions">DIRECTIONS</span>
+          {/* Кнопка DIRECTIONS с ссылкой на real-estate страницу */}
+          <Link to="/real-estate" className="nav-item directions">
+            DIRECTIONS
+          </Link>
           <span className="nav-item projects">PROJECTS</span>
         </div>
         
-        {/* Логотип */}
+        {/* Логотип с ссылкой на домашнюю страницу */}
         <div className="logo">
-          <img src={logoImg} alt="Logo" className="logo-image" />
+          <Link to="/home">
+            <img src={logoImg} alt="Logo" className="logo-image" />
+          </Link>
         </div>
         
         {/* Десктопная навигация - ПРАВАЯ ЧАСТЬ */}
@@ -108,12 +114,16 @@ const VideoBackground = () => {
         <div className={`mobile-dropdown ${isMenuOpen ? 'active' : ''}`}>
           {isMenuOpen && (
             <>
-           
-              
-              <button className="mobile-nav-item" onClick={closeMenu}>DIRECTIONS</button>
+              {/* Мобильная версия кнопки DIRECTIONS */}
+              <Link 
+                to="/real-estate" 
+                className="mobile-nav-item"
+                onClick={closeMenu}
+              >
+                DIRECTIONS
+              </Link>
               <button className="mobile-nav-item" onClick={closeMenu}>PROJECTS</button>
               <button className="mobile-nav-item" onClick={closeMenu}>ABOUT</button>
-         
             </>
           )}
         </div>

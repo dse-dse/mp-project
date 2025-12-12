@@ -1,6 +1,6 @@
 import React from "react";
 import "./HomeSection.css";
-import logo from "./image/logo.png";
+import logo from "../image/logo.png";
 
 const HomeSection = () => {
   return (

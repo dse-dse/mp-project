@@ -1,8 +1,8 @@
 import React from "react";
 import "./Footer.css";
-import instagramIcon from "./image/instagram-icon.svg"; // переименуем для ясности
-import emailIcon from "./image/email-icon.svg";
-import vimeoIcon from "./image/vimeo-icon.svg";
+import instagramIcon from "../image/instagram-icon.svg"; // переименуем для ясности
+import emailIcon from "../image/email-icon.svg";
+import vimeoIcon from "../image/vimeo-icon.svg";
 
 const Footer = () => {
   return (

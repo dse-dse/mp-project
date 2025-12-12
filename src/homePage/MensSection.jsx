@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import "./MensSection.css";
-import mensPhoto from "./image/mens.png";
+import mensPhoto from "../image/mens.png";
 
 const MensSection = () => {
   const sectionRef = useRef(null);
