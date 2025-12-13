@@ -10,14 +10,6 @@
   align-items: center;
 }
 
-/* Разделительная линия */
-.section-divider {
-  width: 768px;
-  height: 2px;
-  background: #D9D9D9;
-  margin: 20px auto 40px auto;
-}
-
 /* Контейнер */
 .projects-video-container {
   width: 100%;
@@ -54,26 +46,29 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  margin-bottom: 20px; /* Отступ снизу */
+}
+
+/* Разделительная линия */
+.section-divider {
+  width: 768px;
+  height: 2px;
+  background: #D9D9D9;
+  margin: 20px auto;
 }
 
 /* ========== ДЕСКТОПНАЯ ФИЛЬТРАЦИЯ ========== */
-.desktop-category-filter {
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  margin-bottom: 40px;
-}
 
-.desktop-main-categories {
+/* Главные категории НАД чертой */
+.desktop-main-categories-above {
   display: flex;
   flex-wrap: wrap;
   gap: 30px;
   justify-content: center;
-  margin-bottom: 10px;
+  margin-bottom: 30px; /* Отступ снизу перед чертой */
 }
 
-.desktop-category-btn {
+.desktop-category-btn-above {
   background: transparent;
   border: none;
   font-family: 'Helvetica Neue', Arial, sans-serif;
@@ -88,27 +83,25 @@
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   white-space: nowrap;
   position: relative;
-  border-radius: 4px;
 }
 
-.desktop-category-btn:hover {
+.desktop-category-btn-above:hover {
   opacity: 0.7;
   transform: translateY(-2px);
 }
 
-.desktop-category-btn.active {
+.desktop-category-btn-above.active {
   opacity: 1;
-  background: rgba(0, 0, 0, 0.05);
+  font-weight: 700; /* Толще текст вместо серого фона */
 }
 
-.desktop-category-btn:not(.active) {
+.desktop-category-btn-above:not(.active) {
   opacity: 0.3;
 }
 
-/* Контейнер для подкатегорий под чертой */
-.desktop-subcategories-container {
+/* Подкатегории ПОД чертой */
+.desktop-subcategories-below {
   width: 100%;
-  max-width: 768px;
   margin-top: 20px;
   min-height: 50px;
   display: flex;
@@ -117,7 +110,7 @@
   transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
-.desktop-subcategories {
+.desktop-subcategories-below-inner {
   display: flex;
   flex-wrap: wrap;
   gap: 20px;
@@ -128,20 +121,20 @@
   visibility: hidden;
 }
 
-.desktop-subcategories.open {
+.desktop-subcategories-below-inner.open {
   opacity: 1;
   transform: translateY(0);
   visibility: visible;
 }
 
-.desktop-subcategories.closing {
+.desktop-subcategories-below-inner.closing {
   opacity: 0;
   transform: translateY(-10px);
   visibility: hidden;
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-.desktop-subcategory-btn {
+.desktop-subcategory-btn-below {
   background: transparent;
   border: none;
   font-family: 'Helvetica Neue', Arial, sans-serif;
@@ -158,14 +151,19 @@
   opacity: 0.5;
 }
 
-.desktop-subcategory-btn:hover {
+.desktop-subcategory-btn-below:hover {
   opacity: 0.8;
   transform: translateY(-1px);
 }
 
-.desktop-subcategory-btn.active {
+.desktop-subcategory-btn-below.active {
   opacity: 1;
-  font-weight: 600;
+  font-weight: 700; /* Толще текст вместо серого фона */
+}
+
+/* Удаляем старые стили десктопной фильтрации */
+.desktop-category-filter {
+  display: none;
 }
 
 /* ========== МОБИЛЬНАЯ ФИЛЬТРАЦИЯ ========== */
@@ -220,6 +218,7 @@
 
 .mobile-category-text.active {
   opacity: 1;
+  font-weight: 800; /* Толще текст для активного элемента */
 }
 
 .mobile-category-text.inactive {
@@ -318,7 +317,7 @@
 
 .mobile-subcategory-text.active {
   opacity: 1 !important;
-  font-weight: 600;
+  font-weight: 700; /* Толще текст для активного элемента */
 }
 
 .mobile-subcategory-text:hover {
@@ -527,17 +526,19 @@
     font-size: 56px;
     line-height: 56px;
     min-width: 400px;
+    margin-bottom: 15px;
   }
 
-  .desktop-main-categories {
+  .desktop-main-categories-above {
     gap: 20px;
+    margin-bottom: 25px;
   }
 
-  .desktop-category-btn {
+  .desktop-category-btn-above {
     font-size: 14px;
   }
 
-  .desktop-subcategory-btn {
+  .desktop-subcategory-btn-below {
     font-size: 13px;
   }
 
@@ -568,7 +569,8 @@
 
 /* Мобильные (768px и меньше) */
 @media (max-width: 768px) {
-  .desktop-category-filter {
+  .desktop-main-categories-above,
+  .desktop-subcategories-below {
     display: none;
   }
 
@@ -589,11 +591,12 @@
     line-height: 48px;
     min-width: 320px;
     height: 48px;
+    margin-bottom: 15px;
   }
 
   .section-divider {
     width: 90%;
-    margin: 20px auto 30px auto;
+    margin: 20px auto;
   }
 
   .mobile-category-text {
@@ -662,8 +665,9 @@
     display: none;
   }
 
-  .desktop-category-filter {
-    display: block;
+  .desktop-main-categories-above,
+  .desktop-subcategories-below {
+    display: flex;
   }
 }
 
@@ -678,6 +682,7 @@
     line-height: 36px;
     min-width: 260px;
     height: 36px;
+    margin-bottom: 10px;
   }
 
   .mobile-category-text {

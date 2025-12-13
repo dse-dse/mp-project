@@ -22,7 +22,6 @@ const desktopMainCategories = [
   "HYPE & MARKETING", 
   "EVENTS & LAUNCHES",
   "3D",
-  "CELEBRITY APPEARANCES"
 ];
 
 // Главные категории для мобильной версии
@@ -31,7 +30,6 @@ const mobileMainCategories = [
   "HYPE & MARKETING",
   "EVENTS & LAUNCHES", 
   "3D",
-  "CELEBRITY APPEARANCES"
 ];
 
 // Подкатегории для всех категорий (как на референсе)
@@ -49,7 +47,7 @@ const videoData = [
     id: 1,
     title: "BRUNELLO",
     description: "WE COMBINE FILM AND REAL ESTATE ADVERTISING. REAL ESTATE IS SOLD THROUGH EMOTION, THROUGH STORYTELLING, AND THROUGH THE EXPERIENCE OF BEING IN IT.",
-    videoUrl: BRUNELLOVideo, // Vimeo ссылка
+    videoUrl: BRUNELLOVideo,
     desktopMainCategory: "VIDEO",
     desktopSubCategory: "Real Estate development",
     mobileCategories: ["VIDEO"],
