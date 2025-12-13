@@ -466,13 +466,7 @@ const ProjectsVideoSection = () => {
                 <div className="video-content">
                   <h2 className="video-title">{video.title}</h2>
                   <p className="video-description">{video.description}</p>
-                  <div className="video-categories">
-                    {video.mobileCategories.map((cat, index) => (
-                      <span key={index} className="video-category-tag">
-                        {cat}
-                      </span>
-                    ))}
-                  </div>
+                
                   <button
                     className="watch-btn"
                     onClick={(e) => {
