@@ -21,3 +21,7 @@
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+src/realEstatePage/video/VILLADELGAVI.mp4
+src/realEstatePage/video/VilladelDivos.mp4
+/src/realEstatePage/video
+/src/projectsPage/video

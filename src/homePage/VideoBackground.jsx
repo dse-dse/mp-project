@@ -58,7 +58,10 @@ const VideoBackground = () => {
           <Link to="/real-estate" className="nav-item directions">
             DIRECTIONS
           </Link>
-          <span className="nav-item projects">PROJECTS</span>
+          {/* Кнопка PROJECTS с ссылкой на projects страницу */}
+          <Link to="/projects" className="nav-item projects">
+            PROJECTS
+          </Link>
         </div>
         
         {/* Логотип с ссылкой на домашнюю страницу */}
@@ -122,7 +125,14 @@ const VideoBackground = () => {
               >
                 DIRECTIONS
               </Link>
-              <button className="mobile-nav-item" onClick={closeMenu}>PROJECTS</button>
+              {/* Мобильная версия кнопки PROJECTS */}
+              <Link 
+                to="/projects" 
+                className="mobile-nav-item"
+                onClick={closeMenu}
+              >
+                PROJECTS
+              </Link>
               <button className="mobile-nav-item" onClick={closeMenu}>ABOUT</button>
             </>
           )}

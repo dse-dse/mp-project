@@ -10,26 +10,21 @@ import MensSection from "./MensSection";
 import Footer from "./Footer";
 import "./App.css";
 
-function HomePageApp() {
+function  ProjectsPageApp() {
   return (
     <div className="App">
       <VideoBackground />
-      <div style={{height: '50vh', display: 'flex', alignItems: 'center', justifyContent: 'center'}}>
-      </div>
+     
       
-      <ScrollTextAnimation />
-      <div style={{height: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center'}}>
-      </div>
-      <ThirdScrollBlock />
-      
+   
       {/* Добавляем новый блок с видео и сортировкой */}
       <ProjectsVideoSection />
     
-      <MensSection />
+ 
       <ContactSection />
       <Footer />
     </div>
   );
 }
 
-export default HomePageApp;
+export default ProjectsPageApp;
