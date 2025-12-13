@@ -9,7 +9,7 @@ const ScrollTextAnimation = () => {
   const [number2Visible, setNumber2Visible] = useState(false);
   const wrapperRef = useRef(null);
   const animationFrameRef = useRef(null);
-  const isTransitioningRef = useRef(false);
+  const lastScrollYRef = useRef(0);
 
   // Данные для текста - ДЕСКТОП
   const sections = [
@@ -54,20 +54,18 @@ const ScrollTextAnimation = () => {
       const mobile = window.innerWidth <= 480;
       setIsMobile(mobile);
 
+      // Инициализация состояний слов
+      const initialWordStates = {};
       if (mobile) {
-        const initialWordStates = {};
         mobileSections.forEach((section, sectionIdx) => {
           section.lines.forEach((line, lineIdx) => {
             line.forEach((_, wordIdx) => {
               const key = getWordKey(sectionIdx, lineIdx, wordIdx);
-              initialWordStates[key] = (sectionIdx === 0);
+              initialWordStates[key] = false;
             });
           });
         });
-        setWordStates(initialWordStates);
-        setActiveSection(0);
       } else {
-        const initialWordStates = {};
         sections.forEach((section, sectionIdx) => {
           section.lines.forEach((line, lineIdx) => {
             line.forEach((_, wordIdx) => {
@@ -76,11 +74,12 @@ const ScrollTextAnimation = () => {
             });
           });
         });
-        setWordStates(initialWordStates);
-        setActiveSection(0);
-        setNumber1Visible(false);
-        setNumber2Visible(false);
       }
+      
+      setWordStates(initialWordStates);
+      setActiveSection(0);
+      setNumber1Visible(false);
+      setNumber2Visible(false);
     };
 
     checkMobile();
@@ -94,91 +93,8 @@ const ScrollTextAnimation = () => {
     };
   }, []);
 
-  // Обработчик скролла для мобильных устройств
+  // ОБЩАЯ АНИМАЦИЯ ДЛЯ ВСЕХ УСТРОЙСТВ
   useEffect(() => {
-    if (!isMobile) return;
-
-    let ticking = false;
-    let lastScrollY = window.scrollY;
-    let lastDirection = 0;
-
-    const handleScroll = () => {
-      if (!wrapperRef.current || isTransitioningRef.current) return;
-
-      const currentScrollY = window.scrollY;
-      const direction = currentScrollY > lastScrollY ? 1 : -1;
-      lastScrollY = currentScrollY;
-
-      const directionChanged = lastDirection !== 0 && lastDirection !== direction;
-      lastDirection = direction;
-
-      if (!ticking) {
-        ticking = true;
-        requestAnimationFrame(() => {
-          const wrapper = wrapperRef.current;
-          const rect = wrapper.getBoundingClientRect();
-          const windowHeight = window.innerHeight;
-
-          if (rect.top > windowHeight || rect.bottom < 0) {
-            ticking = false;
-            return;
-          }
-
-          const wrapperTop = wrapper.offsetTop;
-          const wrapperHeight = wrapper.offsetHeight;
-          const scrollTop = window.scrollY || document.documentElement.scrollTop;
-          const scrollPosition = Math.max(0, scrollTop - wrapperTop);
-          const maxScroll = Math.max(1, wrapperHeight - windowHeight);
-          const progress = Math.min(1, Math.max(0, scrollPosition / maxScroll));
-
-          let newActiveSection = progress < 0.5 ? 0 : 1;
-
-          if (newActiveSection !== activeSection && !directionChanged) {
-            isTransitioningRef.current = true;
-            setActiveSection(newActiveSection);
-
-            const newWordStates = {};
-            mobileSections.forEach((section, sectionIdx) => {
-              section.lines.forEach((line, lineIdx) => {
-                line.forEach((_, wordIdx) => {
-                  const key = getWordKey(sectionIdx, lineIdx, wordIdx);
-                  newWordStates[key] = (sectionIdx === newActiveSection);
-                });
-              });
-            });
-
-            setWordStates(newWordStates);
-
-            setTimeout(() => {
-              isTransitioningRef.current = false;
-            }, 300);
-          }
-
-          ticking = false;
-        });
-      }
-    };
-
-    window.addEventListener('scroll', handleScroll, { passive: true });
-
-    setTimeout(() => {
-      handleScroll();
-    }, 100);
-
-    return () => {
-      window.removeEventListener('scroll', handleScroll);
-    };
-  }, [isMobile, activeSection]);
-
-  // Десктопная анимация
-  useEffect(() => {
-    if (isMobile) {
-      if (animationFrameRef.current) {
-        cancelAnimationFrame(animationFrameRef.current);
-      }
-      return;
-    }
-
     const updateAnimation = () => {
       if (!wrapperRef.current) {
         animationFrameRef.current = requestAnimationFrame(updateAnimation);
@@ -188,16 +104,20 @@ const ScrollTextAnimation = () => {
       const wrapper = wrapperRef.current;
       const rect = wrapper.getBoundingClientRect();
       const windowHeight = window.innerHeight;
+      const windowWidth = window.innerWidth;
 
+      // Проверяем, виден ли блок
       const isVisible = rect.top < windowHeight && rect.bottom > 0;
 
       if (!isVisible) {
+        // Если блок не виден, скрываем всё
         setActiveSection(0);
         setNumber1Visible(false);
         setNumber2Visible(false);
-
+        
         const resetWordStates = {};
-        sections.forEach((section, sectionIdx) => {
+        const currentSections = isMobile ? mobileSections : sections;
+        currentSections.forEach((section, sectionIdx) => {
           section.lines.forEach((line, lineIdx) => {
             line.forEach((_, wordIdx) => {
               const key = getWordKey(sectionIdx, lineIdx, wordIdx);
@@ -206,10 +126,12 @@ const ScrollTextAnimation = () => {
           });
         });
         setWordStates(resetWordStates);
+        
         animationFrameRef.current = requestAnimationFrame(updateAnimation);
         return;
       }
 
+      // Вычисляем прогресс скролла внутри блока
       let progress = 0;
       if (rect.top <= 0) {
         const scrolled = Math.abs(rect.top);
@@ -219,60 +141,129 @@ const ScrollTextAnimation = () => {
         }
       }
 
-      let newActiveSection = 0;
-      let sectionProgress = 0;
+      // ЛОГИКА ДЛЯ МОБИЛЬНОЙ ВЕРСИИ
+      if (isMobile) {
+        // Для мобильной версии делим на 2 равные части
+        let newActiveSection = 0;
+        let sectionProgress = 0;
+        
+        if (progress < 0.5) {
+          // Первая половина скролла - первая секция
+          newActiveSection = 0;
+          sectionProgress = progress / 0.5;
+        } else {
+          // Вторая половина скролла - вторая секция
+          newActiveSection = 1;
+          sectionProgress = (progress - 0.5) / 0.5;
+        }
 
-      if (progress < 0.6) {
-        newActiveSection = 0;
-        sectionProgress = progress / 0.6;
-      } else {
-        newActiveSection = 1;
-        sectionProgress = (progress - 0.6) / 0.4;
-      }
+        if (newActiveSection !== activeSection) {
+          setActiveSection(newActiveSection);
+        }
 
-      if (newActiveSection !== activeSection) {
-        setActiveSection(newActiveSection);
-      }
+        // Показываем цифры для соответствующей секции
+        if (newActiveSection === 0) {
+          const firstWordKey = getWordKey(0, 0, 0);
+          const isFirstWordActive = wordStates[firstWordKey] || false;
+          setNumber1Visible(isFirstWordActive && sectionProgress > 0.1);
+          setNumber2Visible(false);
+        } else {
+          setNumber1Visible(false);
+          const secondWordKey = getWordKey(1, 0, 0);
+          const isSecondWordActive = wordStates[secondWordKey] || false;
+          setNumber2Visible(isSecondWordActive && sectionProgress > 0.1);
+        }
 
-      if (newActiveSection === 0) {
-        const firstWordKey = getWordKey(0, 0, 0);
-        const isFirstWordActive = wordStates[firstWordKey] || false;
-        setNumber1Visible(isFirstWordActive);
-        setNumber2Visible(false);
-      } else {
-        setNumber1Visible(false);
-        const secondWordKey = getWordKey(1, 0, 0);
-        const isSecondWordActive = wordStates[secondWordKey] || false;
-        setNumber2Visible(isSecondWordActive);
-      }
+        // Обновляем состояния слов для активной секции
+        const activeSectionData = mobileSections[newActiveSection];
+        const totalWords = activeSectionData.lines.flat().length;
+        
+        // Увеличиваем скорость появления слов
+        const wordsToActivate = Math.min(
+          totalWords,
+          Math.floor(sectionProgress * totalWords * 2.5)
+        );
 
-      const activeSectionData = sections[newActiveSection];
-      const totalWords = activeSectionData.lines.flat().length;
-      const wordsToActivate = Math.min(
-        totalWords,
-        Math.floor(sectionProgress * totalWords * 2.0)
-      );
+        const newWordStates = { ...wordStates };
 
-      const newWordStates = { ...wordStates };
-
-      let wordIndex = 0;
-      activeSectionData.lines.forEach((line, lineIdx) => {
-        line.forEach((_, wordIdx) => {
-          const key = getWordKey(newActiveSection, lineIdx, wordIdx);
-          newWordStates[key] = (wordIndex < wordsToActivate);
-          wordIndex++;
+        // Активируем слова в активной секции
+        let wordIndex = 0;
+        activeSectionData.lines.forEach((line, lineIdx) => {
+          line.forEach((_, wordIdx) => {
+            const key = getWordKey(newActiveSection, lineIdx, wordIdx);
+            newWordStates[key] = (wordIndex < wordsToActivate);
+            wordIndex++;
+          });
         });
-      });
 
-      const inactiveSectionIdx = newActiveSection === 0 ? 1 : 0;
-      sections[inactiveSectionIdx].lines.forEach((line, lineIdx) => {
-        line.forEach((_, wordIdx) => {
-          const key = getWordKey(inactiveSectionIdx, lineIdx, wordIdx);
-          newWordStates[key] = false;
+        // Деактивируем слова из неактивной секции
+        const inactiveSectionIdx = newActiveSection === 0 ? 1 : 0;
+        mobileSections[inactiveSectionIdx].lines.forEach((line, lineIdx) => {
+          line.forEach((_, wordIdx) => {
+            const key = getWordKey(inactiveSectionIdx, lineIdx, wordIdx);
+            newWordStates[key] = false;
+          });
         });
-      });
 
-      setWordStates(newWordStates);
+        setWordStates(newWordStates);
+      } 
+      // ЛОГИКА ДЛЯ ДЕСКТОПНОЙ ВЕРСИИ
+      else {
+        let newActiveSection = 0;
+        let sectionProgress = 0;
+
+        if (progress < 0.6) {
+          newActiveSection = 0;
+          sectionProgress = progress / 0.6;
+        } else {
+          newActiveSection = 1;
+          sectionProgress = (progress - 0.6) / 0.4;
+        }
+
+        if (newActiveSection !== activeSection) {
+          setActiveSection(newActiveSection);
+        }
+
+        if (newActiveSection === 0) {
+          const firstWordKey = getWordKey(0, 0, 0);
+          const isFirstWordActive = wordStates[firstWordKey] || false;
+          setNumber1Visible(isFirstWordActive);
+          setNumber2Visible(false);
+        } else {
+          setNumber1Visible(false);
+          const secondWordKey = getWordKey(1, 0, 0);
+          const isSecondWordActive = wordStates[secondWordKey] || false;
+          setNumber2Visible(isSecondWordActive);
+        }
+
+        const activeSectionData = sections[newActiveSection];
+        const totalWords = activeSectionData.lines.flat().length;
+        const wordsToActivate = Math.min(
+          totalWords,
+          Math.floor(sectionProgress * totalWords * 2.0)
+        );
+
+        const newWordStates = { ...wordStates };
+
+        let wordIndex = 0;
+        activeSectionData.lines.forEach((line, lineIdx) => {
+          line.forEach((_, wordIdx) => {
+            const key = getWordKey(newActiveSection, lineIdx, wordIdx);
+            newWordStates[key] = (wordIndex < wordsToActivate);
+            wordIndex++;
+          });
+        });
+
+        const inactiveSectionIdx = newActiveSection === 0 ? 1 : 0;
+        sections[inactiveSectionIdx].lines.forEach((line, lineIdx) => {
+          line.forEach((_, wordIdx) => {
+            const key = getWordKey(inactiveSectionIdx, lineIdx, wordIdx);
+            newWordStates[key] = false;
+          });
+        });
+
+        setWordStates(newWordStates);
+      }
 
       animationFrameRef.current = requestAnimationFrame(updateAnimation);
     };
@@ -286,7 +277,7 @@ const ScrollTextAnimation = () => {
     };
   }, [isMobile, activeSection, wordStates]);
 
-  // Рендер секции для десктопа/планшета
+  // Рендер десктопной секции
   const renderDesktopSection = (sectionIdx) => {
     const section = sections[sectionIdx];
     const isActive = sectionIdx === activeSection;
@@ -368,23 +359,23 @@ const ScrollTextAnimation = () => {
     );
   };
 
-  // Рендер мобильного блока
-  const renderMobileBlock = (sectionIdx) => {
+  // Рендер мобильной секции
+  const renderMobileSection = (sectionIdx) => {
     const section = mobileSections[sectionIdx];
     const isActive = sectionIdx === activeSection;
 
     return (
       <div
-        key={`mobile-block-${sectionIdx}`}
-        className={`mobile-block ${isActive ? 'active' : 'inactive'}`}
+        key={`mobile-section-${sectionIdx}`}
+        className={`mobile-section ${isActive ? 'active' : ''}`}
         data-section-index={sectionIdx}
-        style={{ zIndex: sectionIdx === 0 ? 2 : 1 }}
       >
-        <div className="mobile-number">
+        {/* Цифра над текстом для мобильной версии */}
+        <div className={`mobile-section-number ${sectionIdx === 0 ? 'number-1' : 'number-2'} ${(sectionIdx === 0 ? number1Visible : number2Visible) ? 'active' : ''}`}>
           {section.number}
         </div>
 
-        <div className="mobile-text-content">
+        <div className="mobile-section-content">
           {section.lines.map((line, lineIdx) => (
             <div key={`mobile-line-${lineIdx}`} className="mobile-line">
               {line.map((word, wordIdx) => {
@@ -395,6 +386,9 @@ const ScrollTextAnimation = () => {
                   <React.Fragment key={`mobile-word-${key}`}>
                     <span
                       className={`mobile-word ${isWordActive ? 'active' : ''}`}
+                      style={{
+                        transitionDelay: `${(lineIdx * line.length + wordIdx) * 0.02}s`
+                      }}
                     >
                       {word}
                     </span>
@@ -428,8 +422,8 @@ const ScrollTextAnimation = () => {
 
           {/* Мобильная версия */}
           {isMobile && (
-            <div className="mobile-container">
-              {mobileSections.map((_, idx) => renderMobileBlock(idx))}
+            <div className="mobile-sections-container">
+              {mobileSections.map((_, idx) => renderMobileSection(idx))}
             </div>
           )}
         </div>

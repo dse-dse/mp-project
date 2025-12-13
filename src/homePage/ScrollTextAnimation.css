@@ -23,7 +23,7 @@
   height: 100%;
 }
 
-/* ДЕСКТОПНЫЕ СТИЛИ */
+/* ========== ДЕСКТОПНЫЕ СТИЛИ ========== */
 
 /* КАЖДОЕ ПРЕДЛОЖЕНИЕ */
 .text-section {
@@ -134,66 +134,65 @@
   height: 1px;
 }
 
-/* МОБИЛЬНЫЕ СТИЛИ */
-.mobile-container {
+/* ========== МОБИЛЬНЫЕ СТИЛИ ========== */
+.mobile-sections-container {
   position: relative;
   width: 100%;
-  height: 100vh;
+  height: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  overflow: hidden;
+  padding: 0 20px;
 }
 
-.mobile-block {
+.mobile-section {
   position: absolute;
-  top: 0;
-  left: 0;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
   width: 100%;
-  height: 100%;
   max-width: 360px;
-  padding: 0 20px;
-  margin: 0 auto;
   text-align: center;
   opacity: 0;
   visibility: hidden;
-  transition: all 0.7s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: opacity 0.6s ease-out, transform 0.6s ease-out;
   pointer-events: none;
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
 }
 
-.mobile-block.active {
+/* Активная мобильная секция */
+.mobile-section.active {
   opacity: 1;
   visibility: visible;
-  pointer-events: auto;
+  transform: translate(-50%, -50%) translateY(0);
 }
 
-.mobile-block.inactive {
-  opacity: 0;
-  visibility: hidden;
-}
-
-/* Цифра над текстом */
-.mobile-number {
+/* Цифра для мобильной секции */
+.mobile-section-number {
   font-family: 'Helvetica Neue', Arial, sans-serif;
   font-size: 18px;
   font-weight: 400;
   color: #000000;
   margin-bottom: 25px;
-  opacity: 0.8;
+  opacity: 0;
   letter-spacing: 1.2px;
+  transition: opacity 0.4s ease-out;
+}
+
+.mobile-section-number.active {
+  opacity: 0.8;
 }
 
 /* Контейнер для текста */
-.mobile-text-content {
+.mobile-section-content {
   display: flex;
   flex-direction: column;
   gap: 12px;
   align-items: center;
+  width: 100%;
 }
 
 /* Строка текста */
@@ -218,8 +217,8 @@
 
   opacity: 0;
   transform: translateY(15px);
-  transition: opacity 0.6s cubic-bezier(0.4, 0, 0.2, 1),
-              transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: opacity 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+              transform 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
 }
 
 .mobile-word.active {
@@ -319,7 +318,7 @@
 /* МОБИЛЬНАЯ ВЕРСИЯ (480px и меньше) */
 @media (max-width: 480px) {
   .scroll-text-animation-wrapper {
-    height: 200vh;
+    height: 400vh; /* Увеличиваем для плавного скролла */
   }
 
   .scroll-text-fixed-container {
@@ -329,22 +328,26 @@
     height: 100vh;
   }
 
+  .mobile-word {
+    font-size: 38px;
+  }
+
   /* Адаптация для маленьких экранов */
   @media (max-width: 390px) {
     .mobile-word {
       font-size: 36px;
     }
 
-    .mobile-number {
+    .mobile-section-number {
       font-size: 17px;
       margin-bottom: 22px;
     }
 
-    .mobile-container {
+    .mobile-section {
       max-width: 340px;
     }
 
-    .mobile-text-content {
+    .mobile-section-content {
       gap: 10px;
     }
   }
@@ -354,12 +357,12 @@
       font-size: 34px;
     }
 
-    .mobile-number {
+    .mobile-section-number {
       font-size: 16px;
       margin-bottom: 20px;
     }
 
-    .mobile-container {
+    .mobile-section {
       max-width: 320px;
     }
   }
@@ -369,12 +372,12 @@
       font-size: 32px;
     }
 
-    .mobile-number {
+    .mobile-section-number {
       font-size: 15px;
       margin-bottom: 18px;
     }
 
-    .mobile-container {
+    .mobile-section {
       max-width: 300px;
     }
 
