@@ -266,43 +266,45 @@ const ThirdScrollBlock = () => {
           </h2>
         </div>
 
-        {/* Контур DO над кнопкой - МОБИЛЬНЫЙ */}
-        <div className="outline-do-container mobile-outline do-above-button">
-          <h2 className="outline-do">
-            {"DO".split("").map((letter, index) => (
-              <span
-                key={`mobile-outline-do-${index}`}
-                className="outline-letter"
-                style={{
-                  opacity: isVisible ? 1 : 0,
-                  transform: getOutlineTransform(isVisible),
-                  transitionDelay: `${index * 100 + 700}ms`
-                }}
-              >
-                {letter}
-              </span>
-            ))}
-          </h2>
-        </div>
+ {/* Контур DO на уровне кнопки - МОБИЛЬНЫЙ */}
+<div className="outline-do-container mobile-outline do-above-button">
+  <h2 className="outline-do">
+    {"DO".split("").map((letter, index) => (
+      <span
+        key={`mobile-outline-do-${index}`}
+        className="outline-letter"
+        style={{
+          opacity: isVisible ? 0.9 : 0,
+          transform: isVisible ? 'translateY(0)' : 'translateY(20px)',
+          transitionDelay: `${index * 100 + 400}ms`,
+          transition: 'opacity 0.8s cubic-bezier(0.4, 0, 0.2, 1), transform 0.8s cubic-bezier(0.4, 0, 0.2, 1)'
+        }}
+      >
+        {letter}
+      </span>
+    ))}
+  </h2>
+</div>
 
-        {/* Контур WE под кнопкой - МОБИЛЬНЫЙ */}
-        <div className="outline-we-container mobile-outline we-below-button">
-          <h2 className="outline-we">
-            {"WE".split("").map((letter, index) => (
-              <span
-                key={`mobile-outline-we-${index}`}
-                className="outline-letter"
-                style={{
-                  opacity: isVisible ? 1 : 0,
-                  transform: getOutlineTransform(isVisible),
-                  transitionDelay: `${index * 100 + 500}ms`
-                }}
-              >
-                {letter}
-              </span>
-            ))}
-          </h2>
-        </div>
+{/* Контур WE под кнопкой - МОБИЛЬНЫЙ */}
+<div className="outline-we-container mobile-outline we-below-button">
+  <h2 className="outline-we">
+    {"WE".split("").map((letter, index) => (
+      <span
+        key={`mobile-outline-we-${index}`}
+        className="outline-letter"
+        style={{
+          opacity: isVisible ? 0.9 : 0,
+          transform: isVisible ? 'translateY(0)' : 'translateY(20px)',
+          transitionDelay: `${index * 100 + 600}ms`,
+          transition: 'opacity 0.8s cubic-bezier(0.4, 0, 0.2, 1), transform 0.8s cubic-bezier(0.4, 0, 0.2, 1)'
+        }}
+      >
+        {letter}
+      </span>
+    ))}
+  </h2>
+</div>
       </div>
     </section>
   );

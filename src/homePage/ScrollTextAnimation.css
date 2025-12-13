@@ -23,7 +23,7 @@
   height: 100%;
 }
 
-/* ========== ДЕСКТОПНЫЕ СТИЛИ ========== */
+/* ДЕСКТОПНЫЕ СТИЛИ */
 
 /* КАЖДОЕ ПРЕДЛОЖЕНИЕ */
 .text-section {
@@ -134,114 +134,66 @@
   height: 1px;
 }
 
-/* ========== МОБИЛЬНЫЕ СТИЛИ ========== */
-.mobile-sections-container {
+/* МОБИЛЬНЫЕ СТИЛИ */
+.mobile-container {
   position: relative;
   width: 100%;
-  height: 100%;
+  height: 100vh;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding: 0 20px;
+  overflow: hidden;
 }
 
-.mobile-section {
+.mobile-block {
   position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
+  top: 0;
+  left: 0;
   width: 100%;
+  height: 100%;
   max-width: 360px;
+  padding: 0 20px;
+  margin: 0 auto;
   text-align: center;
   opacity: 0;
   visibility: hidden;
+  transition: all 0.7s cubic-bezier(0.4, 0, 0.2, 1);
   pointer-events: none;
   display: flex;
   flex-direction: column;
   align-items: center;
-  transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+  justify-content: center;
 }
 
-/* Первая секция - появляется сверху, исчезает вверх при скролле вниз */
-.mobile-section[data-section-index="0"] {
-  opacity: 0;
-  visibility: hidden;
-  transform: translate(-50%, calc(-50% - 40px));
-}
-
-/* Вторая секция - появляется снизу, исчезает вниз при скролле вверх */
-.mobile-section[data-section-index="1"] {
-  opacity: 0;
-  visibility: hidden;
-  transform: translate(-50%, calc(-50% + 40px));
-}
-
-/* Секция становится видимой при появлении */
-.mobile-section.visible[data-section-index="0"] {
+.mobile-block.active {
   opacity: 1;
   visibility: visible;
-  transform: translate(-50%, calc(-50% - 40px));
+  pointer-events: auto;
 }
 
-.mobile-section.visible[data-section-index="1"] {
-  opacity: 1;
-  visibility: visible;
-  transform: translate(-50%, calc(-50% + 40px));
-}
-
-/* Активная мобильная секция - плавное появление на свое место */
-.mobile-section.active[data-section-index="0"] {
-  opacity: 1;
-  visibility: visible;
-  transform: translate(-50%, -50%) !important;
-}
-
-.mobile-section.active[data-section-index="1"] {
-  opacity: 1;
-  visibility: visible;
-  transform: translate(-50%, -50%) !important;
-}
-
-/* Анимация исчезновения первой секции при скролле вниз */
-.mobile-section[data-section-index="0"]:not(.active):not(.visible) {
+.mobile-block.inactive {
   opacity: 0;
   visibility: hidden;
-  transform: translate(-50%, calc(-50% - 40px));
-  transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-/* Анимация исчезновения второй секции при скролле вверх */
-.mobile-section[data-section-index="1"]:not(.active):not(.visible) {
-  opacity: 0;
-  visibility: hidden;
-  transform: translate(-50%, calc(-50% + 40px));
-  transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-/* Цифра для мобильной секции */
-.mobile-section-number {
+/* Цифра над текстом */
+.mobile-number {
   font-family: 'Helvetica Neue', Arial, sans-serif;
   font-size: 18px;
   font-weight: 400;
   color: #000000;
   margin-bottom: 25px;
-  opacity: 0;
-  letter-spacing: 1.2px;
-  transition: opacity 0.5s cubic-bezier(0.4, 0, 0.2, 1) 0.1s;
-}
-
-.mobile-section-number.active {
   opacity: 0.8;
+  letter-spacing: 1.2px;
 }
 
 /* Контейнер для текста */
-.mobile-section-content {
+.mobile-text-content {
   display: flex;
   flex-direction: column;
   gap: 12px;
   align-items: center;
-  width: 100%;
 }
 
 /* Строка текста */
@@ -266,8 +218,8 @@
 
   opacity: 0;
   transform: translateY(15px);
-  transition: opacity 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94),
-              transform 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  transition: opacity 0.6s cubic-bezier(0.4, 0, 0.2, 1),
+              transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .mobile-word.active {
@@ -367,7 +319,7 @@
 /* МОБИЛЬНАЯ ВЕРСИЯ (480px и меньше) */
 @media (max-width: 480px) {
   .scroll-text-animation-wrapper {
-    height: 400vh; /* Увеличиваем для плавного скролла */
+    height: 200vh;
   }
 
   .scroll-text-fixed-container {
@@ -377,26 +329,22 @@
     height: 100vh;
   }
 
-  .mobile-word {
-    font-size: 38px;
-  }
-
   /* Адаптация для маленьких экранов */
   @media (max-width: 390px) {
     .mobile-word {
       font-size: 36px;
     }
 
-    .mobile-section-number {
+    .mobile-number {
       font-size: 17px;
       margin-bottom: 22px;
     }
 
-    .mobile-section {
+    .mobile-container {
       max-width: 340px;
     }
 
-    .mobile-section-content {
+    .mobile-text-content {
       gap: 10px;
     }
   }
@@ -406,12 +354,12 @@
       font-size: 34px;
     }
 
-    .mobile-section-number {
+    .mobile-number {
       font-size: 16px;
       margin-bottom: 20px;
     }
 
-    .mobile-section {
+    .mobile-container {
       max-width: 320px;
     }
   }
@@ -421,12 +369,12 @@
       font-size: 32px;
     }
 
-    .mobile-section-number {
+    .mobile-number {
       font-size: 15px;
       margin-bottom: 18px;
     }
 
-    .mobile-section {
+    .mobile-container {
       max-width: 300px;
     }
 

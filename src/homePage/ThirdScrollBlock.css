@@ -8,17 +8,6 @@
   max-height: 90vh;
 }
 
-/* Линия сверху */
-.section-top-line {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 2px;
-  background: #D9D9D9;
-  z-index: 1;
-}
-
 /* ========== ОСНОВНОЙ КОНТЕЙНЕР ========== */
 .third-scroll-container {
   width: 100%;
@@ -88,7 +77,7 @@
   justify-content: flex-start;
   width: auto;
   min-width: 0;
-  max-width: 60%;
+  max-width: 90% !important;
 }
 
 /* Контейнер для списка */
@@ -104,7 +93,7 @@
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  gap: 16px;
+  gap: 20px !important;
   width: 100%;
   min-width: 0;
 }
@@ -247,7 +236,7 @@
   -webkit-text-stroke: 2px #DDDBDB;
   text-stroke: 2px #DDDBDB;
   -webkit-text-fill-color: transparent;
-  margin-bottom: -50px; /* Чтобы буквы "вылазили" из блока */
+  margin-bottom: -50px;
 }
 
 /* Контур DO справа (выступает на 33%) - ДЕСКТОП */
@@ -314,118 +303,7 @@
 .mobile-title {
   display: none;
   flex-direction: column;
-  align-items: center;
-}
-
-/* ========== АДАПТАЦИЯ ДЛЯ ШИРОКИХ ЭКРАНОВ ========== */
-@media (min-width: 1441px) and (max-width: 1800px) {
-  .third-scroll-container {
-    padding: 0 60px;
-  }
-  
-  .left-side {
-    margin-right: 80px;
-  }
-  
-  .right-side {
-    max-width: 65%;
-  }
-  
-  .third-title {
-    font-size: 220px;
-    line-height: 220px;
-  }
-  
-  .item-text {
-    font-size: 60px;
-    line-height: 60px;
-  }
-  
-  /* Контурные буквы */
-  .outline-we-container.desktop-outline {
-    padding: 0 60px;
-  }
-  
-  .outline-we-container.desktop-outline .outline-we,
-  .outline-do-container.desktop-outline .outline-do {
-    font-size: 280px;
-    line-height: 280px;
-    -webkit-text-stroke: 2px #DDDBDB;
-  }
-}
-
-@media (min-width: 1801px) and (max-width: 2200px) {
-  .third-scroll-container {
-    padding: 0 80px;
-  }
-  
-  .left-side {
-    margin-right: 120px;
-  }
-  
-  .right-side {
-    max-width: 60%;
-  }
-  
-  .third-title {
-    font-size: 240px;
-    line-height: 240px;
-  }
-  
-  .item-text {
-    font-size: 64px;
-    line-height: 64px;
-  }
-  
-  /* Контурные буквы */
-  .outline-we-container.desktop-outline {
-    padding: 0 80px;
-  }
-  
-  .outline-we-container.desktop-outline .outline-we,
-  .outline-do-container.desktop-outline .outline-do {
-    font-size: 300px;
-    line-height: 300px;
-    -webkit-text-stroke: 2px #DDDBDB;
-  }
-}
-
-@media (min-width: 2201px) {
-  .third-scroll-container {
-    padding: 0 100px;
-    max-width: 2400px;
-    margin: 0 auto;
-  }
-  
-  .left-side {
-    margin-right: 150px;
-  }
-  
-  .right-side {
-    max-width: 55%;
-  }
-  
-  .third-title {
-    font-size: 250px;
-    line-height: 250px;
-  }
-  
-  .item-text {
-    font-size: 64px;
-    line-height: 64px;
-  }
-  
-  /* Контурные буквы */
-  .outline-we-container.desktop-outline {
-    padding: 0 100px;
-  }
-  
-  .outline-we-container.desktop-outline .outline-we,
-  .outline-do-container.desktop-outline .outline-do {
-    font-size: 320px;
-    line-height: 320px;
-    -webkit-text-stroke: 2px #DDDBDB;
-  }
+  align-items: flex-start;
 }
 
 /* ========== ВЕРСИЯ 1440PX И НИЖЕ ========== */
@@ -458,7 +336,7 @@
   }
 
   .third-title {
-    font-size: 200px;
+    font-size: 250px !important;
     line-height: 0.8;
     text-align: left;
     width: 100%;
@@ -499,7 +377,7 @@
     width: 100%;
   }
   
-  /* Контур WE на планшетах */
+  /* Контурные буквы */
   .outline-we-container.desktop-outline {
     padding: 0 60px;
   }
@@ -515,82 +393,34 @@
 /* ========== ТЕЛЕФОННАЯ ВЕРСИЯ (мобильные устройства) ========== */
 @media (max-width: 768px) {
   .third-scroll-section {
-    padding-top: 50px;
-    padding-bottom: 120px; /* Увеличиваем отступ снизу для WE */
+    padding: 50px 20px 140px 20px !important;
     min-height: auto;
+    overflow: hidden;
+    position: relative;
   }
 
   .third-scroll-container {
     flex-direction: column;
-    align-items: center;
-    padding: 0 20px;
-    gap: 30px;
+    align-items: flex-start;
+    padding: 0 !important;
+    gap: 40px;
     min-width: 0;
-    justify-content: flex-start;
+    position: relative;
+    z-index: 5;
   }
 
+  /* ЛЕВАЯ ЧАСТЬ - Заголовок WE DO */
   .left-side {
     width: 100%;
-    align-items: center;
+    align-items: flex-start;
     margin-right: 0;
+    order: 1;
   }
 
-  .right-side {
-    width: 100%;
-    align-items: center;
-    max-width: 100%;
-  }
-
-  .items-container {
-    align-items: center;
+  .third-title-wrapper {
     width: 100%;
   }
 
-  .third-items-list {
-    align-items: center;
-    gap: 8px;
-    width: 100%;
-  }
-
-  .third-title {
-    font-size: 70px;
-    line-height: 0.8;
-    text-align: center;
-  }
-
-  .third-item {
-    text-align: center;
-    width: 100%;
-  }
-
-  .item-text {
-    font-size: 28px;
-    line-height: 30px;
-    text-align: center;
-    white-space: normal;
-    overflow: visible;
-    text-overflow: clip;
-  }
-
-  .title-space {
-    width: 10px;
-  }
-
-  .button-container {
-    margin-top: 25px;
-    justify-content: center;
-    position: relative;
-    z-index: 4;
-  }
-
-  .third-button {
-    width: 180px;
-    height: 50px;
-    font-size: 14px;
-    border-radius: 25px;
-  }
-
-  /* Мобильная версия заголовка */
   .desktop-title {
     display: none;
   }
@@ -598,199 +428,324 @@
   .mobile-title {
     display: flex;
     flex-direction: column;
-    align-items: center;
+    align-items: flex-start;
+    width: 100%;
+  }
+
+  .third-title {
+    font-size: 100px !important;
+    line-height: 0.85 !important;
+    text-align: left !important;
+    margin: 0 !important;
+    width: 100%;
   }
 
   .title-word {
     display: block;
     line-height: 0.85;
-    text-align: center;
+    text-align: left;
+    width: 100%;
   }
 
-  .title-word:nth-child(1) {
-    transform: translateX(-22px);
+  /* ПРАВАЯ ЧАСТЬ - Список сервисов */
+  .right-side {
+    width: 100%;
+    align-items: flex-start;
+    max-width: 100%;
+    order: 2;
+    position: relative;
+    z-index: 6;
   }
 
-  .title-word:nth-child(2) {
-    transform: translateX(22px);
+  .items-container {
+    align-items: flex-start;
+    width: 100%;
   }
-  
-  /* Мобильные контурные буквы */
+
+  .third-items-list {
+    align-items: flex-start;
+    gap: 20px;
+    width: 100%;
+  }
+
+  .third-item {
+    text-align: left;
+    width: 100%;
+  }
+
+  .item-text {
+    font-size: 42px !important;
+    line-height: 42px !important;
+    text-align: left;
+    white-space: normal;
+    overflow: visible;
+    text-overflow: clip;
+  }
+
+  /* КНОПКА */
+  .button-container {
+    margin-top: 50px !important;
+    margin-bottom: 30px !important; /* Добавили отступ снизу для DO */
+    justify-content: flex-start;
+    width: 100%;
+    position: relative;
+    z-index: 7;
+    order: 3;
+    height: 60px;
+    display: flex;
+    align-items: center;
+  }
+
+  .third-button-wrapper {
+    position: relative;
+    z-index: 8;
+  }
+
+  .third-button {
+    width: 220px !important;
+    height: 60px !important;
+    font-size: 18px !important;
+    border-radius: 35px;
+    background: rgba(230, 230, 230, 0.85);
+    position: relative;
+    z-index: 9;
+  }
+
+  /* СКРЫВАЕМ ДЕСКТОПНЫЕ КОНТУРНЫЕ БУКВЫ */
   .desktop-outline {
     display: none !important;
   }
   
+  /* ПОКАЗЫВАЕМ МОБИЛЬНЫЕ КОНТУРНЫЕ БУКВЫ */
   .mobile-outline {
     display: block !important;
   }
   
-  /* Контур DO над кнопкой справа - МОБИЛЬНЫЙ */
+  /* DO - НАД кнопкой справа, увеличенный */
   .outline-do-container.mobile-outline.do-above-button {
-    position: absolute;
-    top: auto;
-    bottom: calc(100% - 80px); /* Позиционируем над кнопкой */
-    right: 20px;
-    z-index: 3;
+    position: absolute !important;
+    top: auto !important;
+    bottom: 110px !important; /* Подняли ВЫШЕ кнопки */
+    right: 20px !important;
+    z-index: 4;
     transform: none !important;
+    opacity: 1;
   }
   
   .outline-do-container.mobile-outline.do-above-button .outline-do {
-    font-size: 60px;
-    line-height: 60px;
+    font-size: 120px !important; /* Увеличили размер */
+    line-height: 120px !important;
     color: transparent;
-    -webkit-text-stroke: 1px #DDDBDB;
-    text-stroke: 1px #DDDBDB;
+    -webkit-text-stroke: 2px #DDDBDB;
+    text-stroke: 2px #DDDBDB;
     -webkit-text-fill-color: transparent;
-    margin-bottom: -15px; /* Залазит на кнопку */
+    letter-spacing: -2px;
   }
   
-  /* Контур WE под кнопкой слева - МОБИЛЬНЫЙ */
+  /* WE - под кнопкой слева, видна только верхняя половина */
   .outline-we-container.mobile-outline.we-below-button {
-    position: absolute;
-    bottom: 30px; /* В самом низу блока */
-    left: 20px;
+    position: absolute !important;
+    bottom: 10px !important; /* Под кнопкой */
+    left: 20px !important;
     z-index: 3;
+    overflow: hidden;
+    height: 50px; /* Видна только верхняя половина */
+    mask-image: linear-gradient(to bottom, black 0%, black 50%, transparent 100%) !important;
+    -webkit-mask-image: linear-gradient(to bottom, black 0%, black 50%, transparent 100%) !important;
   }
   
   .outline-we-container.mobile-outline.we-below-button .outline-we {
-    font-size: 60px;
-    line-height: 60px;
+    font-size: 130px !important;
+    line-height: 130px !important;
     color: transparent;
-    -webkit-text-stroke: 1px #DDDBDB;
-    text-stroke: 1px #DDDBDB;
+    -webkit-text-stroke: 1.5px #DDDBDB;
+    text-stroke: 1.5px #DDDBDB;
     -webkit-text-fill-color: transparent;
-    margin-top: -15px; /* Залазит на кнопку */
+    letter-spacing: -2px;
+    margin-top: -80px; /* Сдвигаем вверх чтобы была видна только верхняя часть */
+  }
+  
+  /* ПЛАВНЫЕ АНИМАЦИИ */
+  .third-title-wrapper,
+  .third-items-list,
+  .button-container {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 0.7s cubic-bezier(0.4, 0, 0.2, 1), 
+                transform 0.7s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  
+  .section-visible .third-title-wrapper {
+    opacity: 1;
+    transform: translateY(0);
+    transition-delay: 100ms;
+  }
+  
+  .section-visible .third-items-list {
+    opacity: 1;
+    transform: translateY(0);
+    transition-delay: 200ms;
+  }
+  
+  .section-visible .button-container {
+    opacity: 1;
+    transform: translateY(0);
+    transition-delay: 300ms;
+  }
+  
+  /* Анимация для контурных букв */
+  .outline-do-container.mobile-outline.do-above-button .outline-letter,
+  .outline-we-container.mobile-outline.we-below-button .outline-letter {
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.8s cubic-bezier(0.4, 0, 0.2, 1), 
+                transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  
+  .section-visible .outline-do-container.mobile-outline.do-above-button .outline-letter,
+  .section-visible .outline-we-container.mobile-outline.we-below-button .outline-letter {
+    opacity: 0.9;
+    transform: translateY(0);
+  }
+  
+  /* Задержки для букв */
+  .outline-do-container.mobile-outline.do-above-button .outline-letter:nth-child(1) {
+    transition-delay: 400ms;
+  }
+  
+  .outline-do-container.mobile-outline.do-above-button .outline-letter:nth-child(2) {
+    transition-delay: 500ms;
+  }
+  
+  .outline-we-container.mobile-outline.we-below-button .outline-letter:nth-child(1) {
+    transition-delay: 600ms;
+  }
+  
+  .outline-we-container.mobile-outline.we-below-button .outline-letter:nth-child(2) {
+    transition-delay: 700ms;
   }
 }
 
 /* ========== МАЛЕНЬКИЕ ТЕЛЕФОНЫ ========== */
 @media (max-width: 480px) {
   .third-scroll-section {
-    padding-top: 40px;
-    padding-bottom: 110px;
+    padding: 40px 16px 130px 16px !important;
   }
 
   .third-scroll-container {
-    padding: 0 15px;
-    gap: 25px;
+    gap: 35px;
   }
 
   .third-title {
-    font-size: 55px;
-    line-height: 0.9;
-  }
-
-  .title-word:nth-child(1) {
-    transform: translateX(-20px);
-  }
-
-  .title-word:nth-child(2) {
-    transform: translateX(20px);
+    font-size: 104px !important;
+    line-height: 0.85 !important;
   }
 
   .item-text {
-    font-size: 24px;
-    line-height: 26px;
+    font-size: 24px !important;
+    line-height: 24px !important;
   }
 
   .third-items-list {
-    gap: 6px;
+    gap: 18px;
   }
 
   .third-button {
-    width: 170px;
-    height: 48px;
-    font-size: 13px;
+    border-radius: 35px !important;
+    width: 216px !important;
+    height: 60px !important;
+    font-size: 16px !important;
+  }
+
+  .button-container {
+    height: 60px;
+    margin-top: 45px !important;
+    margin-bottom: 25px !important;
   }
   
-  /* Контурные буквы мобильные */
+  /* Контурные буквы */
   .outline-do-container.mobile-outline.do-above-button {
-    bottom: calc(100% - 70px);
-    right: 15px;
+    bottom: 160px !important; /* Подняли выше */
+    right: -90px !important;
+    
   }
   
   .outline-do-container.mobile-outline.do-above-button .outline-do {
-    font-size: 50px;
-    line-height: 50px;
-    -webkit-text-stroke: 0.8px #DDDBDB;
-    margin-bottom: -12px;
+    font-size: 150px !important; /* Увеличили размер */
+    line-height: 150px !important;
+    -webkit-text-stroke: 1.8px #DDDBDB;
   }
   
   .outline-we-container.mobile-outline.we-below-button {
-    bottom: 25px;
-    left: 15px;
+    bottom: 70px !important;
+    left: -15px !important;
+    height: 65px;
   }
   
   .outline-we-container.mobile-outline.we-below-button .outline-we {
-    font-size: 50px;
-    line-height: 50px;
-    -webkit-text-stroke: 0.8px #DDDBDB;
-    margin-top: -12px;
+    font-size: 150px !important;
+    line-height: 150px !important;
+    margin-top: -5px;
   }
 }
 
 /* ========== ОЧЕНЬ МАЛЕНЬКИЕ ЭКРАНЫ ========== */
 @media (max-width: 380px) {
   .third-scroll-section {
-    padding-top: 30px;
-    padding-bottom: 100px;
+    padding: 30px 12px 120px 12px !important;
   }
 
   .third-scroll-container {
-    padding: 0 12px;
-    gap: 20px;
+    gap: 30px;
   }
 
   .third-title {
-    font-size: 48px;
-  }
-
-  .title-word:nth-child(1) {
-    transform: translateX(-15px);
-  }
-
-  .title-word:nth-child(2) {
-    transform: translateX(15px);
+    font-size: 100px !important;
   }
 
   .item-text {
-    font-size: 20px;
-    line-height: 22px;
+    font-size: 24px !important;
+    line-height: 28px !important;
   }
 
   .third-items-list {
-    gap: 5px;
+    gap: 16px;
   }
 
   .third-button {
-    width: 160px;
-    height: 46px;
-    font-size: 12px;
+    width: 180px !important;
+    height: 52px !important;
+    font-size: 14px !important;
+  }
+
+  .button-container {
+    height: 52px;
+    margin-top: 40px !important;
+    margin-bottom: 20px !important;
   }
   
-  /* Контурные буквы мобильные */
+   /* Контурные буквы */
   .outline-do-container.mobile-outline.do-above-button {
-    bottom: calc(100% - 65px);
-    right: 12px;
+    bottom: 160px !important; /* Подняли выше */
+    right: -90px !important;
   }
   
   .outline-do-container.mobile-outline.do-above-button .outline-do {
-    font-size: 45px;
-    line-height: 45px;
-    -webkit-text-stroke: 0.6px #DDDBDB;
-    margin-bottom: -10px;
+    font-size: 150px !important; /* Увеличили размер */
+    line-height: 150px !important;
+    -webkit-text-stroke: 1.8px #DDDBDB;
   }
   
   .outline-we-container.mobile-outline.we-below-button {
-    bottom: 20px;
-    left: 12px;
+    bottom: 70px !important;
+    left: -15px !important;
+    height: 65px;
   }
   
   .outline-we-container.mobile-outline.we-below-button .outline-we {
-    font-size: 45px;
-    line-height: 45px;
-    -webkit-text-stroke: 0.6px #DDDBDB;
-    margin-top: -10px;
+    font-size: 150px !important;
+    line-height: 150px !important;
+    margin-top: -5px;
   }
 }
 
