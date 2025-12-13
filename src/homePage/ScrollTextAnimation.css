@@ -156,18 +156,67 @@
   text-align: center;
   opacity: 0;
   visibility: hidden;
-  transition: opacity 0.6s ease-out, transform 0.6s ease-out;
   pointer-events: none;
   display: flex;
   flex-direction: column;
   align-items: center;
+  transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-/* Активная мобильная секция */
-.mobile-section.active {
+/* Первая секция - появляется сверху, исчезает вверх при скролле вниз */
+.mobile-section[data-section-index="0"] {
+  opacity: 0;
+  visibility: hidden;
+  transform: translate(-50%, calc(-50% - 40px));
+}
+
+/* Вторая секция - появляется снизу, исчезает вниз при скролле вверх */
+.mobile-section[data-section-index="1"] {
+  opacity: 0;
+  visibility: hidden;
+  transform: translate(-50%, calc(-50% + 40px));
+}
+
+/* Секция становится видимой при появлении */
+.mobile-section.visible[data-section-index="0"] {
   opacity: 1;
   visibility: visible;
-  transform: translate(-50%, -50%) translateY(0);
+  transform: translate(-50%, calc(-50% - 40px));
+}
+
+.mobile-section.visible[data-section-index="1"] {
+  opacity: 1;
+  visibility: visible;
+  transform: translate(-50%, calc(-50% + 40px));
+}
+
+/* Активная мобильная секция - плавное появление на свое место */
+.mobile-section.active[data-section-index="0"] {
+  opacity: 1;
+  visibility: visible;
+  transform: translate(-50%, -50%) !important;
+}
+
+.mobile-section.active[data-section-index="1"] {
+  opacity: 1;
+  visibility: visible;
+  transform: translate(-50%, -50%) !important;
+}
+
+/* Анимация исчезновения первой секции при скролле вниз */
+.mobile-section[data-section-index="0"]:not(.active):not(.visible) {
+  opacity: 0;
+  visibility: hidden;
+  transform: translate(-50%, calc(-50% - 40px));
+  transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Анимация исчезновения второй секции при скролле вверх */
+.mobile-section[data-section-index="1"]:not(.active):not(.visible) {
+  opacity: 0;
+  visibility: hidden;
+  transform: translate(-50%, calc(-50% + 40px));
+  transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 /* Цифра для мобильной секции */
@@ -179,7 +228,7 @@
   margin-bottom: 25px;
   opacity: 0;
   letter-spacing: 1.2px;
-  transition: opacity 0.4s ease-out;
+  transition: opacity 0.5s cubic-bezier(0.4, 0, 0.2, 1) 0.1s;
 }
 
 .mobile-section-number.active {

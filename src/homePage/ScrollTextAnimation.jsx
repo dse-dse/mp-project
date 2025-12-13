@@ -7,9 +7,12 @@ const ScrollTextAnimation = () => {
   const [isMobile, setIsMobile] = useState(false);
   const [number1Visible, setNumber1Visible] = useState(false);
   const [number2Visible, setNumber2Visible] = useState(false);
+  const [section1Visible, setSection1Visible] = useState(false);
+  const [section2Visible, setSection2Visible] = useState(false);
   const wrapperRef = useRef(null);
   const animationFrameRef = useRef(null);
   const lastScrollYRef = useRef(0);
+  const lastProgressRef = useRef(0);
 
   // Данные для текста - ДЕСКТОП
   const sections = [
@@ -80,6 +83,8 @@ const ScrollTextAnimation = () => {
       setActiveSection(0);
       setNumber1Visible(false);
       setNumber2Visible(false);
+      setSection1Visible(false);
+      setSection2Visible(false);
     };
 
     checkMobile();
@@ -104,8 +109,8 @@ const ScrollTextAnimation = () => {
       const wrapper = wrapperRef.current;
       const rect = wrapper.getBoundingClientRect();
       const windowHeight = window.innerHeight;
-      const windowWidth = window.innerWidth;
-
+      const scrollY = window.scrollY;
+      
       // Проверяем, виден ли блок
       const isVisible = rect.top < windowHeight && rect.bottom > 0;
 
@@ -114,6 +119,8 @@ const ScrollTextAnimation = () => {
         setActiveSection(0);
         setNumber1Visible(false);
         setNumber2Visible(false);
+        setSection1Visible(false);
+        setSection2Visible(false);
         
         const resetWordStates = {};
         const currentSections = isMobile ? mobileSections : sections;
@@ -141,6 +148,10 @@ const ScrollTextAnimation = () => {
         }
       }
 
+      // Определяем направление скролла
+      const isScrollingDown = scrollY > lastScrollYRef.current;
+      lastScrollYRef.current = scrollY;
+
       // ЛОГИКА ДЛЯ МОБИЛЬНОЙ ВЕРСИИ
       if (isMobile) {
         // Для мобильной версии делим на 2 равные части
@@ -155,6 +166,35 @@ const ScrollTextAnimation = () => {
           // Вторая половина скролла - вторая секция
           newActiveSection = 1;
           sectionProgress = (progress - 0.5) / 0.5;
+        }
+
+        // Управляем видимостью секций в зависимости от направления скролла
+        if (newActiveSection === 0) {
+          // Показываем первую секцию
+          if (isScrollingDown) {
+            // При скролле вниз плавно показываем первую секцию
+            setSection1Visible(true);
+            setSection2Visible(false);
+          } else {
+            // При скролле вверх плавно скрываем вторую секцию
+            if (sectionProgress < 0.3) {
+              setSection2Visible(false);
+            }
+            setSection1Visible(true);
+          }
+        } else {
+          // Показываем вторую секцию
+          if (isScrollingDown) {
+            // При скролле вниз плавно скрываем первую секцию
+            if (sectionProgress > 0.7) {
+              setSection1Visible(false);
+            }
+            setSection2Visible(true);
+          } else {
+            // При скролле вверх плавно показываем вторую секцию
+            setSection2Visible(true);
+            setSection1Visible(false);
+          }
         }
 
         if (newActiveSection !== activeSection) {
@@ -265,6 +305,7 @@ const ScrollTextAnimation = () => {
         setWordStates(newWordStates);
       }
 
+      lastProgressRef.current = progress;
       animationFrameRef.current = requestAnimationFrame(updateAnimation);
     };
 
@@ -363,12 +404,14 @@ const ScrollTextAnimation = () => {
   const renderMobileSection = (sectionIdx) => {
     const section = mobileSections[sectionIdx];
     const isActive = sectionIdx === activeSection;
+    const isVisible = sectionIdx === 0 ? section1Visible : section2Visible;
 
     return (
       <div
         key={`mobile-section-${sectionIdx}`}
-        className={`mobile-section ${isActive ? 'active' : ''}`}
+        className={`mobile-section ${isActive && isVisible ? 'active' : ''} ${isVisible ? 'visible' : ''}`}
         data-section-index={sectionIdx}
+        data-scroll-direction={sectionIdx === 0 ? 'down' : 'up'}
       >
         {/* Цифра над текстом для мобильной версии */}
         <div className={`mobile-section-number ${sectionIdx === 0 ? 'number-1' : 'number-2'} ${(sectionIdx === 0 ? number1Visible : number2Visible) ? 'active' : ''}`}>
