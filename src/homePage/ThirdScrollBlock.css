@@ -5,6 +5,7 @@
   overflow: hidden;
   padding-bottom: 90px;
   padding-top: 100px;
+  max-height: 70vh;
 }
 
 /* Линия сверху */
@@ -18,28 +19,30 @@
   z-index: 1;
 }
 
-/* ========== ШИРОКИЙ ФОРМАТ (десктоп выше 1440px) ========== */
+/* ========== ОСНОВНОЙ КОНТЕЙНЕР ========== */
 .third-scroll-container {
   width: 100%;
   display: flex;
   flex-direction: row;
   align-items: flex-start;
-  justify-content: space-between; /* Распределяем пространство между блоками */
+  justify-content: space-between;
   padding: 0 80px;
   box-sizing: border-box;
   min-width: 0;
+  position: relative;
+  z-index: 3;
 }
 
-/* Левая часть - WE DO */
+/* Левая часть - основной WE DO (заполненный) */
 .left-side {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
   justify-content: flex-start;
   flex-shrink: 0;
-  width: auto; /* Ширина по содержимому */
+  width: auto;
   min-width: 0;
-  margin-right: 100px; /* Отступ между WE DO и списком */
+  margin-right: 100px;
 }
 
 .third-title-wrapper {
@@ -81,11 +84,11 @@
 .right-side {
   display: flex;
   flex-direction: column;
-  align-items: flex-end; /* Прижимаем весь блок к правому краю */
+  align-items: flex-end;
   justify-content: flex-start;
-  width: auto; /* Ширина по содержимому */
+  width: auto;
   min-width: 0;
-  max-width: 60%; /* Ограничиваем максимальную ширину */
+  max-width: 60%;
 }
 
 /* Контейнер для списка */
@@ -94,13 +97,13 @@
   flex-direction: column;
   width: 100%;
   min-width: 0;
-  align-items: flex-start; /* Текст внутри выровнен по левому краю */
+  align-items: flex-start;
 }
 
 .third-items-list {
   display: flex;
   flex-direction: column;
-  align-items: flex-start; /* Текст внутри выровнен по левому краю */
+  align-items: flex-start;
   gap: 16px;
   width: 100%;
   min-width: 0;
@@ -108,7 +111,7 @@
 
 .third-item {
   width: 100%;
-  text-align: left; /* Текст выровнен по левому краю */
+  text-align: left;
   opacity: 0;
   transform: translateX(-50px);
   transition: opacity 0.6s ease, transform 0.6s ease;
@@ -126,7 +129,7 @@
   color: #282525;
   display: block;
   white-space: nowrap;
-  text-align: left; /* Текст выровнен по левому краю */
+  text-align: left;
   overflow: visible;
   text-overflow: clip;
   max-width: 100%;
@@ -144,7 +147,7 @@
   display: flex;
   width: 100%;
   margin-top: 40px;
-  justify-content: flex-end; /* Кнопка прижата к правому краю внутри блока */
+  justify-content: flex-end;
 }
 
 .third-button-wrapper {
@@ -192,6 +195,84 @@
   transition: opacity 0.3s ease;
 }
 
+/* ========== КОНТУРНЫЕ БУКВЫ (фон) ========== */
+.outline-letters-wrapper {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 2;
+}
+
+/* Контурные буквы стили */
+.outline-we,
+.outline-do {
+  font-family: 'Helvetica Neue', Arial, sans-serif;
+  font-style: normal;
+  font-weight: 700;
+  text-transform: uppercase;
+  margin: 0;
+  white-space: nowrap;
+  letter-spacing: -0.04em;
+  display: inline-block;
+}
+
+.outline-letter {
+  display: inline-block;
+  opacity: 0;
+  transform: translateX(-50px);
+  transition: opacity 0.8s ease, transform 0.8s ease;
+}
+
+/* Десктопные контурные буквы */
+.desktop-outline {
+  display: block;
+}
+
+/* Контур WE внизу в левом углу - ДЕСКТОП */
+.outline-we-container.desktop-outline {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  padding: 0 80px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.outline-we-container.desktop-outline .outline-we {
+  font-size: 300px;
+  line-height: 300px;
+  color: transparent;
+  -webkit-text-stroke: 2px #DDDBDB;
+  text-stroke: 2px #DDDBDB;
+  -webkit-text-fill-color: transparent;
+  margin-bottom: -50px; /* Чтобы буквы "вылазили" из блока */
+}
+
+/* Контур DO справа (выступает на 33%) - ДЕСКТОП */
+.outline-do-container.desktop-outline {
+  position: absolute;
+  top: 100px;
+  right: 0;
+  transform: translateX(33%);
+}
+
+.outline-do-container.desktop-outline .outline-do {
+  font-size: 300px;
+  line-height: 300px;
+  color: transparent;
+  -webkit-text-stroke: 2px #DDDBDB;
+  text-stroke: 2px #DDDBDB;
+  -webkit-text-fill-color: transparent;
+}
+
+/* Мобильные контурные буквы */
+.mobile-outline {
+  display: none;
+}
+
 /* Анимации */
 .section-visible .third-title {
   opacity: 1;
@@ -221,6 +302,11 @@
   opacity: 1;
 }
 
+.section-visible .outline-letter {
+  opacity: 1;
+  transform: translateX(0);
+}
+
 /* Десктопная версия заголовка */
 .desktop-title {
   display: block;
@@ -232,7 +318,7 @@
   align-items: center;
 }
 
-/* ========== АДАПТАЦИЯ ДЛЯ ОЧЕНЬ ШИРОКИХ ЭКРАНОВ ========== */
+/* ========== АДАПТАЦИЯ ДЛЯ ШИРОКИХ ЭКРАНОВ ========== */
 @media (min-width: 1441px) and (max-width: 1800px) {
   .third-scroll-container {
     padding: 0 60px;
@@ -254,6 +340,18 @@
   .item-text {
     font-size: 60px;
     line-height: 60px;
+  }
+  
+  /* Контурные буквы */
+  .outline-we-container.desktop-outline {
+    padding: 0 60px;
+  }
+  
+  .outline-we-container.desktop-outline .outline-we,
+  .outline-do-container.desktop-outline .outline-do {
+    font-size: 280px;
+    line-height: 280px;
+    -webkit-text-stroke: 2px #DDDBDB;
   }
 }
 
@@ -278,6 +376,18 @@
   .item-text {
     font-size: 64px;
     line-height: 64px;
+  }
+  
+  /* Контурные буквы */
+  .outline-we-container.desktop-outline {
+    padding: 0 80px;
+  }
+  
+  .outline-we-container.desktop-outline .outline-we,
+  .outline-do-container.desktop-outline .outline-do {
+    font-size: 300px;
+    line-height: 300px;
+    -webkit-text-stroke: 2px #DDDBDB;
   }
 }
 
@@ -305,30 +415,17 @@
     font-size: 64px;
     line-height: 64px;
   }
-}
-
-/* ========== АДАПТАЦИЯ ДЛЯ УЗКИХ ДЕСКТОПОВ ========== */
-@media (min-width: 1441px) and (max-width: 1600px) {
-  .third-scroll-container {
-    padding: 0 50px;
+  
+  /* Контурные буквы */
+  .outline-we-container.desktop-outline {
+    padding: 0 100px;
   }
   
-  .left-side {
-    margin-right: 60px;
-  }
-  
-  .right-side {
-    max-width: 70%;
-  }
-  
-  .third-title {
-    font-size: 200px;
-    line-height: 200px;
-  }
-  
-  .item-text {
-    font-size: 56px;
-    line-height: 56px;
+  .outline-we-container.desktop-outline .outline-we,
+  .outline-do-container.desktop-outline .outline-do {
+    font-size: 320px;
+    line-height: 320px;
+    -webkit-text-stroke: 2px #DDDBDB;
   }
 }
 
@@ -402,13 +499,26 @@
     justify-content: flex-end;
     width: 100%;
   }
+  
+  /* Контур WE на планшетах */
+  .outline-we-container.desktop-outline {
+    padding: 0 60px;
+  }
+  
+  .outline-we-container.desktop-outline .outline-we,
+  .outline-do-container.desktop-outline .outline-do {
+    font-size: 250px;
+    line-height: 250px;
+    -webkit-text-stroke: 2px #DDDBDB;
+  }
 }
 
 /* ========== ТЕЛЕФОННАЯ ВЕРСИЯ (мобильные устройства) ========== */
 @media (max-width: 768px) {
   .third-scroll-section {
     padding-top: 50px;
-    padding-bottom: 90px;
+    padding-bottom: 120px; /* Увеличиваем отступ снизу для WE */
+    min-height: auto;
   }
 
   .third-scroll-container {
@@ -470,6 +580,8 @@
   .button-container {
     margin-top: 25px;
     justify-content: center;
+    position: relative;
+    z-index: 4;
   }
 
   .third-button {
@@ -503,13 +615,60 @@
   .title-word:nth-child(2) {
     transform: translateX(22px);
   }
+  
+  /* Мобильные контурные буквы */
+  .desktop-outline {
+    display: none !important;
+  }
+  
+  .mobile-outline {
+    display: block !important;
+  }
+  
+  /* Контур DO над кнопкой справа - МОБИЛЬНЫЙ */
+  .outline-do-container.mobile-outline.do-above-button {
+    position: absolute;
+    top: auto;
+    bottom: calc(100% - 80px); /* Позиционируем над кнопкой */
+    right: 20px;
+    z-index: 3;
+    transform: none !important;
+  }
+  
+  .outline-do-container.mobile-outline.do-above-button .outline-do {
+    font-size: 60px;
+    line-height: 60px;
+    color: transparent;
+    -webkit-text-stroke: 1px #DDDBDB;
+    text-stroke: 1px #DDDBDB;
+    -webkit-text-fill-color: transparent;
+    margin-bottom: -15px; /* Залазит на кнопку */
+  }
+  
+  /* Контур WE под кнопкой слева - МОБИЛЬНЫЙ */
+  .outline-we-container.mobile-outline.we-below-button {
+    position: absolute;
+    bottom: 30px; /* В самом низу блока */
+    left: 20px;
+    z-index: 3;
+  }
+  
+  .outline-we-container.mobile-outline.we-below-button .outline-we {
+    font-size: 60px;
+    line-height: 60px;
+    color: transparent;
+    -webkit-text-stroke: 1px #DDDBDB;
+    text-stroke: 1px #DDDBDB;
+    -webkit-text-fill-color: transparent;
+    margin-top: -15px; /* Залазит на кнопку */
+  }
 }
 
 /* ========== МАЛЕНЬКИЕ ТЕЛЕФОНЫ ========== */
 @media (max-width: 480px) {
   .third-scroll-section {
     padding-top: 40px;
-    padding-bottom: 15px;
+    padding-bottom: 110px;
   }
 
   .third-scroll-container {
@@ -544,13 +703,38 @@
     height: 48px;
     font-size: 13px;
   }
+  
+  /* Контурные буквы мобильные */
+  .outline-do-container.mobile-outline.do-above-button {
+    bottom: calc(100% - 70px);
+    right: 15px;
+  }
+  
+  .outline-do-container.mobile-outline.do-above-button .outline-do {
+    font-size: 50px;
+    line-height: 50px;
+    -webkit-text-stroke: 0.8px #DDDBDB;
+    margin-bottom: -12px;
+  }
+  
+  .outline-we-container.mobile-outline.we-below-button {
+    bottom: 25px;
+    left: 15px;
+  }
+  
+  .outline-we-container.mobile-outline.we-below-button .outline-we {
+    font-size: 50px;
+    line-height: 50px;
+    -webkit-text-stroke: 0.8px #DDDBDB;
+    margin-top: -12px;
+  }
 }
 
 /* ========== ОЧЕНЬ МАЛЕНЬКИЕ ЭКРАНЫ ========== */
 @media (max-width: 380px) {
   .third-scroll-section {
     padding-top: 30px;
-    padding-bottom: 15px;
+    padding-bottom: 100px;
   }
 
   .third-scroll-container {
@@ -583,5 +767,43 @@
     width: 160px;
     height: 46px;
     font-size: 12px;
+  }
+  
+  /* Контурные буквы мобильные */
+  .outline-do-container.mobile-outline.do-above-button {
+    bottom: calc(100% - 65px);
+    right: 12px;
+  }
+  
+  .outline-do-container.mobile-outline.do-above-button .outline-do {
+    font-size: 45px;
+    line-height: 45px;
+    -webkit-text-stroke: 0.6px #DDDBDB;
+    margin-bottom: -10px;
+  }
+  
+  .outline-we-container.mobile-outline.we-below-button {
+    bottom: 20px;
+    left: 12px;
+  }
+  
+  .outline-we-container.mobile-outline.we-below-button .outline-we {
+    font-size: 45px;
+    line-height: 45px;
+    -webkit-text-stroke: 0.6px #DDDBDB;
+    margin-top: -10px;
+  }
+}
+
+/* Fallback для браузеров без поддержки -webkit-text-stroke */
+@supports not (-webkit-text-stroke: 1px #DDDBDB) {
+  .outline-we,
+  .outline-do {
+    color: transparent;
+    text-shadow: 
+      -1px -1px 0 #DDDBDB,
+      1px -1px 0 #DDDBDB,
+      -1px 1px 0 #DDDBDB,
+      1px 1px 0 #DDDBDB;
   }
 }

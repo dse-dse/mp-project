@@ -81,14 +81,18 @@ const ThirdScrollBlock = () => {
     return isAppearing ? "translateY(0)" : "translateY(30px)";
   };
 
+  const getOutlineTransform = (isAppearing) => {
+    return isAppearing ? "translateX(0)" : "translateX(-50px)";
+  };
+
   return (
     <section
       className={`third-scroll-section ${isVisible ? 'section-visible' : ''}`}
       ref={sectionRef}
     >
-      <div className="section-top-line"></div>
 
       <div className="third-scroll-container">
+        {/* Левая часть - основной WE DO (заполненный) */}
         <div className="left-side">
           <div className="third-title-wrapper">
             <h2 className="third-title">
@@ -149,6 +153,7 @@ const ThirdScrollBlock = () => {
           </div>
         </div>
 
+        {/* Правая часть - список и кнопка */}
         <div className="right-side">
           <div className="items-container">
             <div className="third-items-list">
@@ -218,6 +223,85 @@ const ThirdScrollBlock = () => {
               </button>
             </div>
           </div>
+        </div>
+      </div>
+
+      {/* Контурные буквы WE и DO как фоновые элементы */}
+      <div className="outline-letters-wrapper">
+        {/* Контур WE слева внизу в углу - ДЕСКТОП */}
+        <div className="outline-we-container desktop-outline">
+          <h2 className="outline-we">
+            {"WE".split("").map((letter, index) => (
+              <span
+                key={`outline-we-${index}`}
+                className="outline-letter"
+                style={{
+                  opacity: isVisible ? 1 : 0,
+                  transform: getOutlineTransform(isVisible),
+                  transitionDelay: `${index * 100 + 500}ms`
+                }}
+              >
+                {letter}
+              </span>
+            ))}
+          </h2>
+        </div>
+
+        {/* Контур DO справа (выступает на 33%) - ДЕСКТОП */}
+        <div className="outline-do-container desktop-outline">
+          <h2 className="outline-do">
+            {"DO".split("").map((letter, index) => (
+              <span
+                key={`outline-do-${index}`}
+                className="outline-letter"
+                style={{
+                  opacity: isVisible ? 1 : 0,
+                  transform: getOutlineTransform(isVisible),
+                  transitionDelay: `${index * 100 + 700}ms`
+                }}
+              >
+                {letter}
+              </span>
+            ))}
+          </h2>
+        </div>
+
+        {/* Контур DO над кнопкой - МОБИЛЬНЫЙ */}
+        <div className="outline-do-container mobile-outline do-above-button">
+          <h2 className="outline-do">
+            {"DO".split("").map((letter, index) => (
+              <span
+                key={`mobile-outline-do-${index}`}
+                className="outline-letter"
+                style={{
+                  opacity: isVisible ? 1 : 0,
+                  transform: getOutlineTransform(isVisible),
+                  transitionDelay: `${index * 100 + 700}ms`
+                }}
+              >
+                {letter}
+              </span>
+            ))}
+          </h2>
+        </div>
+
+        {/* Контур WE под кнопкой - МОБИЛЬНЫЙ */}
+        <div className="outline-we-container mobile-outline we-below-button">
+          <h2 className="outline-we">
+            {"WE".split("").map((letter, index) => (
+              <span
+                key={`mobile-outline-we-${index}`}
+                className="outline-letter"
+                style={{
+                  opacity: isVisible ? 1 : 0,
+                  transform: getOutlineTransform(isVisible),
+                  transitionDelay: `${index * 100 + 500}ms`
+                }}
+              >
+                {letter}
+              </span>
+            ))}
+          </h2>
         </div>
       </div>
     </section>

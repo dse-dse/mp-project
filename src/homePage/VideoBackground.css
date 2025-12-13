@@ -250,22 +250,18 @@
   }
   
   .icon-1 {
-    width: calc(65px * var(--scale-factor));
     height: calc(27px * var(--scale-factor));
   }
   
   .icon-2 {
-    width: calc(100px * var(--scale-factor));
     height: calc(28px * var(--scale-factor));
   }
   
   .icon-3 {
-    width: calc(77px * var(--scale-factor));
     height: calc(28px * var(--scale-factor));
   }
   
   .icon-4 {
-    width: calc(119px * var(--scale-factor));
     height: calc(30px * var(--scale-factor));
   }
 }
