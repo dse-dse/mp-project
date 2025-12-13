@@ -7,12 +7,12 @@ const ThirdScrollBlock = () => {
 
   const title = "WE DO";
   const items = [
-    "COMMERCIAL VIDEO",
-    "HYPE & MARKETING",
-    "BRANDING",
-    "EVENTS / LAUNCHES",
+    "VIDEO PRODUCTION",
+    "PROJECT BRANDING",
+    "INFLUENCE MARKETING",
     "CELEBRITY APPEARANCES",
-    "3D"
+    "EVENTS",
+    "3D/CG"
   ];
   const buttonText = "VIEW ALL PROJECT";
 
