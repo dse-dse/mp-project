@@ -1,4 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import "./MensSection.css";
 import mensPhoto from "../image/mens.png";
 
@@ -9,6 +10,12 @@ const MensSection = () => {
   const textContainerRef = useRef(null);
   const secondaryContainerRef = useRef(null);
   const [isMobile, setIsMobile] = useState(false);
+  const navigate = useNavigate();
+
+  // Функция для перехода на real-estate страницу
+  const goToRealEstate = () => {
+    navigate("/real-estate");
+  };
 
   useEffect(() => {
     const checkMobile = () => {
@@ -116,8 +123,9 @@ const MensSection = () => {
     };
   }, [isMobile]);
 
+  // ОБНОВЛЕНО: Добавлен id для навигации
   return (
-    <section className="mens-section" ref={sectionRef}>
+    <section className="mens-section" id="mens-section" ref={sectionRef}>
       <div className="mens-sticky">
         <div className="mens-content">
           {/* Дата */}
@@ -135,8 +143,9 @@ const MensSection = () => {
           </div>
 
           {/* Кнопка - выровнена по левому краю основного текста */}
+          {/* ОБНОВЛЕНО: Кнопка теперь ведет на /real-estate */}
           <div className="mens-secondary-container" ref={secondaryContainerRef}>
-            <button className="mens-button">
+            <button className="mens-button" onClick={goToRealEstate}>
               READ MORE
             </button>
           </div>

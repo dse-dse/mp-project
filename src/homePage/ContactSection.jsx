@@ -70,8 +70,9 @@ const ContactSection = () => {
     }
   };
 
+  // ОБНОВЛЕНО: Добавлен id для навигации
   return (
-    <section className="contact-section">
+    <section className="contact-section" id="contact-section">
       {/* УДАЛЕНО: Разделительная полоса теперь находится ВНЕ этого компонента */}
       <div className="contact-container">
         {/* ЛЕВАЯ КОЛОНКА */}

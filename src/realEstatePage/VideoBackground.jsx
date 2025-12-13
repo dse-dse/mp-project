@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import "./VideoBackground.css";
 import videoSrc from "../video/hero-video.mp4";
 import logoImg from "../image/logo.png";
@@ -10,6 +10,7 @@ import designfestivalImg from "../image/designfestival.png";
 
 const VideoBackground = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const location = useLocation();
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
@@ -17,6 +18,36 @@ const VideoBackground = () => {
 
   const closeMenu = () => {
     setIsMenuOpen(false);
+  };
+
+  // Функция для скролла к блоку Mens
+  const scrollToMens = () => {
+    closeMenu();
+    const mensSection = document.getElementById('mens-section');
+    if (mensSection) {
+      mensSection.scrollIntoView({ 
+        behavior: 'smooth',
+        block: 'start'
+      });
+    }
+  };
+
+  // Функция для скролла к Contact секции
+  const scrollToContact = () => {
+    closeMenu();
+    const contactSection = document.getElementById('contact-section');
+    if (contactSection) {
+      contactSection.scrollIntoView({ 
+        behavior: 'smooth',
+        block: 'start'
+      });
+    }
+  };
+
+  // Функция для обработки клика на ABOUT
+  const handleAboutClick = (e) => {
+    e.preventDefault();
+    scrollToMens();
   };
 
   // Закрытие меню при нажатии Escape
@@ -73,10 +104,18 @@ const VideoBackground = () => {
         
         {/* Десктопная навигация - ПРАВАЯ ЧАСТЬ */}
         <div className="nav-right">
-          <span className="nav-item about">ABOUT</span>
+          {/* ОБНОВЛЕНО: About теперь Link как DIRECTIONS и PROJECTS */}
+          <Link 
+            to="#" 
+            className="nav-item about"
+            onClick={handleAboutClick}
+          >
+            ABOUT
+          </Link>
+          {/* ОБНОВЛЕНО: CHAT WITH US теперь скроллит к ContactSection */}
           <button 
             className="nav-item chat-button"
-            onClick={() => alert("Opening chat...")}
+            onClick={scrollToContact}
           >
             CHAT WITH US
           </button>
@@ -105,7 +144,7 @@ const VideoBackground = () => {
           aria-label="Chat with us"
           onClick={() => {
             closeMenu();
-            alert("Opening chat...");
+            scrollToContact();
           }}
         >
           <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -133,7 +172,17 @@ const VideoBackground = () => {
               >
                 PROJECTS
               </Link>
-              <button className="mobile-nav-item" onClick={closeMenu}>ABOUT</button>
+              {/* ОБНОВЛЕНО: Мобильная версия ABOUT как Link */}
+              <Link 
+                to="#" 
+                className="mobile-nav-item"
+                onClick={(e) => {
+                  e.preventDefault();
+                  scrollToMens();
+                }}
+              >
+                ABOUT
+              </Link>
             </>
           )}
         </div>

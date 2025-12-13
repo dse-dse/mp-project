@@ -1,24 +1,18 @@
-/* VideoBackground.css */
+/* NavBar.css */
 
 :root {
   --base-width: 1440px;
   --scale-factor: 1;
 }
 
-/* БЕЛЫЙ ФОН ВМЕСТО ВИДЕО */
-.video-background-container.white-background {
+/* КОНТЕЙНЕР HEADER */
+.header-wrapper {
   position: relative;
   width: 100%;
   height: 150px; /* ФИКСИРОВАННАЯ ВЫСОТА 150px */
   overflow: hidden;
   margin: 0 auto;
   background-color: #FFFFFF;
-}
-
-/* Убираем все видео-стили */
-.video-background,
-.video-background-overlay {
-  display: none;
 }
 
 /* Автоматическое вычисление масштаба для больших экранов */
@@ -29,8 +23,8 @@
   }
 }
 
-/* НАВИГАЦИЯ - ПК ВЕРСИЯ (КОРРЕКТНАЯ) */
-.navigation {
+/* ГЛАВНЫЙ HEADER - ПК ВЕРСИЯ */
+.main-header {
   position: absolute;
   top: 50%;
   transform: translate(-50%, -50%); /* Центрирование по вертикали и горизонтали */
@@ -47,15 +41,15 @@
 
 /* Масштабирование навигации для больших экранов */
 @media (min-width: 1441px) {
-  .navigation {
+  .main-header {
     top: 50%;
     padding: 0 calc(40px * var(--scale-factor));
     max-width: calc(1440px * var(--scale-factor));
   }
 }
 
-/* ЛЕВАЯ ЧАСТЬ НАВИГАЦИИ */
-.nav-left {
+/* ЛЕВАЯ ЧАСТЬ HEADER */
+.header-section--left {
   display: flex;
   align-items: center;
   justify-content: flex-start;
@@ -64,14 +58,14 @@
 }
 
 @media (min-width: 1441px) {
-  .nav-left {
+  .header-section--left {
     width: calc(50% - calc(52.5px * var(--scale-factor)));
     gap: calc(220px * var(--scale-factor));
   }
 }
 
-/* ПРАВАЯ ЧАСТЬ НАВИГАЦИИ */
-.nav-right {
+/* ПРАВАЯ ЧАСТЬ HEADER */
+.header-section--right {
   display: flex;
   align-items: center;
   justify-content: flex-end;
@@ -80,13 +74,13 @@
 }
 
 @media (min-width: 1441px) {
-  .nav-right {
+  .header-section--right {
     width: calc(50% - calc(52.5px * var(--scale-factor)));
     gap: calc(179px * var(--scale-factor));
   }
 }
 
-.nav-item {
+.nav-link {
   color: #000000; /* Черный текст на белом фоне */
   font-size: 14px;
   cursor: pointer;
@@ -97,48 +91,48 @@
 }
 
 @media (min-width: 1441px) {
-  .nav-item {
+  .nav-link {
     font-size: calc(14px * var(--scale-factor));
   }
 }
 
-.nav-item:hover {
+.nav-link:hover {
   opacity: 0.6;
 }
 
 /* Отступы для элементов навигации */
-.nav-left .nav-item.directions {
+.header-section--left .nav-link--directions {
   margin-right: 48px;
 }
 
 @media (min-width: 1441px) {
-  .nav-left .nav-item.directions {
+  .header-section--left .nav-link--directions {
     margin-right: calc(48px * var(--scale-factor));
   }
 }
 
 /* Логотип в центре */
-.logo {
+.brand-logo {
   position: absolute;
   left: 50%;
   transform: translateX(-50%);
 }
 
-.logo-image {
+.brand-logo__image {
   width: 105px;
   height: 40px;
   object-fit: contain;
 }
 
 @media (min-width: 1441px) {
-  .logo-image {
+  .brand-logo__image {
     width: calc(105px * var(--scale-factor));
     height: calc(40px * var(--scale-factor));
   }
 }
 
-/* Кнопка CHAT WITH US - возвращаем оригинальный стиль, но с черным текстом */
-.chat-button {
+/* Кнопка CHAT WITH US */
+.chat-action-button {
   background-color: transparent; /* Прозрачный фон */
   width: 176px;
   height: 60px;
@@ -157,7 +151,7 @@
 }
 
 @media (min-width: 1441px) {
-  .chat-button {
+  .chat-action-button {
     width: calc(176px * var(--scale-factor));
     height: calc(60px * var(--scale-factor));
     border-radius: calc(30px * var(--scale-factor));
@@ -165,23 +159,17 @@
   }
 }
 
-.chat-button:hover {
+.chat-action-button:hover {
   background-color: rgba(0, 0, 0, 0.05); /* Легкий черный фон при наведении */
   transform: translateY(-2px);
-}
-
-/* Убираем контейнер для кнопки VIEW PROJECT */
-.view-project-container,
-.view-project-button {
-  display: none;
 }
 
 /* ============================================= */
 /* ЭЛЕМЕНТЫ МОБИЛЬНОЙ ВЕРСИИ - СКРЫТЫ ДЛЯ ПК */
 /* ============================================= */
-.burger-menu,
-.mobile-chat-button,
-.mobile-dropdown {
+.mobile-menu-toggle,
+.mobile-chat-action,
+.mobile-navigation-menu {
   display: none;
 }
 
@@ -189,8 +177,8 @@
 /* МОБИЛЬНАЯ ВЕРСИЯ (768px и меньше) */
 /* ============================================= */
 @media (max-width: 768px) {
-  /* НАВИГАЦИЯ - МОБИЛЬНАЯ */
-  .navigation {
+  /* HEADER - МОБИЛЬНАЯ */
+  .main-header {
     top: 50%;
     transform: translate(-50%, -50%);
     padding: 0 16px;
@@ -200,33 +188,33 @@
   }
   
   /* Скрываем десктопную навигацию в мобильной версии */
-  .nav-left, 
-  .nav-right,
-  .chat-button {
+  .header-section--left, 
+  .header-section--right,
+  .chat-action-button {
     display: none !important;
   }
   
   /* Показываем элементы мобильной версии */
-  .burger-menu,
-  .mobile-chat-button {
+  .mobile-menu-toggle,
+  .mobile-chat-action {
     display: flex;
   }
   
   /* Логотип в центре */
-  .logo {
+  .brand-logo {
     position: static;
     left: auto;
     transform: none;
     order: 2;
   }
   
-  .logo-image {
+  .brand-logo__image {
     width: 80px;
     height: 30px;
   }
   
-  /* БУРГЕР-МЕНЮ ПРОЗРАЧНЫЙ С ЧЕРНОЙ ГРАНИЦЕЙ */
-  .burger-menu {
+  /* БУРГЕР-МЕНЮ */
+  .mobile-menu-toggle {
     width: 48px;
     height: 48px;
     background: transparent;
@@ -240,19 +228,19 @@
     transition: all 0.3s ease;
   }
   
-  .burger-menu:hover {
+  .mobile-menu-toggle:hover {
     background-color: rgba(0, 0, 0, 0.05);
     transform: translateY(-2px);
   }
   
-  .burger-menu svg {
+  .mobile-menu-toggle svg {
     width: 18px;
     height: 12px;
     transition: transform 0.3s ease;
   }
   
-  /* КНОПКА ЧАТА СПРАВА (ПРОЗРАЧНАЯ С ЧЕРНОЙ ГРАНИЦЕЙ) */
-  .mobile-chat-button {
+  /* КНОПКА ЧАТА СПРАВА */
+  .mobile-chat-action {
     width: 48px;
     height: 48px;
     background: transparent;
@@ -266,18 +254,18 @@
     z-index: 101;
   }
   
-  .mobile-chat-button:hover {
+  .mobile-chat-action:hover {
     background-color: rgba(0, 0, 0, 0.05);
     transform: translateY(-2px);
   }
   
-  .mobile-chat-button svg {
+  .mobile-chat-action svg {
     width: 18px;
     height: 18px;
   }
   
   /* ВЫПАДАЮЩЕЕ МЕНЮ ДЛЯ МОБИЛЬНОЙ ВЕРСИИ */
-  .mobile-dropdown {
+  .mobile-navigation-menu {
     display: flex !important;
     position: fixed;
     top: 0;
@@ -299,14 +287,14 @@
     transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
   }
   
-  .mobile-dropdown.active {
+  .mobile-navigation-menu--active {
     opacity: 1;
     visibility: visible;
     transform: translateY(0);
   }
   
   /* ЭЛЕМЕНТЫ МЕНЮ */
-  .mobile-nav-item {
+  .mobile-nav-link {
     color: #000000;
     font-size: 18px;
     font-weight: 500;
@@ -323,7 +311,7 @@
     cursor: pointer;
   }
   
-  .mobile-nav-item:hover {
+  .mobile-nav-link:hover {
     color: #000000;
     background: #E0E0E0;
     transform: translateY(-3px);
@@ -333,19 +321,19 @@
 
 /* ДЛЯ ПЛАНШЕТОВ (769px - 1024px) */
 @media (min-width: 769px) and (max-width: 1024px) {
-  .navigation {
+  .main-header {
     padding: 0 24px;
   }
   
-  .nav-left, .nav-right {
+  .header-section--left, .header-section--right {
     width: auto;
   }
   
-  .nav-left {
+  .header-section--left {
     gap: 100px;
   }
   
-  .nav-right {
+  .header-section--right {
     gap: 80px;
   }
 }
@@ -377,24 +365,24 @@
 
 /* ДЛЯ ОЧЕНЬ МАЛЕНЬКИХ ТЕЛЕФОНОВ */
 @media (max-width: 360px) {
-  .logo-image {
+  .brand-logo__image {
     width: 70px;
     height: 26px;
   }
   
-  .mobile-nav-item {
+  .mobile-nav-link {
     width: 200px;
     padding: 14px 24px;
     font-size: 16px;
   }
   
-  .burger-menu,
-  .mobile-chat-button {
+  .mobile-menu-toggle,
+  .mobile-chat-action {
     width: 44px;
     height: 44px;
   }
   
-  .mobile-dropdown {
+  .mobile-navigation-menu {
     padding: 60px 20px;
     gap: 12px;
   }

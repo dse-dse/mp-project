@@ -1,27 +1,23 @@
 // App.js - обновленная версия
 import React from "react";
-import VideoBackground from "./VideoBackground";
+import NavBar from "./NavBar"; // Импортируем переименованный компонент
 import ScrollTextAnimation from "./ScrollTextAnimation";
 import ThirdScrollBlock from "./ThirdScrollBlock";
 import FourthScrollBlock from "./FourthScrollBlock";
 import ContactSection from "./ContactSection";
-import ProjectsVideoSection from "./ProjectsVideoSection"; // Импортируем новый компонент
+import ProjectsVideoSection from "./ProjectsVideoSection"; // Компонент с видео и сортировкой
 import MensSection from "./MensSection";
 import Footer from "./Footer";
 import "./App.css";
 
-function  ProjectsPageApp() {
+function ProjectsPageApp() {
   return (
     <div className="App">
-      <VideoBackground />
-     
+      <NavBar /> {/* Используем переименованный компонент */}
       
-   
-      {/* Добавляем новый блок с видео и сортировкой */}
       <ProjectsVideoSection />
-    
- 
       <ContactSection />
+
       <Footer />
     </div>
   );
