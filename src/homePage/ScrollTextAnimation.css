@@ -43,7 +43,7 @@
 
 /* ВТОРОЕ ПРЕДЛОЖЕНИЕ - СНИЗУ СПРАВА */
 .text-section[data-section-index="1"] {
-  bottom: 15%;
+  /* bottom: 15%; */
   right: 10%;
   text-align: right;
   transform: translateY(10px);
@@ -294,7 +294,7 @@
 
   .text-section[data-section-index="1"] {
     left: 5%;
-    margin-top: 70vh;
+    margin-top: 90vh;
   }
 
   .text-number.number-1 {
